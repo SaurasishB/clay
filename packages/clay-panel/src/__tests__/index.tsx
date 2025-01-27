@@ -13,9 +13,9 @@ describe('ClayPanel', () => {
 	it('renders', () => {
 		const {container} = render(
 			<ClayPanel displayTitle="Display Title" spritemap="/foo/bar">
-				<ClayPanel.Header>{'Header!'}</ClayPanel.Header>
-				<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
-				<ClayPanel.Footer>{'Footer!'}</ClayPanel.Footer>
+				<ClayPanel.Header>Header!</ClayPanel.Header>
+				<ClayPanel.Body>Body!</ClayPanel.Body>
+				<ClayPanel.Footer>Footer!</ClayPanel.Footer>
 			</ClayPanel>
 		);
 
@@ -26,12 +26,28 @@ describe('ClayPanel', () => {
 		const {container} = render(
 			<ClayPanel
 				displayTitle="Display Title"
-				displayType="secondary"
+				displayType="block"
 				spritemap="/foo/bar"
 			>
-				<ClayPanel.Header>{'Header!'}</ClayPanel.Header>
-				<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
-				<ClayPanel.Footer>{'Footer!'}</ClayPanel.Footer>
+				<ClayPanel.Header>Header!</ClayPanel.Header>
+				<ClayPanel.Body>Body!</ClayPanel.Body>
+				<ClayPanel.Footer>Footer!</ClayPanel.Footer>
+			</ClayPanel>
+		);
+
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders with different size', () => {
+		const {container} = render(
+			<ClayPanel
+				displayTitle="Display Title"
+				size="sm"
+				spritemap="/foo/bar"
+			>
+				<ClayPanel.Header>Header!</ClayPanel.Header>
+				<ClayPanel.Body>Body!</ClayPanel.Body>
+				<ClayPanel.Footer>Footer!</ClayPanel.Footer>
 			</ClayPanel>
 		);
 
@@ -42,11 +58,11 @@ describe('ClayPanel', () => {
 		const {container} = render(
 			<ClayPanel.Group>
 				<ClayPanel displayTitle="Display Title" spritemap="/foo/bar">
-					<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
+					<ClayPanel.Body>Body!</ClayPanel.Body>
 				</ClayPanel>
 
 				<ClayPanel displayTitle="Display Title" spritemap="/foo/bar">
-					<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
+					<ClayPanel.Body>Body!</ClayPanel.Body>
 				</ClayPanel>
 
 				<ClayPanel
@@ -54,7 +70,7 @@ describe('ClayPanel', () => {
 					displayTitle="Display Title"
 					spritemap="/foo/bar"
 				>
-					<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
+					<ClayPanel.Body>Body!</ClayPanel.Body>
 				</ClayPanel>
 			</ClayPanel.Group>
 		);
@@ -66,11 +82,11 @@ describe('ClayPanel', () => {
 		const {container} = render(
 			<ClayPanel.Group small>
 				<ClayPanel displayTitle="Display Title" spritemap="/foo/bar">
-					<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
+					<ClayPanel.Body>Body!</ClayPanel.Body>
 				</ClayPanel>
 
 				<ClayPanel displayTitle="Display Title" spritemap="/foo/bar">
-					<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
+					<ClayPanel.Body>Body!</ClayPanel.Body>
 				</ClayPanel>
 
 				<ClayPanel
@@ -78,7 +94,7 @@ describe('ClayPanel', () => {
 					displayTitle="Display Title"
 					spritemap="/foo/bar"
 				>
-					<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
+					<ClayPanel.Body>Body!</ClayPanel.Body>
 				</ClayPanel>
 			</ClayPanel.Group>
 		);
@@ -92,16 +108,15 @@ describe('ClayPanel', () => {
 				collapsable
 				displayTitle={
 					<ClayPanel.Title>
-						<h3>{'Custom Panel Title'}</h3>
+						<h3>Custom Panel Title</h3>
 					</ClayPanel.Title>
 				}
-				displayType="secondary"
 				showCollapseIcon
 				spritemap="/foo/bar"
 			>
-				<ClayPanel.Header>{'Header!'}</ClayPanel.Header>
-				<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
-				<ClayPanel.Footer>{'Footer!'}</ClayPanel.Footer>
+				<ClayPanel.Header>Header!</ClayPanel.Header>
+				<ClayPanel.Body>Body!</ClayPanel.Body>
+				<ClayPanel.Footer>Footer!</ClayPanel.Footer>
 			</ClayPanel>
 		);
 
@@ -110,15 +125,10 @@ describe('ClayPanel', () => {
 
 	it('renders without displayTitle', () => {
 		const {container} = render(
-			<ClayPanel
-				collapsable
-				displayType="secondary"
-				showCollapseIcon
-				spritemap="/foo/bar"
-			>
-				<ClayPanel.Header>{'Header!'}</ClayPanel.Header>
-				<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
-				<ClayPanel.Footer>{'Footer!'}</ClayPanel.Footer>
+			<ClayPanel collapsable showCollapseIcon spritemap="/foo/bar">
+				<ClayPanel.Header>Header!</ClayPanel.Header>
+				<ClayPanel.Body>Body!</ClayPanel.Body>
+				<ClayPanel.Footer>Footer!</ClayPanel.Footer>
 			</ClayPanel>
 		);
 
@@ -137,9 +147,9 @@ describe('ClayPanel Interactions', () => {
 				displayTitle="Display Title"
 				spritemap="/foo/bar"
 			>
-				<ClayPanel.Header>{'Header!'}</ClayPanel.Header>
-				<ClayPanel.Body>{'Body!'}</ClayPanel.Body>
-				<ClayPanel.Footer>{'Footer!'}</ClayPanel.Footer>
+				<ClayPanel.Header>Header!</ClayPanel.Header>
+				<ClayPanel.Body>Body!</ClayPanel.Body>
+				<ClayPanel.Footer>Footer!</ClayPanel.Footer>
 			</ClayPanel>
 		);
 

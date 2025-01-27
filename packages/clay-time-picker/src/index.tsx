@@ -6,9 +6,9 @@
 import ClayButton from '@clayui/button';
 import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import {FocusScope} from '@clayui/shared';
+import {FocusScope, InternalDispatch, useControlledState} from '@clayui/shared';
 import classNames from 'classnames';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 type ConfigMaxMin = {
 	max: number;
@@ -40,7 +40,11 @@ enum TimeType {
 	ampm = 'ampm',
 }
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps
+	extends Omit<
+		React.HTMLAttributes<HTMLDivElement>,
+		'onChange' | 'defaultValue'
+	> {
 	/**
 	 * Add the labels for the input elements and the input clear button,
 	 * use this to provide accessibility and internationalization.
@@ -69,24 +73,35 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	disabled?: boolean;
 
 	/**
+	 * Property to set the default value (uncontrolled).
+	 */
+	defaultValue?: Input;
+
+	/**
 	 * Flag to indicate if show time icon or not.
 	 */
 	icon?: boolean;
 
 	/**
-	 * Called when input values change hour, minutes or ampm.
+	 * Id to be applied to `clay-time-hours` input.
 	 */
-	onInputChange: (values: Input) => void;
+	id?: string;
+
+	/**
+	 * Called when input values change hour, minutes or ampm (controlled).
+	 */
+	onChange?: InternalDispatch<Input>;
+
+	/**
+	 * Called when input values change hour, minutes or ampm (controlled).
+	 * @deprecated since v3.52.0 - use `onChange` instead.
+	 */
+	onInputChange?: InternalDispatch<Input>;
 
 	/**
 	 * Name attribute for the hidden input (used for form submission).
 	 */
 	name?: string;
-
-	/**
-	 * Sets the values for the hour, minute, or am/pm input.
-	 */
-	values: Input;
 
 	/**
 	 * The path to the SVG spritemap file containing the icons.
@@ -102,6 +117,17 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	 * Flag to indicate if 12-hour use, when true, should show am/pm input.
 	 */
 	use12Hours?: boolean;
+
+	/**
+	 * Sets the values for the hour, minute, or am/pm input (controlled).
+	 * @deprecated since v3.52.0 - use `value` instead.
+	 */
+	values?: Input;
+
+	/**
+	 * Sets the values for the hour, minute, or am/pm input (controlled).
+	 */
+	value?: Input;
 }
 
 const DEFAULT_VALUE = '--';
@@ -136,10 +162,11 @@ const DEFAULT_CONFIG = {
 	},
 };
 
-const ClayTimePicker: React.FunctionComponent<IProps> = ({
+const regex = /^\d+$/;
+
+const ClayTimePicker = ({
 	ariaLabels = {
-		ampm:
-			'Select time of day (AM/PM) using up (PM) and down (AM) arrow keys',
+		ampm: 'Select time of day (AM/PM) using up (PM) and down (AM) arrow keys',
 		clear: 'Delete the entered time',
 		hours: 'Enter the hour in 00:00 format',
 		minutes: 'Enter the minutes in 00:00 format',
@@ -148,30 +175,44 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 	},
 	config = DEFAULT_CONFIG,
 	disabled = false,
-	icon = false,
-	name,
-	spritemap,
-	timezone,
-	use12Hours = false,
-	values = {
+	defaultValue = {
 		hours: DEFAULT_VALUE,
 		minutes: DEFAULT_VALUE,
 	},
-	onInputChange = () => {},
+	icon = false,
+	id,
+	name,
+	onChange,
+	onInputChange,
+	spritemap,
+	timezone,
+	use12Hours = false,
+	value,
+	values,
 }: IProps) => {
+	const [internalValue, setValue] = useControlledState({
+		defaultName: 'defaultValue',
+		defaultValue,
+		handleName: 'onChange',
+		name: 'value',
+		onChange: onChange ?? onInputChange,
+		value: value ?? values,
+	});
+
 	const useConfig: Config = config[use12Hours ? 'use12Hours' : 'use24Hours'];
-	const [actionVisible, setActionVisible] = React.useState(false);
-	const [isFocused, setIsFocused] = React.useState(false);
-	const elementRef = React.useRef<null | HTMLDivElement>(null);
+
+	const [actionVisible, setActionVisible] = useState(false);
+	const elementRef = useRef<null | HTMLDivElement>(null);
+
 	const defaultFocused = {
 		configName: TimeType.hours,
 		focused: false,
 	};
-	const [currentInputFocused, setCurrentInputFocused] = React.useState<{
+
+	const [currentInputFocused, setCurrentInputFocused] = useState<{
 		configName: TimeType;
 		focused: boolean;
 	}>(defaultFocused);
-	const regex = /^\d+$/;
 
 	const handleMaxAndMin = (value: string, config: ConfigMaxMin) => {
 		const newValue = value.substring(value.length - 2, value.length);
@@ -193,14 +234,14 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 	) => {
 		const config = useConfig[configName];
 		const intrinsicValue = Number(value);
-		const setValue = (newValue: string | number) => {
+		const onValue = (newValue: string | number) => {
 			const newVal =
 				configName === TimeType.ampm
 					? newValue
 					: handleMaxAndMin(String(newValue), config as ConfigMaxMin);
 
-			return onInputChange({
-				...values,
+			return setValue({
+				...internalValue,
 				// eslint-disable-next-line sort-keys
 				[configName]: String(newVal).padStart(2, '0'),
 			});
@@ -208,16 +249,16 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 
 		switch (event.key) {
 			case 'Backspace':
-				setValue(DEFAULT_VALUE);
+				onValue(DEFAULT_VALUE);
 				break;
 			case 'ArrowUp':
 				event.preventDefault();
 				event.stopPropagation();
 
 				if (configName === TimeType.ampm) {
-					setValue((config as ConfigAmpm).pm);
+					onValue((config as ConfigAmpm).pm);
 				} else {
-					setValue(
+					onValue(
 						value !== DEFAULT_VALUE
 							? intrinsicValue + 1
 							: (config as ConfigMaxMin).min
@@ -229,9 +270,9 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 				event.stopPropagation();
 
 				if (configName === TimeType.ampm) {
-					setValue((config as ConfigAmpm).am);
+					onValue((config as ConfigAmpm).am);
 				} else {
-					setValue(
+					onValue(
 						value !== DEFAULT_VALUE
 							? intrinsicValue - 1
 							: (config as ConfigMaxMin).max
@@ -257,12 +298,12 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 							: (value && value !== DEFAULT_VALUE ? value : '') +
 							  keyVal;
 
-					setValue(newVal);
+					onValue(newVal);
 				} else if (
 					configName === TimeType.ampm &&
 					(event.key === 'a' || event.key === 'p')
 				) {
-					setValue(
+					onValue(
 						event.key === 'a'
 							? (config as ConfigAmpm).am
 							: (config as ConfigAmpm).pm
@@ -275,7 +316,7 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 	const handleAction = (direction: number) => {
 		const {configName} = currentInputFocused;
 		const config = useConfig[configName];
-		const prevValue = values[configName];
+		const prevValue = internalValue[configName];
 		let value;
 
 		if (configName === TimeType.ampm) {
@@ -300,8 +341,8 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 			configName,
 			focused: true,
 		});
-		onInputChange({
-			...values,
+		setValue({
+			...internalValue,
 			// eslint-disable-next-line sort-keys
 			[configName]: String(value).padStart(2, '0'),
 		});
@@ -315,7 +356,6 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 		) {
 			setActionVisible(false);
 			setCurrentInputFocused(defaultFocused);
-			setIsFocused(false);
 		}
 	};
 
@@ -325,10 +365,9 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 			configName,
 			focused: true,
 		});
-		setIsFocused(true);
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		document.addEventListener('click', handleDocumentClick);
 
 		return () => {
@@ -338,9 +377,9 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 
 	const visibleActionReset =
 		actionVisible &&
-		((values.ampm !== DEFAULT_VALUE && values.ampm != null) ||
-			values.hours !== DEFAULT_VALUE ||
-			values.minutes !== DEFAULT_VALUE);
+		((internalValue.ampm !== DEFAULT_VALUE && internalValue.ampm != null) ||
+			internalValue.hours !== DEFAULT_VALUE ||
+			internalValue.minutes !== DEFAULT_VALUE);
 
 	return (
 		<div className="clay-time">
@@ -353,11 +392,10 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 					</ClayInput.GroupItem>
 				)}
 				<FocusScope arrowKeysLeftRight arrowKeysUpDown={false}>
-					<ClayInput.GroupItem shrink>
+					<ClayInput.GroupItem>
 						<div
 							className={classNames('form-control', {
 								disabled,
-								focus: isFocused,
 							})}
 							data-testid="formControl"
 							onMouseEnter={() => {
@@ -386,6 +424,7 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 									)}
 									data-testid="hours"
 									disabled={disabled}
+									id={id}
 									maxLength={2}
 									onFocus={() =>
 										handleInputFocus(TimeType.hours)
@@ -393,15 +432,15 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 									onKeyDown={(event) =>
 										handleKeyDown(
 											event,
-											values.hours,
+											internalValue.hours,
 											TimeType.hours
 										)
 									}
 									readOnly
 									type="text"
-									value={values.hours}
+									value={internalValue.hours}
 								/>
-								<span className="clay-time-divider">{':'}</span>
+								<span className="clay-time-divider">:</span>
 								<input
 									aria-label={ariaLabels.minutes}
 									className={classNames(
@@ -421,13 +460,13 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 									onKeyDown={(event) =>
 										handleKeyDown(
 											event,
-											values.minutes,
+											internalValue.minutes,
 											TimeType.minutes
 										)
 									}
 									readOnly
 									type="text"
-									value={values.minutes}
+									value={internalValue.minutes}
 								/>
 								{use12Hours && (
 									<input
@@ -449,20 +488,22 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 										onKeyDown={(event) =>
 											handleKeyDown(
 												event,
-												values.ampm as InputAmPm,
+												internalValue.ampm as InputAmPm,
 												TimeType.ampm
 											)
 										}
 										readOnly
 										type="text"
-										value={values.ampm || DEFAULT_VALUE}
+										value={
+											internalValue.ampm || DEFAULT_VALUE
+										}
 									/>
 								)}
 								{name && (
 									<input
 										name={name}
 										type="hidden"
-										value={`${values.hours}:${values.minutes}`}
+										value={`${internalValue.hours}:${internalValue.minutes}`}
 									/>
 								)}
 							</div>
@@ -483,16 +524,18 @@ const ClayTimePicker: React.FunctionComponent<IProps> = ({
 										disabled={disabled}
 										displayType="unstyled"
 										onClick={() =>
-											onInputChange(
+											setValue(
 												use12Hours
 													? {
 															ampm: DEFAULT_VALUE,
 															hours: DEFAULT_VALUE,
-															minutes: DEFAULT_VALUE,
+															minutes:
+																DEFAULT_VALUE,
 													  }
 													: {
 															hours: DEFAULT_VALUE,
-															minutes: DEFAULT_VALUE,
+															minutes:
+																DEFAULT_VALUE,
 													  }
 											)
 										}

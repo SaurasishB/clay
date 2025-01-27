@@ -41,7 +41,7 @@ mainTabURL: 'docs/components/management-toolbar.html'
                 <li class="nav-item">
                     <div class="custom-control custom-checkbox">
                         <label>
-                            <input class="custom-control-input" type="checkbox">
+                            <input class="custom-control-input" aria-label="Select all" type="checkbox">
                             <span class="custom-control-label"></span>
                         </label>
                     </div>
@@ -55,7 +55,7 @@ mainTabURL: 'docs/components/management-toolbar.html'
                             <use href="/images/icons/icons.svg#caret-bottom"></use>
                         </svg>
                     </a>
-                    <a aria-expanded="false" aria-haspopup="true"
+                    <a aria-label="Order" aria-expanded="false" aria-haspopup="true"
                         class="nav-link nav-link-monospaced dropdown-toggle navbar-breakpoint-d-none" data-toggle="dropdown"
                         href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-filter" focusable="false" role="presentation">
@@ -69,7 +69,7 @@ mainTabURL: 'docs/components/management-toolbar.html'
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Order" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-order-list-up" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#order-list-up"></use>
                         </svg>
@@ -84,12 +84,12 @@ mainTabURL: 'docs/components/management-toolbar.html'
                                 <input class="form-control input-group-inset input-group-inset-after"
                                     placeholder="Search for..." type="text">
                                 <span class="input-group-inset-item input-group-inset-item-after">
-                                    <button class="btn btn-monospaced btn-unstyled" type="submit">
+                                    <button aria-label="Search" class="btn btn-monospaced btn-unstyled" type="submit">
                                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#search"></use>
                                         </svg>
                                     </button>
-                                    <button class="btn btn-monospaced btn-unstyled d-none" type="button">
+                                    <button aria-label="Close search" class="btn btn-monospaced btn-unstyled d-none" type="button">
                                         <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#times"></use>
                                         </svg>
@@ -102,14 +102,14 @@ mainTabURL: 'docs/components/management-toolbar.html'
             </div>
             <ul class="navbar-nav">
                 <li class="nav-item navbar-breakpoint-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Search" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#search"></use>
                         </svg>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-monospaced" href="#uniqueSidenavCollapseId2" id="uniqueSidenavToggler2"
+                    <a aria-label="Open" class="nav-link nav-link-monospaced" href="#uniqueSidenavCollapseId2" id="uniqueSidenavToggler2"
                         role="button">
                         <svg class="lexicon-icon lexicon-icon-circle-open" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#circle-open"></use>
@@ -117,7 +117,7 @@ mainTabURL: 'docs/components/management-toolbar.html'
                     </a>
                 </li>
                 <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced"
+                    <a aria-label="Display view" aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced"
                         data-toggle="dropdown" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-list" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#list"></use>
@@ -157,14 +157,14 @@ mainTabURL: 'docs/components/management-toolbar.html'
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-primary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none" href="#1">
+                    <a aria-label="Add" class="btn btn-primary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none" href="#1">
                         <svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#plus"></use>
                         </svg>
                     </a>
                 </li>
                 <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true"
+                    <a aria-label="More Actions" aria-expanded="false" aria-haspopup="true"
                         class="btn btn-primary dropdown-toggle nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
                         data-toggle="dropdown" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
@@ -193,90 +193,49 @@ mainTabURL: 'docs/components/management-toolbar.html'
 <div class="sheet-example">
     <nav class="management-bar management-bar-primary navbar navbar-expand-md">
         <div class="container-fluid container-fluid-max-xl">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav navbar-expand">
                 <li class="nav-item">
                     <div class="custom-control custom-checkbox">
                         <label>
-                            <input class="custom-control-input" type="checkbox">
+                            <input aria-label="Select all" aria-describedby="checkbox-description-1" class="custom-control-input" type="checkbox">
                             <span class="custom-control-label"></span>
                         </label>
                     </div>
                 </li>
-                <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true"
-                        class="dropdown-toggle nav-link navbar-breakpoint-down-d-none" data-toggle="dropdown" href="#1"
-                        role="button">
-                        <span class="navbar-text-truncate">Filter and Order</span>
-                        <svg class="lexicon-icon lexicon-icon-caret-bottom" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#caret-bottom"></use>
-                        </svg>
-                    </a>
-                    <a aria-expanded="false" aria-haspopup="true"
-                        class="nav-link nav-link-monospaced dropdown-toggle navbar-breakpoint-d-none" data-toggle="dropdown"
-                        href="#1" role="button">
-                        <svg class="lexicon-icon lexicon-icon-filter" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#filter"></use>
-                        </svg>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#1" role="button">Filter Action 1</a></li>
-                        <li><a class="dropdown-item" href="#1" role="button">Filter Action 2</a></li>
-                        <li><a class="dropdown-item" href="#1" role="button">Filter Action 3</a></li>
-                    </ul>
+                <li class="nav-item nav-item-shrink">
+                    <span class="navbar-text" id="checkbox-description-1">
+                        3 of 7
+                        <span class="navbar-breakpoint-down-d-none">items selected</span>
+                    </span>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
-                        <svg class="lexicon-icon lexicon-icon-order-list-up" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#order-list-up"></use>
-                        </svg>
-                    </a>
+                <li class="nav-item nav-item-shrink">
+                    <button class="btn btn-link nav-btn" type="button">
+                        <span class="text-truncate-inline">
+                            <span class="text-truncate">Select All</span>
+                        </span>
+                    </button>
                 </li>
             </ul>
-            <div class="navbar-form navbar-form-autofit navbar-overlay navbar-overlay-sm-down">
-                <div class="container-fluid container-fluid-max-xl">
-                    <form role="search">
-                        <div class="input-group">
-                            <div class="input-group-item">
-                                <input class="form-control input-group-inset input-group-inset-after"
-                                    placeholder="Search for..." type="text">
-                                <span class="input-group-inset-item input-group-inset-item-after">
-                                    <button class="btn btn-monospaced btn-unstyled" type="submit">
-                                        <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
-                                            <use href="/images/icons/icons.svg#search"></use>
-                                        </svg>
-                                    </button>
-                                    <button class="btn btn-monospaced btn-unstyled d-none" type="button">
-                                        <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
-                                            <use href="/images/icons/icons.svg#times"></use>
-                                        </svg>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
             <ul class="navbar-nav">
-                <li class="nav-item navbar-breakpoint-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
-                        <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#search"></use>
+                <li class="nav-item">
+                    <a aria-label="Delete" class="nav-link nav-link-monospaced" href="#1" role="button">
+                        <svg class="lexicon-icon lexicon-icon-trash" focusable="false" role="presentation">
+                            <use href="/images/icons/icons.svg#trash"></use>
                         </svg>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-monospaced" href="#uniqueSidenavCollapseId2" id="uniqueSidenavToggler2"
-                        role="button">
-                        <svg class="lexicon-icon lexicon-icon-circle-open" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#circle-open"></use>
+                    <a aria-label="Paste" class="nav-link nav-link-monospaced" href="#1" role="button">
+                        <svg class="lexicon-icon lexicon-icon-paste" focusable="false" role="presentation">
+                            <use href="/images/icons/icons.svg#paste"></use>
                         </svg>
                     </a>
                 </li>
                 <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced"
+                    <a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced"
                         data-toggle="dropdown" href="#1" role="button">
-                        <svg class="lexicon-icon lexicon-icon-list" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#list"></use>
+                        <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
+                            <use href="/images/icons/icons.svg#ellipsis-v"></use>
                         </svg>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-menu-indicator-start">
@@ -312,26 +271,12 @@ mainTabURL: 'docs/components/management-toolbar.html'
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none" href="#1">
-                        <svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#plus"></use>
+                <li class="nav-item nav-divider">
+                    <a aria-label="Info" class="nav-link nav-link-monospaced" href="#1">
+                        <svg class="lexicon-icon lexicon-icon-info-circle-open" focusable="false" role="presentation">
+                            <use href="/images/icons/icons.svg#info-circle-open"></use>
                         </svg>
                     </a>
-                </li>
-                <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true"
-                        class="btn btn-primary dropdown-toggle nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
-                        data-toggle="dropdown" href="#1" role="button">
-                        <svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
-                            <use href="/images/icons/icons.svg#plus"></use>
-                        </svg>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a class="active dropdown-item" href="#1">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#1">Option 2</a></li>
-                        <li><a class="dropdown-item" href="#1">Option 3</a></li>
-                    </ul>
                 </li>
             </ul>
         </div>
@@ -355,13 +300,13 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                 <li class="nav-item">
                     <div class="custom-control custom-checkbox">
                         <label>
-                            <input class="custom-control-input" type="checkbox">
+                            <input aria-label="Select all" class="custom-control-input" type="checkbox">
                             <span class="custom-control-label"></span>
                         </label>
                     </div>
                 </li>
                 <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true"
+                    <a aria-label="Order" aria-expanded="false" aria-haspopup="true"
                         class="dropdown-toggle nav-link nav-link-monospaced navbar-breakpoint-d-none" data-toggle="dropdown"
                         href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-filter" focusable="false" role="presentation">
@@ -386,7 +331,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Order" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-order-list-up" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#order-list-up"></use>
                         </svg>
@@ -401,12 +346,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                                 <input class="form-control input-group-inset input-group-inset-after"
                                     placeholder="Search for..." type="text">
                                 <span class="input-group-inset-item input-group-inset-item-after">
-                                    <button class="btn btn-monospaced btn-unstyled" type="submit">
+                                    <button aria-label="Search" class="btn btn-monospaced btn-unstyled" type="submit">
                                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#search"></use>
                                         </svg>
                                     </button>
-                                    <button class="btn btn-monospaced btn-unstyled d-none" type="button">
+                                    <button aria-label="Close search" class="btn btn-monospaced btn-unstyled d-none" type="button">
                                         <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#times"></use>
                                         </svg>
@@ -419,20 +364,20 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
             </div>
             <ul class="navbar-nav">
                 <li class="nav-item navbar-breakpoint-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Search" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#search"></use>
                         </svg>
                     </a>
                 </li>
-                <li class="nav-item navbar-breakpoint-down-d-none">
+                <li aria-label="View" class="nav-item navbar-breakpoint-down-d-none">
                     <a class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-view" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#view"></use>
                         </svg>
                     </a>
                 </li>
-                <li class="nav-item navbar-breakpoint-down-d-none">
+                <li aria-label="Table" class="nav-item navbar-breakpoint-down-d-none">
                     <a class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-table" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#table"></use>
@@ -467,7 +412,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </ul>
                     <ul class="navbar-nav">
                         <li class="dropdown nav-item">
-                            <a aria-expanded="false" aria-haspopup="true"
+                            <a aria-label="More Actions" aria-expanded="false" aria-haspopup="true"
                                 class="dropdown-toggle nav-link nav-link-monospaced" data-toggle="dropdown" href="#1"
                                 role="button">
                                 <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
@@ -506,6 +451,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			</li>
 			<li class="dropdown nav-item">
 				<a
+					aria-label="Filter"
 					aria-expanded="false"
 					aria-haspopup="true"
 					class="dropdown-toggle nav-link nav-link-monospaced navbar-breakpoint-d-none"
@@ -561,7 +507,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				</ul>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="Order"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-order-list-up"
 						focusable="false"
@@ -588,6 +539,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 								class="input-group-inset-item input-group-inset-item-after"
 							>
 								<button
+									aria-label="search"
 									class="btn btn-monospaced btn-unstyled"
 									type="submit"
 								>
@@ -602,6 +554,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 									</svg>
 								</button>
 								<button
+									aria-label="Close search"
 									class="btn btn-monospaced btn-unstyled d-none"
 									type="button"
 								>
@@ -623,7 +576,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 		</div>
 		<ul class="navbar-nav">
 			<li class="nav-item navbar-breakpoint-d-none">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="Search"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-search"
 						focusable="false"
@@ -634,7 +592,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				</a>
 			</li>
 			<li class="nav-item navbar-breakpoint-down-d-none">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="View"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-view"
 						focusable="false"
@@ -645,7 +608,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				</a>
 			</li>
 			<li class="nav-item navbar-breakpoint-down-d-none">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="Table"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-table"
 						focusable="false"
@@ -690,6 +658,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				<ul class="navbar-nav">
 					<li class="dropdown nav-item">
 						<a
+							aria-label="More Actions"
 							aria-expanded="false"
 							aria-haspopup="true"
 							class="dropdown-toggle nav-link nav-link-monospaced"
@@ -761,7 +730,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </div>
                 </li>
                 <li class="dropdown nav-item">
-                    <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced navbar-breakpoint-d-none" data-toggle="dropdown" href="#1" role="button">
+                    <a aria-label="Filter" aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced navbar-breakpoint-d-none" data-toggle="dropdown" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-filter" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#filter"></use>
                         </svg>
@@ -783,7 +752,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Order" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-order-list-up" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#order-list-up"></use>
                         </svg>
@@ -797,12 +766,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                             <div class="input-group-item">
                                 <input class="form-control input-group-inset input-group-inset-after" placeholder="Search for..." type="text">
                                 <span class="input-group-inset-item input-group-inset-item-after">
-                                    <button class="btn btn-monospaced btn-unstyled" type="submit">
+                                    <button aria-label="Search" class="btn btn-monospaced btn-unstyled" type="submit">
                                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#search"></use>
                                         </svg>
                                     </button>
-                                    <button class="btn btn-monospaced btn-unstyled d-none" type="button">
+                                    <button aria-label="Close search" class="btn btn-monospaced btn-unstyled d-none" type="button">
                                         <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#times"></use>
                                         </svg>
@@ -815,21 +784,21 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
             </div>
             <ul class="navbar-nav">
                 <li class="nav-item navbar-breakpoint-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Search" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#search"></use>
                         </svg>
                     </a>
                 </li>
                 <li class="nav-item navbar-breakpoint-down-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="View" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-view" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#view"></use>
                         </svg>
                     </a>
                 </li>
                 <li class="nav-item navbar-breakpoint-down-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Table" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-table" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#table"></use>
                         </svg>
@@ -863,7 +832,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </ul>
                     <ul class="navbar-nav">
                         <li class="dropdown nav-item">
-                            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced" data-toggle="dropdown" href="#1" role="button">
+                            <a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-link-monospaced" data-toggle="dropdown" href="#1" role="button">
                                 <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                                     <use href="/images/icons/icons.svg#ellipsis-v"></use>
                                 </svg>
@@ -900,6 +869,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			</li>
 			<li class="dropdown nav-item">
 				<a
+					aria-label="Filter"
 					aria-expanded="false"
 					aria-haspopup="true"
 					class="dropdown-toggle nav-link nav-link-monospaced navbar-breakpoint-d-none"
@@ -955,7 +925,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				</ul>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="Order"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-order-list-up"
 						focusable="false"
@@ -982,6 +957,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 								class="input-group-inset-item input-group-inset-item-after"
 							>
 								<button
+									aria-label="Search"
 									class="btn btn-monospaced btn-unstyled"
 									type="submit"
 								>
@@ -996,6 +972,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 									</svg>
 								</button>
 								<button
+									aria-label="Close search"
 									class="btn btn-monospaced btn-unstyled d-none"
 									type="button"
 								>
@@ -1017,7 +994,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 		</div>
 		<ul class="navbar-nav">
 			<li class="nav-item navbar-breakpoint-d-none">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="Search"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-search"
 						focusable="false"
@@ -1028,7 +1010,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				</a>
 			</li>
 			<li class="nav-item navbar-breakpoint-down-d-none">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="View"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-view"
 						focusable="false"
@@ -1038,7 +1025,10 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 					</svg>
 				</a>
 			</li>
-			<li class="nav-item navbar-breakpoint-down-d-none">
+			<li
+				aria-label="Table"
+				class="nav-item navbar-breakpoint-down-d-none"
+			>
 				<a class="nav-link nav-link-monospaced" href="#1" role="button">
 					<svg
 						class="lexicon-icon lexicon-icon-table"
@@ -1084,6 +1074,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 				<ul class="navbar-nav">
 					<li class="dropdown nav-item">
 						<a
+							aria-label="More Actions"
 							aria-expanded="false"
 							aria-haspopup="true"
 							class="dropdown-toggle nav-link nav-link-monospaced"
@@ -1148,12 +1139,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                             <input class="form-control input-group-inset input-group-inset-after"
                                 placeholder="Search for..." type="text">
                             <span class="input-group-inset-item input-group-inset-item-after">
-                                <button class="btn btn-monospaced btn-unstyled" type="submit">
+                                <button aria-label="Search" class="btn btn-monospaced btn-unstyled" type="submit">
                                     <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                                         <use href="/images/icons/icons.svg#search"></use>
                                     </svg>
                                 </button>
-                                <button class="btn btn-monospaced btn-unstyled d-none" type="button">
+                                <button aria-label="Close search" class="btn btn-monospaced btn-unstyled d-none" type="button">
                                     <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
                                         <use href="/images/icons/icons.svg#times"></use>
                                     </svg>
@@ -1183,6 +1174,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 							class="input-group-inset-item input-group-inset-item-after"
 						>
 							<button
+								aria-label="Search"
 								class="btn btn-monospaced btn-unstyled"
 								type="submit"
 							>
@@ -1197,6 +1189,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 								</svg>
 							</button>
 							<button
+								aria-label="Close search"
 								class="btn btn-monospaced btn-unstyled d-none"
 								type="button"
 							>
@@ -1232,12 +1225,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                                 <input class="form-control input-group-inset input-group-inset-after"
                                     placeholder="Search for..." type="text">
                                 <span class="input-group-inset-item input-group-inset-item-after">
-                                    <button class="btn btn-monospaced btn-unstyled" type="submit">
+                                    <button aria-label="Search" class="btn btn-monospaced btn-unstyled" type="submit">
                                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#search"></use>
                                         </svg>
                                     </button>
-                                    <button class="btn btn-monospaced btn-unstyled d-none" type="button">
+                                    <button aria-label="Close search" class="btn btn-monospaced btn-unstyled d-none" type="button">
                                         <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#times"></use>
                                         </svg>
@@ -1250,7 +1243,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
             </div>
             <ul class="navbar-nav navbar-nav-last">
                 <li class="nav-item navbar-breakpoint-d-none">
-                    <a class="nav-link nav-link-monospaced" href="#1" role="button">
+                    <a aria-label="Search" class="nav-link nav-link-monospaced" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#search"></use>
                         </svg>
@@ -1280,6 +1273,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 								class="input-group-inset-item input-group-inset-item-after"
 							>
 								<button
+									aria-label="Search"
 									class="btn btn-monospaced btn-unstyled"
 									type="submit"
 								>
@@ -1294,6 +1288,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 									</svg>
 								</button>
 								<button
+									aria-label="Close search"
 									class="btn btn-monospaced btn-unstyled d-none"
 									type="button"
 								>
@@ -1315,7 +1310,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 		</div>
 		<ul class="navbar-nav navbar-nav-last">
 			<li class="nav-item navbar-breakpoint-d-none">
-				<a class="nav-link nav-link-monospaced" href="#1" role="button">
+				<a
+					aria-label="Search"
+					class="nav-link nav-link-monospaced"
+					href="#1"
+					role="button"
+				>
 					<svg
 						class="lexicon-icon lexicon-icon-search"
 						focusable="false"
@@ -1586,7 +1586,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                 <li class="nav-item">
                     <div class="custom-control custom-checkbox">
                         <label>
-                            <input class="custom-control-input" type="checkbox">
+                            <input aria-label="Select all" class="custom-control-input" type="checkbox">
                             <span class="custom-control-label"></span>
                         </label>
                     </div>
@@ -1600,7 +1600,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                             <use href="/images/icons/icons.svg#caret-bottom"></use>
                         </svg>
                     </button>
-                    <button aria-expanded="false" aria-haspopup="true"
+                    <button aria-label="Filter" aria-expanded="false" aria-haspopup="true"
                         class="btn btn-unstyled dropdown-toggle nav-btn nav-btn-monospaced navbar-breakpoint-d-none"
                         data-toggle="dropdown" type="button">
                         <svg class="lexicon-icon lexicon-icon-filter" focusable="false" role="presentation">
@@ -1609,7 +1609,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-unstyled nav-btn nav-btn-monospaced" type="button">
+                    <button aria-label="Order" class="btn btn-unstyled nav-btn nav-btn-monospaced" type="button">
                     <svg class="lexicon-icon lexicon-icon-order-list-up" focusable="false" role="presentation">
                         <use href="/images/icons/icons.svg#order-list-up"></use>
                     </svg>
@@ -1624,12 +1624,12 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                                 <input class="form-control input-group-inset input-group-inset-after"
                                     placeholder="Search for..." type="text">
                                 <span class="input-group-inset-item input-group-inset-item-after">
-                                    <button class="btn btn-monospaced btn-unstyled" type="submit">
+                                    <button aria-label="Search" class="btn btn-monospaced btn-unstyled" type="submit">
                                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#search"></use>
                                         </svg>
                                     </button>
-                                    <button class="btn btn-monospaced btn-unstyled d-none" type="button">
+                                    <button aria-label="Close search" class="btn btn-monospaced btn-unstyled d-none" type="button">
                                         <svg class="lexicon-icon lexicon-icon-times" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#times"></use>
                                         </svg>
@@ -1642,14 +1642,14 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
             </div>
             <ul class="navbar-nav">
                 <li class="nav-item navbar-breakpoint-d-none">
-                    <button class="btn btn-unstyled nav-btn nav-btn-monospaced" type="button">
+                    <button aria-label="Search" class="btn btn-unstyled nav-btn nav-btn-monospaced" type="button">
                         <svg class="lexicon-icon lexicon-icon-search" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#search"></use>
                         </svg>
                     </button>
                 </li>
                 <li class="dropdown nav-item">
-                    <button aria-expanded="false" aria-haspopup="true"
+                    <button aria-label="List" aria-expanded="false" aria-haspopup="true"
                         class="btn btn-unstyled dropdown-toggle nav-btn nav-btn-monospaced" data-toggle="dropdown"
                         type="button">
                         <svg class="lexicon-icon lexicon-icon-list" focusable="false" role="presentation">
@@ -1658,7 +1658,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-secondary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
+                    <button aria-label="Add" class="btn btn-secondary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
                         type="button">
                         <svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#plus"></use>
@@ -1666,7 +1666,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-primary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none" type="button">
+                    <button aria-label="Add" class="btn btn-primary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none" type="button">
                         <svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#plus"></use>
                         </svg>
@@ -1684,7 +1684,11 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			<li class="nav-item">
 				<div class="custom-control custom-checkbox">
 					<label>
-						<input class="custom-control-input" type="checkbox" />
+						<input
+							aria-label="Select all"
+							class="custom-control-input"
+							type="checkbox"
+						/>
 						<span class="custom-control-label"></span>
 					</label>
 				</div>
@@ -1707,6 +1711,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 					</svg>
 				</button>
 				<button
+					aria-label="Filter"
 					aria-expanded="false"
 					aria-haspopup="true"
 					class="btn btn-unstyled dropdown-toggle nav-btn nav-btn-monospaced navbar-breakpoint-d-none"
@@ -1724,6 +1729,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			</li>
 			<li class="nav-item">
 				<button
+					aria-label="Order"
 					class="btn btn-unstyled nav-btn nav-btn-monospaced"
 					type="button"
 				>
@@ -1753,6 +1759,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 								class="input-group-inset-item input-group-inset-item-after"
 							>
 								<button
+									aria-label="Search"
 									class="btn btn-monospaced btn-unstyled"
 									type="submit"
 								>
@@ -1767,6 +1774,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 									</svg>
 								</button>
 								<button
+									aria-label="Close search"
 									class="btn btn-monospaced btn-unstyled d-none"
 									type="button"
 								>
@@ -1789,6 +1797,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 		<ul class="navbar-nav">
 			<li class="nav-item navbar-breakpoint-d-none">
 				<button
+					aria-label="Search"
 					class="btn btn-unstyled nav-btn nav-btn-monospaced"
 					type="button"
 				>
@@ -1803,6 +1812,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			</li>
 			<li class="dropdown nav-item">
 				<button
+					aria-label="List"
 					aria-expanded="false"
 					aria-haspopup="true"
 					class="btn btn-unstyled dropdown-toggle nav-btn nav-btn-monospaced"
@@ -1820,6 +1830,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			</li>
 			<li class="nav-item">
 				<button
+					aria-label="Add"
 					class="btn btn-secondary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
 					type="button"
 				>
@@ -1834,6 +1845,7 @@ Use `navbar-overlay navbar-overlay-up` on any direct descendant of navbar to cre
 			</li>
 			<li class="nav-item">
 				<button
+					aria-label="Add"
 					class="btn btn-primary nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
 					type="button"
 				>

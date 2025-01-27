@@ -6,10 +6,14 @@
 import ClayTimePicker, {Input} from '@clayui/time-picker';
 import React from 'react';
 
-interface IProps {
+type Props = {
 	currentTime: string;
 	disabled?: boolean;
-	onTimeChange: (hours: number | string, minutes: number | string) => void;
+	onTimeChange: (
+		hours: number | string,
+		minutes: number | string,
+		ampm: Input['ampm']
+	) => void;
 
 	/**
 	 * Path to the location of the spritemap resource.
@@ -17,17 +21,19 @@ interface IProps {
 	spritemap?: string;
 
 	timezone?: string;
-}
+	use12Hours?: boolean;
+};
 
 const DEFAULT_VALUE = '--';
 
-const ClayDatePickerTimePicker: React.FunctionComponent<IProps> = ({
+const ClayDatePickerTimePicker = ({
 	currentTime,
 	disabled,
 	onTimeChange,
 	spritemap,
 	timezone,
-}) => {
+	use12Hours,
+}: Props) => {
 	const [values, setValues] = React.useState<Input>({
 		ampm: DEFAULT_VALUE,
 		hours: DEFAULT_VALUE,
@@ -46,20 +52,24 @@ const ClayDatePickerTimePicker: React.FunctionComponent<IProps> = ({
 			values.minutes === DEFAULT_VALUE
 				? DEFAULT_VALUE
 				: Number(values.minutes);
+		const ampm = values.ampm ? values.ampm : DEFAULT_VALUE;
 
 		setValues(values);
-		onTimeChange(hours, minutes);
+		onTimeChange(hours, minutes, ampm);
 	};
 
 	React.useEffect(() => {
-		const time = currentTime.split(':');
+		const [hours, minutesAndAmpm] = currentTime.split(':');
+
+		const [minutes, ampm] = minutesAndAmpm!.split(' ');
 
 		setValues((prevValues) => ({
 			...prevValues,
-			hours: String(time[0]),
-			minutes: String(time[1]),
+			ampm: ampm as Input['ampm'],
+			hours: String(hours),
+			minutes: String(minutes),
 		}));
-	}, [currentTime]);
+	}, [currentTime, use12Hours]);
 
 	return (
 		<div className="time-picker">
@@ -69,6 +79,7 @@ const ClayDatePickerTimePicker: React.FunctionComponent<IProps> = ({
 				onInputChange={handleOnChange}
 				spritemap={spritemap}
 				timezone={timezone}
+				use12Hours={use12Hours}
 				values={values}
 			/>
 		</div>

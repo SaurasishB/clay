@@ -5,16 +5,22 @@
 
 import {ClayCheckbox, ClayRadio} from '@clayui/form';
 import {
+	FOCUSABLE_ELEMENTS,
+	InternalDispatch,
+	Keys,
 	MouseSafeArea,
-	TInternalStateOnChange,
-	useInternalState,
+	throttle,
+	useControlledState,
+	useNavigation,
 } from '@clayui/shared';
-import React, {useContext, useRef, useState} from 'react';
+import classNames from 'classnames';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import warning from 'warning';
 
 import Caption from './Caption';
 import Divider from './Divider';
-import ClayDropDown from './DropDown';
+import ClayDropDown, {FocusMenu} from './DropDown';
+import {DropDownContext} from './DropDownContext';
 import ClayDropDownGroup from './Group';
 import Help from './Help';
 import ClayDropDownMenu from './Menu';
@@ -38,7 +44,7 @@ interface IItem {
 	label?: string;
 	name?: string;
 	onChange?: Function;
-	onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+	onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 	symbolLeft?: string;
 	symbolRight?: string;
 	type?: TType;
@@ -46,6 +52,8 @@ interface IItem {
 }
 
 interface IDropDownContentProps {
+	'aria-label'?: string;
+
 	/**
 	 * The path to the SVG spritemap file containing the icons.
 	 */
@@ -55,10 +63,23 @@ interface IDropDownContentProps {
 	 * List of items to display in drop down menu
 	 */
 	items: Array<IItem>;
+
+	role?: string;
 }
 
-export interface IProps extends IDropDownContentProps {
-	active?: React.ComponentProps<typeof ClayDropDown>['active'];
+export interface IProps
+	extends Omit<IDropDownContentProps, 'role' | 'aria-label'> {
+	/**
+	 * Flag to indicate if the DropDown menu is active or not (controlled).
+	 */
+	active?: boolean;
+
+	/**
+	 * Flag to align the DropDown menu within the viewport.
+	 */
+	alignmentByViewport?: React.ComponentProps<
+		typeof ClayDropDownMenu
+	>['alignmentByViewport'];
 
 	/**
 	 * Default position of menu element. Values come from `./Menu`.
@@ -86,6 +107,11 @@ export interface IProps extends IDropDownContentProps {
 	>['containerElement'];
 
 	/**
+	 * Property to set the initial value of `active` (uncontrolled).
+	 */
+	defaultActive?: boolean;
+
+	/**
 	 * Add an action button or any other element you want to be fixed position to the
 	 * footer from the DropDown.
 	 */
@@ -94,7 +120,9 @@ export interface IProps extends IDropDownContentProps {
 	/**
 	 * Element that is used as the trigger which will activate the dropdown on click.
 	 */
-	trigger: React.ReactElement;
+	trigger: React.ReactElement & {
+		ref?: (node: HTMLButtonElement | null) => void;
+	};
 
 	/**
 	 * Add informational text at the top of DropDown.
@@ -113,16 +141,31 @@ export interface IProps extends IDropDownContentProps {
 	menuWidth?: React.ComponentProps<typeof ClayDropDown>['menuWidth'];
 
 	/**
+	 * Prop to use language keys.
+	 */
+	messages?: string;
+
+	/**
 	 * Function for setting the offset of the menu from the trigger.
 	 */
 	offsetFn?: React.ComponentProps<typeof ClayDropDown>['offsetFn'];
 
-	onActiveChange?: TInternalStateOnChange<boolean>;
+	/**
+	 * Callback for when the active state changes (controlled).
+	 */
+	onActiveChange?: InternalDispatch<boolean>;
 
 	/**
 	 * Callback will always be called when the user is interacting with search.
 	 */
 	onSearchValueChange?: (newValue: string) => void;
+
+	/**
+	 * Flag indicating if the menu should be rendered lazily
+	 */
+	renderMenuOnClick?: React.ComponentProps<
+		typeof ClayDropDown
+	>['renderMenuOnClick'];
 
 	/**
 	 * Flag to show search at the top of the DropDown.
@@ -141,21 +184,51 @@ export interface IProps extends IDropDownContentProps {
 	 * The value that will be passed to the search input element.
 	 */
 	searchValue?: string;
+
+	/**
+	 * Flag indicating if the caret icon should be displayed on the right side.
+	 */
+	triggerIcon?: string | null;
 }
+
+const findNested = <
+	T extends {items?: Array<T>; [key: string]: any},
+	K extends keyof T
+>(
+	items: Array<T>,
+	key: K
+): T | undefined =>
+	items.find((item) => {
+		if (item[key]) {
+			return true;
+		}
+
+		// Ignore the search if the nested items are part of a contextual submenu
+		// because it will be in another menu and the current menu does not need
+		// to know the information of what exists inside the contextual one, like
+		// knowing if there is an icon.
+		if (item.items && item['type'] !== 'contextual') {
+			return findNested(item.items, key);
+		}
+
+		return false;
+	});
 
 interface IInternalItem {
 	spritemap?: string;
 }
 
-const Checkbox: React.FunctionComponent<IItem & IInternalItem> = ({
+const Checkbox = ({
 	checked = false,
 	onChange = () => {},
 	...otherProps
-}) => {
+}: IItem & IInternalItem) => {
 	const [value, setValue] = useState<boolean>(checked);
 
+	const {tabFocus} = useContext(DropDownContext);
+
 	return (
-		<ClayDropDown.Section>
+		<ClayDropDown.Section role="none">
 			<ClayCheckbox
 				{...otherProps}
 				checked={value}
@@ -163,26 +236,41 @@ const Checkbox: React.FunctionComponent<IItem & IInternalItem> = ({
 					setValue((val) => !val);
 					onChange(!value);
 				}}
+				tabIndex={!tabFocus ? -1 : undefined}
 			/>
 		</ClayDropDown.Section>
 	);
 };
 
-const ClayDropDownContext = React.createContext({close: () => {}});
+type Context = {
+	back?: () => void;
+	close: () => void;
+};
 
-const Item: React.FunctionComponent<
-	Omit<IItem, 'onChange'> & IInternalItem
-> = ({label, onClick, ...props}) => {
-	const {close} = useContext(ClayDropDownContext);
+const ClayDropDownContext = React.createContext({
+	close: () => {},
+} as Context);
+
+const Item = ({
+	label,
+	onClick,
+	...props
+}: Omit<IItem, 'onChange'> & IInternalItem) => {
+	const {back, close} = useContext(ClayDropDownContext);
 
 	return (
 		<ClayDropDown.Item
-			onClick={(e) => {
+			onClick={(event) => {
 				if (onClick) {
-					onClick(e);
+					onClick(event);
 				}
 
 				close();
+			}}
+			onKeyDown={(event) => {
+				if (back && event.key === Keys.Left) {
+					back();
+				}
 			}}
 			{...props}
 		>
@@ -191,20 +279,56 @@ const Item: React.FunctionComponent<
 	);
 };
 
-const Group: React.FunctionComponent<IItem & IInternalItem> = ({
+const Group = ({items, label, spritemap}: IItem & IInternalItem) => {
+	warning(
+		typeof items !== 'undefined',
+		`ClayDropDownWithItems -> The '${label}' group contains no items to render.`
+	);
+
+	if (typeof items === 'undefined') {
+		return null;
+	}
+
+	return (
+		<ClayDropDownGroup header={label}>
+			{items && <Items items={items} spritemap={spritemap} />}
+		</ClayDropDownGroup>
+	);
+};
+
+const BOTTOM_OFFSET = [0, 1] as const;
+const LEFT_OFFSET = [-1, 6] as const;
+const RIGHT_OFFSET = [1, -6] as const;
+const TOP_OFFSET = [0, -1] as const;
+
+const OFFSET_MAP = {
+	bctc: TOP_OFFSET,
+	blbr: RIGHT_OFFSET,
+	bltl: TOP_OFFSET,
+	brbl: LEFT_OFFSET,
+	brtr: TOP_OFFSET,
+	clcr: RIGHT_OFFSET,
+	crcl: LEFT_OFFSET,
+	tcbc: BOTTOM_OFFSET,
+	tlbl: BOTTOM_OFFSET,
+	tltr: RIGHT_OFFSET,
+	trbr: BOTTOM_OFFSET,
+	trtl: LEFT_OFFSET,
+};
+
+function offsetFn(points: any) {
+	return OFFSET_MAP[points.join('') as keyof typeof OFFSET_MAP] as [
+		number,
+		number
+	];
+}
+
+const Contextual = ({
 	items,
 	label,
 	spritemap,
-}) => (
-	<>
-		<ClayDropDownGroup header={label} />
-		{items && <DropDownContent items={items} spritemap={spritemap} />}
-	</>
-);
-
-const Contextual: React.FunctionComponent<
-	Omit<IItem, 'onChange'> & IInternalItem
-> = ({items, label, spritemap, ...otherProps}) => {
+	...otherProps
+}: Omit<IItem, 'onChange'> & IInternalItem) => {
 	const [visible, setVisible] = useState(false);
 	const {close} = useContext(ClayDropDownContext);
 
@@ -212,10 +336,41 @@ const Contextual: React.FunctionComponent<
 	const menuElementRef = useRef<HTMLDivElement>(null);
 	const timeoutHandleRef = useRef<any>(null);
 
+	const keyboardRef = useRef(false);
+
+	const hasRightSymbols = React.useMemo(
+		() => items && !!findNested(items, 'symbolRight'),
+		[items]
+	);
+	const hasLeftSymbols = React.useMemo(
+		() => items && !!findNested(items, 'symbolLeft'),
+		[items]
+	);
+
+	const {navigationProps} = useNavigation({
+		activation: 'manual',
+		containerRef: menuElementRef,
+		loop: true,
+		orientation: 'vertical',
+		typeahead: true,
+		visible,
+	});
+
+	const setThrottleVisible = useCallback(
+		throttle((value: boolean) => setVisible(value), 100),
+		[]
+	);
+
 	return (
 		<ClayDropDown.Item
 			{...otherProps}
+			aria-expanded={visible}
+			aria-haspopup={Boolean(items)}
+			className={classNames({
+				active: visible,
+			})}
 			onClick={(event) => {
+				keyboardRef.current = false;
 				if (event.currentTarget === event.target) {
 					setVisible(true);
 
@@ -223,16 +378,29 @@ const Contextual: React.FunctionComponent<
 					timeoutHandleRef.current = null;
 				}
 			}}
+			onKeyDown={(event) => {
+				switch (event.key) {
+					case Keys.Enter:
+					case Keys.Right:
+						setVisible(true);
+						keyboardRef.current = true;
+						break;
+					default:
+						break;
+				}
+			}}
 			onMouseEnter={() => {
 				if (!visible) {
+					keyboardRef.current = false;
 					timeoutHandleRef.current = setTimeout(
-						() => setVisible(true),
-						500
+						() => setThrottleVisible(true),
+						400
 					);
 				}
 			}}
 			onMouseLeave={() => {
-				setVisible(false);
+				keyboardRef.current = false;
+				setThrottleVisible(false);
 
 				clearTimeout(timeoutHandleRef.current);
 				timeoutHandleRef.current = null;
@@ -248,19 +416,52 @@ const Contextual: React.FunctionComponent<
 					active={visible}
 					alignElementRef={triggerElementRef}
 					alignmentPosition={8}
-					onSetActive={setVisible}
+					hasLeftSymbols={hasLeftSymbols}
+					hasRightSymbols={hasRightSymbols}
+					offsetFn={offsetFn}
+					onActiveChange={setVisible}
+					onKeyDown={navigationProps.onKeyDown}
 					ref={menuElementRef}
 				>
 					{visible && <MouseSafeArea parentRef={menuElementRef} />}
 					<ClayDropDownContext.Provider
 						value={{
+							back: () => {
+								(
+									triggerElementRef.current
+										?.children[0] as HTMLElement
+								).focus();
+								setVisible(false);
+							},
 							close: () => {
 								setVisible(false);
 								close();
 							},
 						}}
 					>
-						<DropDownContent items={items} spritemap={spritemap} />
+						<FocusMenu
+							condition={visible}
+							onRender={() => {
+								if (
+									menuElementRef.current &&
+									keyboardRef.current
+								) {
+									const first =
+										menuElementRef.current.querySelector<HTMLElement>(
+											FOCUSABLE_ELEMENTS.join(',')
+										);
+
+									if (first) {
+										first.focus();
+									}
+								}
+							}}
+						>
+							<DropDownContent
+								items={items}
+								spritemap={spritemap}
+							/>
+						</FocusMenu>
 					</ClayDropDownContext.Provider>
 				</ClayDropDown.Menu>
 			)}
@@ -276,34 +477,35 @@ interface IRadioContext {
 
 const RadioGroupContext = React.createContext({} as IRadioContext);
 
-const Radio: React.FunctionComponent<IItem & IInternalItem> = ({
-	value = '',
-	...otherProps
-}) => {
+const Radio = ({value = '', ...otherProps}: IItem & IInternalItem) => {
 	const {checked, name, onChange} = useContext(RadioGroupContext);
 
+	const {tabFocus} = useContext(DropDownContext);
+
 	return (
-		<ClayDropDown.Section>
+		<ClayDropDown.Section role="none">
 			<ClayRadio
 				{...otherProps}
 				checked={checked === value}
 				inline
 				name={name}
 				onChange={() => onChange(value as string)}
+				tabIndex={!tabFocus ? -1 : undefined}
 				value={value as string}
 			/>
 		</ClayDropDown.Section>
 	);
 };
 
-const RadioGroup: React.FunctionComponent<IItem & IInternalItem> = ({
+const RadioGroup = ({
 	items,
 	label,
 	name,
 	onChange = () => {},
 	spritemap,
-}) => {
-	const [value, setValue] = useState('');
+	value: defaultValue = '',
+}: IItem & IInternalItem) => {
+	const [value, setValue] = useState(defaultValue);
 
 	const params = {
 		checked: value,
@@ -320,16 +522,13 @@ const RadioGroup: React.FunctionComponent<IItem & IInternalItem> = ({
 	);
 
 	return (
-		<>
-			{label && <ClayDropDownGroup header={label} />}
+		<ClayDropDownGroup header={label} role="radiogroup">
 			{items && (
-				<li aria-label={label} role="radiogroup">
-					<RadioGroupContext.Provider value={params}>
-						<DropDownContent items={items} spritemap={spritemap} />
-					</RadioGroupContext.Provider>
-				</li>
+				<RadioGroupContext.Provider value={params}>
+					<Items items={items} spritemap={spritemap} />
+				</RadioGroupContext.Provider>
 			)}
-		</>
+		</ClayDropDownGroup>
 	);
 };
 
@@ -345,45 +544,38 @@ const TYPE_MAP = {
 	radiogroup: RadioGroup,
 };
 
-const DropDownContent: React.FunctionComponent<IDropDownContentProps> = ({
-	items,
-	spritemap,
-}) => (
-	<ClayDropDown.ItemList>
-		{items.map(({type, ...item}, key) => {
-			const Item = TYPE_MAP[type || 'item'];
+const Items = ({items, spritemap}: IDropDownContentProps) => {
+	return (
+		<>
+			{items.map(({type, ...item}, key) => {
+				const Item = TYPE_MAP[type || 'item'];
 
-			return <Item {...item} key={key} spritemap={spritemap} />;
-		})}
+				return <Item {...item} key={key} spritemap={spritemap} />;
+			})}
+		</>
+	);
+};
+
+const DropDownContent = ({
+	items,
+	role,
+	spritemap,
+	...otherProps
+}: IDropDownContentProps) => (
+	<ClayDropDown.ItemList aria-label={otherProps['aria-label']} role={role}>
+		<Items items={items} spritemap={spritemap} />
 	</ClayDropDown.ItemList>
 );
 
-const findNested = <
-	T extends {items?: Array<T>; [key: string]: any},
-	K extends keyof T
->(
-	items: Array<T>,
-	key: K
-): T | undefined =>
-	items.find((item) => {
-		if (item[key]) {
-			return true;
-		}
-
-		if (item.items) {
-			return findNested(item.items, key);
-		}
-
-		return false;
-	});
-
-export const ClayDropDownWithItems: React.FunctionComponent<IProps> = ({
+export const ClayDropDownWithItems = ({
 	active,
+	alignmentByViewport,
 	alignmentPosition,
 	caption,
 	className,
 	closeOnClickOutside,
 	containerElement,
+	defaultActive = false,
 	footerContent,
 	helpText,
 	items,
@@ -393,14 +585,21 @@ export const ClayDropDownWithItems: React.FunctionComponent<IProps> = ({
 	offsetFn,
 	onActiveChange,
 	onSearchValueChange = () => {},
+	renderMenuOnClick,
 	searchable,
 	searchProps,
 	searchValue = '',
+	triggerIcon = null,
 	spritemap,
 	trigger,
 }: IProps) => {
-	const [internalActive, setInternalActive] = useInternalState({
-		initialValue: false,
+	const triggerElementRef = useRef<HTMLButtonElement | null>(null);
+
+	const [internalActive, setInternalActive] = useControlledState({
+		defaultName: 'defaultActive',
+		defaultValue: defaultActive,
+		handleName: 'onActiveChange',
+		name: 'active',
 		onChange: onActiveChange,
 		value: active,
 	});
@@ -419,6 +618,7 @@ export const ClayDropDownWithItems: React.FunctionComponent<IProps> = ({
 	return (
 		<ClayDropDown
 			active={internalActive}
+			alignmentByViewport={alignmentByViewport}
 			alignmentPosition={alignmentPosition}
 			className={className}
 			closeOnClickOutside={closeOnClickOutside}
@@ -430,19 +630,35 @@ export const ClayDropDownWithItems: React.FunctionComponent<IProps> = ({
 			menuWidth={menuWidth}
 			offsetFn={offsetFn}
 			onActiveChange={setInternalActive}
-			trigger={trigger}
+			renderMenuOnClick={renderMenuOnClick}
+			trigger={React.cloneElement(trigger, {
+				ref: (node: HTMLButtonElement) => {
+					if (node) {
+						triggerElementRef.current = node;
+						// Call the original ref, if any.
+						const {ref} = trigger;
+						if (typeof ref === 'function') {
+							ref(node);
+						}
+					}
+				},
+			})}
+			triggerIcon={triggerIcon}
 		>
 			<ClayDropDownContext.Provider
-				value={{close: () => setInternalActive(false)}}
+				value={{
+					close: () => {
+						setInternalActive(false);
+						triggerElementRef.current?.focus();
+					},
+				}}
 			>
 				{helpText && <Help>{helpText}</Help>}
 
 				{searchable && (
 					<Search
 						{...searchProps}
-						onChange={(event) =>
-							onSearchValueChange(event.target.value)
-						}
+						onChange={onSearchValueChange}
 						spritemap={spritemap}
 						value={searchValue}
 					/>
@@ -463,10 +679,14 @@ export const ClayDropDownWithItems: React.FunctionComponent<IProps> = ({
 					{caption && <Caption>{caption}</Caption>}
 
 					{footerContent && (
-						<div className="dropdown-section">{footerContent}</div>
+						<div className="dropdown-section" role="presentation">
+							{footerContent}
+						</div>
 					)}
 				</Wrap>
 			</ClayDropDownContext.Provider>
 		</ClayDropDown>
 	);
 };
+
+ClayDropDownWithItems.displayName = 'ClayDropDownWithItems';

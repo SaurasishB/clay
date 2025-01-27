@@ -6,39 +6,36 @@
 import ClayLink, {ClayLinkContext} from '..';
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
 
 describe('ClayLink', () => {
-	it('renders', () => {
-		const testRenderer = TestRenderer.create(<ClayLink />);
+	afterEach(cleanup);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+	it('renders', () => {
+		const {container} = render(<ClayLink />);
+
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with href', () => {
-		const testRenderer = TestRenderer.create(<ClayLink href="#links" />);
+		const {container} = render(<ClayLink href="#links" />);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with a children content', () => {
-		const testRenderer = TestRenderer.create(
-			<ClayLink>{'My Link'}</ClayLink>
-		);
+		const {container} = render(<ClayLink>My Link</ClayLink>);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with a display type', () => {
-		const testRenderer = TestRenderer.create(
-			<ClayLink displayType="secondary" />
-		);
+		const {container} = render(<ClayLink displayType="secondary" />);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with monospaced', () => {
-		const testRenderer = TestRenderer.create(
+		const {container} = render(
 			<ClayLink
 				borderless
 				displayType="primary"
@@ -46,56 +43,49 @@ describe('ClayLink', () => {
 				monospaced
 				outline
 			>
-				{'M'}
+				M
 			</ClayLink>
 		);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders outline links', () => {
-		const testRenderer = TestRenderer.create(
+		const {container} = render(
 			<ClayLink displayType="primary" href="#1" outline>
-				{'Outline'}
+				Outline
 			</ClayLink>
 		);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders borderless links', () => {
-		const testRenderer = TestRenderer.create(
+		const {container} = render(
 			<ClayLink borderless href="#1">
-				{'Borderless'}
+				Borderless
 			</ClayLink>
 		);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('uses custom link component via context', () => {
-		const BoldLink: React.FunctionComponent<any> = ({
-			children,
-			...otherProps
-		}) => (
+		const BoldLink = ({children, ...otherProps}: any) => (
 			<a {...otherProps}>
 				<strong>{children}</strong>
 			</a>
 		);
-		const testRenderer = TestRenderer.create(
+		const {container} = render(
 			<ClayLinkContext.Provider value={BoldLink}>
 				<ClayLink displayType="secondary" href="#1">
-					{'I am Bold!'}
+					I am Bold!
 				</ClayLink>
 			</ClayLinkContext.Provider>
 		);
 
-		expect(testRenderer.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
-});
-
-describe('ClayCard w/ @testing-library/react', () => {
-	afterEach(cleanup);
 
 	it('adds rel="noreferrer noopener" if target exists', () => {
 		const {container} = render(<ClayLink target="_blank" />);
@@ -111,5 +101,11 @@ describe('ClayCard w/ @testing-library/react', () => {
 		expect((container.firstChild as HTMLAnchorElement).rel).toEqual(
 			'foo bar'
 		);
+	});
+
+	it('add extra aria-label when target is `_blank`', () => {
+		const {getByText} = render(<ClayLink target="_blank">Page</ClayLink>);
+
+		expect(getByText('(Opens a new window)')).toBeTruthy();
 	});
 });

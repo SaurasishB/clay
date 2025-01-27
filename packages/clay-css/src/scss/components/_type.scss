@@ -12,65 +12,51 @@ h6,
 .h4,
 .h5,
 .h6 {
-	color: $headings-color;
-	font-family: $headings-font-family;
-	font-weight: $headings-font-weight;
-	line-height: $headings-line-height;
-	margin-bottom: $headings-margin-bottom;
+	@include clay-css($headings);
+
+	@include clay-generate-media-breakpoints($headings);
 }
 
 h1,
 .h1 {
-	font-size: $h1-font-size;
+	@include clay-css($h1);
 
-	@include clay-scale-component {
-		font-size: $h1-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($h1);
 }
 
 h2,
 .h2 {
-	font-size: $h2-font-size;
+	@include clay-css($h2);
 
-	@include clay-scale-component {
-		font-size: $h2-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($h2);
 }
 
 h3,
 .h3 {
-	font-size: $h3-font-size;
+	@include clay-css($h3);
 
-	@include clay-scale-component {
-		font-size: $h3-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($h3);
 }
 
 h4,
 .h4 {
-	font-size: $h4-font-size;
+	@include clay-css($h4);
 
-	@include clay-scale-component {
-		font-size: $h4-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($h4);
 }
 
 h5,
 .h5 {
-	font-size: $h5-font-size;
+	@include clay-css($h5);
 
-	@include clay-scale-component {
-		font-size: $h5-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($h5);
 }
 
 h6,
 .h6 {
-	font-size: $h6-font-size;
+	@include clay-css($h6);
 
-	@include clay-scale-component {
-		font-size: $h6-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($h6);
 }
 
 .lead {
@@ -81,27 +67,27 @@ h6,
 // Type display classes
 
 .display-1 {
-	font-size: $display1-size;
-	font-weight: $display1-weight;
-	line-height: $display-line-height;
+	@include clay-css($display-1);
+
+	@include clay-generate-media-breakpoints($display-1);
 }
 
 .display-2 {
-	font-size: $display2-size;
-	font-weight: $display2-weight;
-	line-height: $display-line-height;
+	@include clay-css($display-2);
+
+	@include clay-generate-media-breakpoints($display-2);
 }
 
 .display-3 {
-	font-size: $display3-size;
-	font-weight: $display3-weight;
-	line-height: $display-line-height;
+	@include clay-css($display-3);
+
+	@include clay-generate-media-breakpoints($display-3);
 }
 
 .display-4 {
-	font-size: $display4-size;
-	font-weight: $display4-weight;
-	line-height: $display-line-height;
+	@include clay-css($display-4);
+
+	@include clay-generate-media-breakpoints($display-4);
 }
 
 // Horizontal rules
@@ -124,7 +110,22 @@ small,
 
 mark,
 .mark {
-	@include clay-highlight-text($mark-bg, $mark-color);
+	@include clay-css($mark);
+
+	&::before {
+		@include clay-css(map-get($mark, before));
+	}
+}
+
+mark.clay-dark,
+.clay-dark.mark,
+.clay-dark mark,
+.clay-dark .mark {
+	@include clay-css($clay-dark-mark);
+
+	&::before {
+		@include clay-css(map-get($clay-dark-mark, before));
+	}
 }
 
 // Lists
@@ -190,10 +191,11 @@ strong {
 // Reference Mark
 
 .reference-mark {
-	display: inline-block;
-	font-size: $reference-mark-font-size;
-	position: relative;
-	vertical-align: $reference-mark-vertical-align;
+	@include clay-css($reference-mark);
+
+	&.lexicon-icon {
+		@include clay-css(map-get($reference-mark, lexicon-icon));
+	}
 }
 
 // Kbd
@@ -202,7 +204,7 @@ strong {
 	@include clay-css($c-kbd-group);
 
 	> .c-kbd {
-		font-size: inherit;
+		@include clay-css(map-get($c-kbd-group, c-kbd));
 	}
 }
 
@@ -265,6 +267,10 @@ strong {
 
 .c-kbd-group-sm {
 	@include clay-css($c-kbd-group-sm);
+
+	> .c-kbd {
+		@include clay-css(map-get($c-kbd-group-sm, c-kbd));
+	}
 }
 
 .c-kbd-sm,
@@ -280,6 +286,10 @@ strong {
 
 .c-kbd-group-lg {
 	@include clay-css($c-kbd-group-lg);
+
+	> .c-kbd {
+		@include clay-css(map-get($c-kbd-group-lg, c-kbd));
+	}
 }
 
 .c-kbd-lg,
@@ -305,25 +315,4 @@ strong {
 
 .c-kbd-dark {
 	@include clay-css($c-kbd-dark);
-}
-
-// Text Truncate
-
-.text-truncate {
-	display: block;
-}
-
-.text-truncate-inline {
-	display: inline-flex;
-	max-width: 100%;
-
-	.text-truncate {
-		display: inline-block;
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		vertical-align: bottom;
-		white-space: nowrap;
-		word-wrap: normal;
-	}
 }

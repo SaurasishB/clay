@@ -70,7 +70,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
                 <p class="list-group-title text-truncate">
                     <a href="#1">Account Example One</a>
                 </p>
-                <p class="list-group-subtitle text-truncate">Second Level Text</p>
+                <p class="list-group-text text-truncate">Second Level Text</p>
+                <p class="list-group-subtext">Third Level Text</p>
                 <div class="list-group-detail">
                     <span class="label label-success">
                         <span class="label-item label-item-expand">Approved</span>
@@ -79,24 +80,24 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
             </div>
             <div class="autofit-col">
                 <div class="quick-action-menu">
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Delete" title="Delete" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-trash" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#trash" />
                         </svg>
                     </a>
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Download" title="Download" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-download" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#download" />
                         </svg>
                     </a>
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Info" title="Info" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-info-circle-open" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#info-circle-open" />
                         </svg>
                     </a>
                 </div>
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -134,7 +135,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
                 <p class="list-group-title">
                     <a href="#1">Account Example One</a>
                 </p>
-                <p class="list-group-subtitle">Second Level Text</p>
+                <p class="list-group-text">Second Level Text</p>
+                <p class="list-group-subtext">Third Level Text</p>
                 <div class="list-group-detail">
                     <span class="label label-success">
                         <span class="label-item label-item-expand">Approved</span>
@@ -143,24 +145,24 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
             </div>
             <div class="autofit-col">
                 <div class="quick-action-menu">
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Delete" title="Delete" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-trash" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#trash" />
                         </svg>
                     </a>
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Download" title="Download" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-download" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#download" />
                         </svg>
                     </a>
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Info" title="Info" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-info-circle-open" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#info-circle-open" />
                         </svg>
                     </a>
                 </div>
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -195,16 +197,15 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
 			<p class="list-group-title text-truncate">
 				<a href="#1">Account Example One</a>
 			</p>
-			<p class="list-group-subtitle text-truncate">Second Level Text</p>
+			<p class="list-group-text text-truncate">Second Level Text</p>
+			<p class="list-group-subtext">Third Level Text</p>
 			<div class="list-group-detail">
 				<span class="label label-success">
 					<span class="label-item label-item-expand">Approved</span>
@@ -214,6 +215,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 		<div class="autofit-col">
 			<div class="quick-action-menu">
 				<a
+					aria-label="Delete"
+					title="Delete"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -221,6 +224,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 					...
 				</a>
 				<a
+					aria-label="Download"
+					title="Download"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -228,6 +233,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 					...
 				</a>
 				<a
+					aria-label="Info"
+					title="Info"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -235,9 +242,7 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 					...
 				</a>
 			</div>
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 	<li class="list-group-item list-group-item-flex active">
@@ -255,16 +260,15 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
 			<p class="list-group-title">
 				<a href="#1">Account Example One</a>
 			</p>
-			<p class="list-group-subtitle">Second Level Text</p>
+			<p class="list-group-text">Second Level Text</p>
+			<p class="list-group-subtext">Third Level Text</p>
 			<div class="list-group-detail">
 				<span class="label label-success">
 					<span class="label-item label-item-expand">Approved</span>
@@ -274,6 +278,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 		<div class="autofit-col">
 			<div class="quick-action-menu">
 				<a
+					aria-label="Delete"
+					title="Delete"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -281,6 +287,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 					...
 				</a>
 				<a
+					aria-label="Download"
+					title="Download"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -288,6 +296,8 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 					...
 				</a>
 				<a
+					aria-label="Info"
+					title="Info"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -295,9 +305,7 @@ Add the class `show-dropdown-action-on-active` to display `dropdown-menu`s when 
 					...
 				</a>
 			</div>
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 </ul>
@@ -365,7 +373,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -411,7 +419,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -440,9 +448,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -503,9 +509,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 			</section>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 	<li class="list-group-item list-group-item-flex">
@@ -519,9 +523,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -538,9 +540,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 			</section>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 </ul>
@@ -576,7 +576,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -607,9 +607,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 			</div>
 		</div>
 		<div class="autofit-col">
-			<div class="sticker sticker-secondary">
-				...
-			</div>
+			<div class="sticker sticker-secondary">...</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
 			<p class="list-group-title text-truncate">
@@ -618,9 +616,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 			<p class="list-group-subtitle text-truncate">Second Level Text</p>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 </ul>
@@ -653,12 +649,12 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
                     <div class="list-group-title">
                         <a href="#1">Account Example One</a>
                     </div>
-                    <p class="list-group-subtext">List Group Subtext</p>
+                    <p class="list-group-text">Second Level Text</p>
                 </section>
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -694,12 +690,12 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
                     <div class="list-group-title">
                         <a href="#1">Account Example Two</a>
                     </div>
-                    <p class="list-group-subtext">List Group Subtext</p>
+                    <p class="list-group-text">Second Level Text</p>
                 </section>
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -719,15 +715,11 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 <ul class="list-group list-group-notification">
 	<li class="list-group-item list-group-item-flex list-group-item-primary">
 		<div class="autofit-col">
-			<div class="custom-control custom-checkbox">
-				...
-			</div>
+			<div class="custom-control custom-checkbox">...</div>
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -735,13 +727,11 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 				<div class="list-group-title">
 					<a href="#1">Account Example One</a>
 				</div>
-				<p class="list-group-subtext">List Group Subtext</p>
+				<p class="list-group-text">Second Level Text</p>
 			</section>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 	<li class="list-group-item list-group-item-flex">
@@ -755,9 +745,7 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -765,13 +753,11 @@ Use `.list-group-bordered` on `.list-group` to style `.list-group-item-flex` lik
 				<div class="list-group-title">
 					<a href="#1">Account Example Two</a>
 				</div>
-				<p class="list-group-subtext">List Group Subtext</p>
+				<p class="list-group-text">Second Level Text</p>
 			</section>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 </ul>
@@ -813,9 +799,9 @@ Use the `.list-group-header` and `.list-group-header-title` class.
                             <a class="text-truncate" href="#1">ReallySuperInsanelyJustIncrediblyLongAndTotallyNotPossibleWordButWeAreReallyTryingToCoverAllOurBasesHereJustInCaseSomeoneIsNutsAsPerUsual</a>
                         </span>
                     </div>
-                    <p class="list-group-subtext">
+                    <p class="list-group-text">
                         <span class="text-truncate-inline">
-                            <span class="text-truncate">List Group Subtext</span>
+                            <span class="text-truncate">Second Level Text</span>
                         </span>
                     </p>
                     <div class="list-group-detail">
@@ -827,7 +813,7 @@ Use the `.list-group-header` and `.list-group-header-title` class.
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -859,9 +845,7 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -873,9 +857,9 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 						>
 					</span>
 				</div>
-				<p class="list-group-subtext">
+				<p class="list-group-text">
 					<span class="text-truncate-inline">
-						<span class="text-truncate">List Group Subtext</span>
+						<span class="text-truncate">Second Level Text</span>
 					</span>
 				</p>
 				<div class="list-group-detail">
@@ -888,9 +872,7 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 			</section>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 </ul>
@@ -1031,24 +1013,24 @@ Use the `.list-group-header` and `.list-group-header-title` class.
             </div>
             <div class="autofit-col">
                 <div class="quick-action-menu">
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Delete" title="Delete" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-trash" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#trash"></use>
                         </svg>
                     </a>
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Download" title="Download" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-download" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#download"></use>
                         </svg>
                     </a>
-                    <a class="component-action quick-action-item" href="#1" role="button">
+                    <a aria-label="Expand" title="Expand" class="component-action quick-action-item" href="#1" role="button">
                         <svg class="lexicon-icon lexicon-icon-expand" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#expand"></use>
                         </svg>
                     </a>
                 </div>
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#ellipsis-v"></use>
                         </svg>
@@ -1077,9 +1059,7 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -1092,6 +1072,8 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 		<div class="autofit-col">
 			<div class="quick-action-menu">
 				<a
+					aria-label="Delete"
+					title="Delete"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -1099,6 +1081,8 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 					...
 				</a>
 				<a
+					aria-label="Download"
+					title="Download"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -1106,6 +1090,8 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 					...
 				</a>
 				<a
+					aria-label="Expand"
+					title="Expand"
 					class="component-action quick-action-item"
 					href="#1"
 					role="button"
@@ -1115,6 +1101,8 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 			</div>
 			<div class="dropdown dropdown-action">
 				<a
+					aria-label="More Actions"
+					title="More Actions"
 					aria-expanded="false"
 					aria-haspopup="true"
 					class="component-action dropdown-toggle"
@@ -1180,33 +1168,33 @@ Use the `.list-group-header` and `.list-group-header-title` class.
                             <a class="text-truncate" href="#1">Account Example One</a>
                         </span>
                     </div>
-                    <p class="list-group-subtext">
+                    <p class="list-group-text">
                         <span class="text-truncate-inline">
-                            <span class="text-truncate">List Group Subtext</span>
+                            <span class="text-truncate">Second Level Text</span>
                         </span>
                     </p>
                 </section>
             </div>
             <div class="autofit-col">
                 <div class="quick-action-menu">
-                    <button class="component-action quick-action-item" type="button">
+                    <button aria-label="Delete" title="Delete" class="component-action quick-action-item" type="button">
                         <svg class="lexicon-icon lexicon-icon-trash" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#trash"></use>
                         </svg>
                     </button>
-                    <button class="component-action quick-action-item" type="button">
+                    <button aria-label="Download" title="Download" class="component-action quick-action-item" type="button">
                         <svg class="lexicon-icon lexicon-icon-download" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#download"></use>
                         </svg>
                     </button>
-                    <button class="component-action quick-action-item" type="button">
+                    <button aria-label="Expand" title="Expand" class="component-action quick-action-item" type="button">
                         <svg class="lexicon-icon lexicon-icon-expand" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#expand"></use>
                         </svg>
                     </button>
                 </div>
                 <div class="dropdown dropdown-action">
-                    <button aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" id="dropdownAction1" type="button">
+                    <button aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" id="dropdownAction1" type="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use xlink:href="/images/icons/icons.svg#ellipsis-v"></use>
                         </svg>
@@ -1241,9 +1229,7 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
@@ -1255,9 +1241,9 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 						>
 					</span>
 				</div>
-				<p class="list-group-subtext">
+				<p class="list-group-text">
 					<span class="text-truncate-inline">
-						<span class="text-truncate">List Group Subtext</span>
+						<span class="text-truncate">Second Level Text</span>
 					</span>
 				</p>
 			</section>
@@ -1265,18 +1251,24 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 		<div class="autofit-col">
 			<div class="quick-action-menu">
 				<button
+					aria-label="Delete"
+					title="Delete"
 					class="component-action quick-action-item"
 					type="button"
 				>
 					...
 				</button>
 				<button
+					aria-label="Download"
+					title="Download"
 					class="component-action quick-action-item"
 					type="button"
 				>
 					...
 				</button>
 				<button
+					aria-label="Expand"
+					title="Expand"
 					class="component-action quick-action-item"
 					type="button"
 				>
@@ -1285,6 +1277,8 @@ Use the `.list-group-header` and `.list-group-header-title` class.
 			</div>
 			<div class="dropdown dropdown-action">
 				<button
+					aria-label="More Actions"
+					title="More Actions"
 					aria-expanded="false"
 					aria-haspopup="true"
 					class="component-action dropdown-toggle"
@@ -1348,11 +1342,11 @@ Use the `.active` class on the same element that you putted `.list-group-item`.
                 <p class="list-group-title text-truncate">
                     <a href="#1">Account Example One</a>
                 </p>
-                <p class="list-group-subtitle text-truncate">Second Level Text</p>
+                <p class="list-group-text text-truncate">Second Level Text</p>
             </div>
             <div class="autofit-col">
                 <div class="dropdown dropdown-action">
-                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
+                    <a aria-label="More Actions" title="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" id="dropdownAction1" role="button">
                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                             <use href="/images/icons/icons.svg#ellipsis-v" />
                         </svg>
@@ -1388,21 +1382,17 @@ Use the `.active` class on the same element that you putted `.list-group-item`.
 		</div>
 		<div class="autofit-col">
 			<div class="sticker sticker-secondary">
-				<span class="inline-item">
-					...
-				</span>
+				<span class="inline-item"> ... </span>
 			</div>
 		</div>
 		<div class="autofit-col autofit-col-expand">
 			<p class="list-group-title text-truncate">
 				<a href="#1">Account Example One</a>
 			</p>
-			<p class="list-group-subtitle text-truncate">Second Level Text</p>
+			<p class="list-group-text text-truncate">Second Level Text</p>
 		</div>
 		<div class="autofit-col">
-			<div class="dropdown dropdown-action">
-				...
-			</div>
+			<div class="dropdown dropdown-action">...</div>
 		</div>
 	</li>
 </ul>

@@ -3,20 +3,48 @@ $btn-box-shadow: none !default;
 $btn-font-weight: $font-weight-semi-bold !default;
 $btn-padding-x: 0.9375rem !default; // 15px
 $btn-padding-y: 0.4375rem !default; // 7px
-$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-	border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !default;
+$btn-transition: $component-transition !default;
 
 $btn-focus-box-shadow: $component-focus-box-shadow !default;
 
-$btn-disabled-opacity: 0.4 !default;
+$btn-disabled-opacity: $component-disabled-opacity !default;
+
+$btn-active-box-shadow: c-unset !default;
+
+$btn-inline-item-font-size: null !default;
+
+$btn: () !default;
+$btn: map-deep-merge(
+	(
+		box-shadow: $btn-box-shadow,
+		font-weight: $btn-font-weight,
+		padding-bottom: $btn-padding-y,
+		padding-left: $btn-padding-x,
+		padding-right: $btn-padding-x,
+		padding-top: $btn-padding-y,
+		transition: clay-enable-transitions($btn-transition),
+		focus: (
+			box-shadow: $btn-focus-box-shadow,
+		),
+		active: (
+			box-shadow: $btn-active-box-shadow,
+			focus: (
+				box-shadow: c-unset,
+			),
+		),
+		disabled: (
+			opacity: $btn-disabled-opacity,
+		),
+		inline-item: (
+			font-size: $btn-inline-item-font-size,
+		),
+	),
+	$btn
+);
 
 $btn-link-disabled-color: $link-color !default;
 
-$btn-active-box-shadow: none !default;
-
-$btn-inline-item-font-size: 1rem !default; // 16px
-
-// Button Sizes
+// Button Lg
 
 $btn-border-radius-lg: $border-radius !default;
 $btn-font-size-lg: $font-size-lg !default; // 18px
@@ -24,21 +52,70 @@ $btn-padding-x-lg: 1.5rem !default; // 24px
 $btn-padding-y-lg: 0.59375rem !default; // 9.5px
 $btn-inline-item-font-size-lg: $font-size-lg !default; // 18px
 
+$btn-lg: () !default;
+$btn-lg: map-deep-merge(
+	(
+		border-radius: clay-enable-rounded($btn-border-radius-lg),
+		font-size: $btn-font-size-lg,
+		padding-bottom: $btn-padding-y-lg,
+		padding-left: $btn-padding-x-lg,
+		padding-right: $btn-padding-x-lg,
+		padding-top: $btn-padding-y-lg,
+		inline-item: (
+			font-size: $btn-inline-item-font-size-lg,
+		),
+	),
+	$btn-lg
+);
+
+// Button Sm
+
 $btn-font-size-sm: $font-size-sm !default; // 14px
 $btn-line-height-sm: 1.15 !default;
 $btn-padding-x-sm: 0.75rem !default; // 12px
 $btn-padding-y-sm: 0.4375rem !default; // 7px
 
+$btn-sm: () !default;
+$btn-sm: map-deep-merge(
+	(
+		font-size: $btn-font-size-sm,
+		line-height: $btn-line-height-sm,
+		padding-bottom: $btn-padding-y-sm,
+		padding-left: $btn-padding-x-sm,
+		padding-right: $btn-padding-x-sm,
+		padding-top: $btn-padding-y-sm,
+		lexicon-icon: (
+			font-size: 1rem,
+		),
+	),
+	$btn-sm
+);
+
 // Button Monospaced
 
-$btn-monospaced-padding-y: 0.25rem !default; // 4px
 $btn-monospaced-size: 2.5rem !default; // 40px
 
-$btn-monospaced-padding-x-sm: null !default;
-$btn-monospaced-padding-y-sm: 0.1875rem !default; // 3px
+$btn-monospaced: () !default;
+$btn-monospaced: map-deep-merge(
+	(
+		height: $btn-monospaced-size,
+		width: $btn-monospaced-size,
+	),
+	$btn-monospaced
+);
+
+// Button Monospaced Sm
+
 $btn-monospaced-size-sm: 2rem !default; // 32px
 
-$btn-monospaced-padding-y-lg: 0.375rem !default; // 6px
+$btn-monospaced-sm: () !default;
+$btn-monospaced-sm: map-deep-merge(
+	(
+		height: $btn-monospaced-size-sm,
+		width: $btn-monospaced-size-sm,
+	),
+	$btn-monospaced-sm
+);
 
 // Button Group
 
@@ -49,7 +126,7 @@ $btn-group-item-margin-right: 1rem !default;
 $btn-primary: () !default;
 $btn-primary: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		hover: (
 			background-color: $primary-d1,
 			background-image: clay-enable-gradients($primary-d1),
@@ -58,13 +135,13 @@ $btn-primary: map-deep-merge(
 		focus: (
 			background-color: $primary-d1,
 			background-image: clay-enable-gradients($primary-d1),
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $primary-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
@@ -79,37 +156,36 @@ $btn-secondary: map-deep-merge(
 	(
 		background-color: $white,
 		background-image: clay-enable-gradients($white),
-		border-color: $secondary-l2,
-		box-shadow: $c-unset,
+		border-color: $secondary-l0,
+		box-shadow: c-unset,
 		color: $secondary,
 		hover: (
 			background-color: $gray-100,
 			background-image: clay-enable-gradients($gray-100),
-			border-color: $secondary-l2,
+			border-color: $secondary-l0,
 			color: $gray-900,
 		),
 		focus: (
 			background-color: $gray-100,
 			background-image: clay-enable-gradients($gray-100),
-			border-color: $secondary-l2,
-			box-shadow: $c-unset,
+			border-color: $secondary-l0,
+			box-shadow: c-unset,
 			color: $gray-900,
 		),
 		active: (
 			background-color: $gray-200,
-			border-color: $secondary-l2,
+			border-color: $secondary-l0,
 			color: $gray-900,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
 			background-color: $white,
 			background-image: clay-enable-gradients($white),
-			border-color: $secondary-l2,
+			border-color: $secondary-l0,
 			color: $secondary,
 		),
-		loading-animation: null,
 	),
 	$btn-secondary
 );
@@ -117,7 +193,7 @@ $btn-secondary: map-deep-merge(
 $btn-success: () !default;
 $btn-success: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		hover: (
 			background-color: $success-d1,
 			background-image: clay-enable-gradients($success-d1),
@@ -127,13 +203,13 @@ $btn-success: map-deep-merge(
 			background-color: $success-d1,
 			background-image: clay-enable-gradients($success-d1),
 			border-color: transparent,
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $success-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
@@ -146,7 +222,7 @@ $btn-success: map-deep-merge(
 $btn-info: () !default;
 $btn-info: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		hover: (
 			background-color: $info-d1,
 			background-image: clay-enable-gradients($info-d1),
@@ -156,13 +232,13 @@ $btn-info: map-deep-merge(
 			background-color: $info-d1,
 			background-image: clay-enable-gradients($info-d1),
 			border-color: transparent,
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $info-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
@@ -175,7 +251,7 @@ $btn-info: map-deep-merge(
 $btn-warning: () !default;
 $btn-warning: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		hover: (
 			background-color: $warning-d1,
 			background-image: clay-enable-gradients($warning-d1),
@@ -185,19 +261,18 @@ $btn-warning: map-deep-merge(
 			background-color: $warning-d1,
 			background-image: clay-enable-gradients($warning-d1),
 			border-color: transparent,
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $warning-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
 			background-color: $warning,
 		),
-		loading-animation: 'loading-animation-light',
 	),
 	$btn-warning
 );
@@ -205,7 +280,7 @@ $btn-warning: map-deep-merge(
 $btn-danger: () !default;
 $btn-danger: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		hover: (
 			background-color: $danger-d1,
 			background-image: clay-enable-gradients($danger-d1),
@@ -215,13 +290,13 @@ $btn-danger: map-deep-merge(
 			background-color: $danger-d1,
 			background-image: clay-enable-gradients($danger-d1),
 			border-color: transparent,
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $danger-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
@@ -234,7 +309,7 @@ $btn-danger: map-deep-merge(
 $btn-light: () !default;
 $btn-light: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		color: $gray-900,
 		hover: (
 			background-color: $light-d1,
@@ -245,13 +320,13 @@ $btn-light: map-deep-merge(
 			background-color: $light-d1,
 			background-image: clay-enable-gradients($light-d1),
 			border-color: transparent,
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $light-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
@@ -264,7 +339,7 @@ $btn-light: map-deep-merge(
 $btn-dark: () !default;
 $btn-dark: map-deep-merge(
 	(
-		box-shadow: $c-unset,
+		box-shadow: c-unset,
 		hover: (
 			background-color: $dark-d1,
 			background-image: clay-enable-gradients($dark-d1),
@@ -274,13 +349,13 @@ $btn-dark: map-deep-merge(
 			background-color: $dark-d1,
 			background-image: clay-enable-gradients($dark-d1),
 			border-color: transparent,
-			box-shadow: $c-unset,
+			box-shadow: c-unset,
 		),
 		active: (
 			background-color: $dark-d2,
 			border-color: transparent,
 			focus: (
-				box-shadow: $c-unset,
+				box-shadow: c-unset,
 			),
 		),
 		disabled: (
@@ -305,7 +380,8 @@ $btn-outline-primary: map-deep-merge(
 			color: $primary,
 		),
 		active: (
-			background-color: lighten(desaturate($primary, 42.05), 41.76),
+			background-color:
+				clay-lighten(clay-desaturate($primary, 42.05), 41.76),
 			color: $primary,
 			box-shadow: map-deep-get($btn-primary, active, box-shadow),
 			focus: (
@@ -325,7 +401,7 @@ $btn-outline-primary: map-deep-merge(
 $btn-outline-secondary: () !default;
 $btn-outline-secondary: map-deep-merge(
 	(
-		background-color: $c-unset,
+		background-color: c-unset,
 		border-color: $secondary-l2,
 		hover: (
 			background-color: rgba($gray-900, 0.03),
@@ -375,11 +451,6 @@ $btn-outline-info: map-deep-merge(
 				box-shadow: map-deep-get($btn-info, active, focus, box-shadow),
 			),
 		),
-		disabled: (
-			background-color: transparent,
-			border-color: map-get($btn-info, background-color),
-			color: map-get($btn-info, background-color),
-		),
 	),
 	$btn-outline-info
 );
@@ -396,11 +467,6 @@ $btn-outline-success: map-deep-merge(
 				map-deep-get($btn-success, hover, background-color),
 			box-shadow: map-deep-get($btn-success, focus, box-shadow),
 			color: $white,
-		),
-		disabled: (
-			background-color: transparent,
-			border-color: map-get($btn-success, background-color),
-			color: map-get($btn-success, background-color),
 		),
 		active: (
 			background-color:
@@ -437,11 +503,6 @@ $btn-outline-warning: map-deep-merge(
 					map-deep-get($btn-warning, active, focus, box-shadow),
 			),
 		),
-		disabled: (
-			background-color: transparent,
-			border-color: map-get($btn-warning, background-color),
-			color: map-get($btn-warning, background-color),
-		),
 	),
 	$btn-outline-warning
 );
@@ -458,16 +519,12 @@ $btn-outline-danger: map-deep-merge(
 			color: $white,
 		),
 		active: (
-			background-color: map-get($btn-danger, active-bg),
+			background-color:
+				map-deep-get($btn-danger, active, background-color),
 			box-shadow: map-deep-get($btn-danger, active, box-shadow),
 			focus: (
 				box-shadow: map-deep-get($btn-danger, active, focus, box-shadow),
 			),
-		),
-		disabled: (
-			background-color: transparent,
-			border-color: map-get($btn-danger, background-color),
-			color: map-get($btn-danger, background-color),
 		),
 	),
 	$btn-outline-danger
@@ -491,11 +548,6 @@ $btn-outline-light: map-deep-merge(
 				box-shadow: map-deep-get($btn-light, active, focus, box-shadow),
 			),
 		),
-		disabled: (
-			background-color: transparent,
-			border-color: map-get($btn-light, background-color),
-			color: map-get($btn-light, background-color),
-		),
 	),
 	$btn-outline-light
 );
@@ -517,11 +569,6 @@ $btn-outline-dark: map-deep-merge(
 			focus: (
 				box-shadow: map-deep-get($btn-dark, active, focus, box-shadow),
 			),
-		),
-		disabled: (
-			background-color: transparent,
-			border-color: map-get($btn-dark, background-color),
-			color: map-get($btn-dark, background-color),
 		),
 	),
 	$btn-outline-dark

@@ -2,14 +2,67 @@
 /// @group globals
 ////
 
+@import '_polyfills.scss';
+
+@import '_color-functions.scss';
 @import '_lx-icons-generated.scss';
 @import '_type-conversion-functions.scss';
 
-/// A function that returns a new map with all the keys and values including nested keys and values from both `$map1` and `$map2`. If both `$map1` and `$map2` have the same key, `$map2`’s value takes precedence.
+/// A function that checks if the value contains the key word `c-unset` or `clay-unset`
+/// @param {Any} $value The value to check
+
+@function clay-is-map-unset($value) {
+	@return if(($value == c-unset) or ($value == clay-unset), true, false);
+}
+
+/// A helper function that calculates text-indent of data-label-on and data-label-off in a `.toggle-switch`.
+/// @param {Number} $toggle-switch-width - Width of switch bar
+/// @param {Number} $toggle-switch-padding - Space between button and bar
+/// @param {Number} $label-spacer-x[8px] - Space between toggle-switch-bar and data-label
+
+@function clay-data-label-text-position(
+	$toggle-switch-width,
+	$toggle-switch-padding,
+	$label-spacer-x: 8px
+) {
+	@if ($toggle-switch-padding < 0) {
+		$toggle-switch-width: $toggle-switch-width +
+			abs($toggle-switch-padding);
+	}
+
+	@return $toggle-switch-width + $label-spacer-x;
+}
+
+/// A function that combines two maps. It adds new key value pairs to the end of the map.
+
+@function clay-map-merge($map1, $map2) {
+	@if (length($map2) < 1) {
+		@return $map1;
+	}
+
+	@each $key, $value in $map1 {
+		@if not(map-has-key($map2, $key)) {
+			$map2: map-merge(
+				$map2,
+				(
+					$key: $value,
+				)
+			);
+		}
+	}
+
+	@return $map2;
+}
+
+/// A function that returns a new map with all the keys and values including nested keys and values from both `$map1` and `$map2`. If both `$map1` and `$map2` have the same key, `$map2`’s value takes precedence. The key value pair `merge: false,` will skip merging maps. This allows component properties to be reset to a blank state.
 /// @param {Map, Null} $map1[()]
 /// @param {Map, Null} $map2[()]
 
 @function map-deep-merge($map1: (), $map2: ()) {
+	// @if ($map1 == c-unset or $map2 == c-unset) or ($map1 == clay-unset or $map2 == clay-unset) {
+	// 	@return null;
+	// }
+
 	@if (type-of($map1) == 'list' and length($map1) == 0) or
 		(type-of($map1) == 'null')
 	{
@@ -32,25 +85,29 @@
 
 	$newMap: $map1;
 
-	@each $key, $value in $map2 {
-		@if (type-of($value) == map) {
-			$newMap: map-merge(
-				$newMap,
-				(
-					$key: map-deep-merge(map-get($newMap, $key), $value),
-				)
-			);
-		} @else {
-			$newMap: map-merge(
-				$newMap,
-				(
-					$key: $value,
-				)
-			);
+	@if (map-get($map2, merge) != false) {
+		@each $key, $value in $map2 {
+			@if (type-of($value) == map) {
+				$newMap: map-merge(
+					$newMap,
+					(
+						$key: map-deep-merge(map-get($newMap, $key), $value),
+					)
+				);
+			} @else {
+				$newMap: map-merge(
+					$newMap,
+					(
+						$key: $value,
+					)
+				);
+			}
 		}
+
+		@return $newMap;
 	}
 
-	@return $newMap;
+	@return $map2;
 }
 
 /// A helper function for setting default values in variables inside mixins if no value is declared. If the value of a variable is `clay-unset`, `setter` returns a value of `null` which prevents Sass from outputting the CSS property. If all the values in the arglist `$vars...` is `null`, `setter` returns `null`.
@@ -76,9 +133,54 @@
 @function math-sign($num) {
 	@if (type-of($num) == 'number') {
 		@return -($num);
+	} @else if (type-of($num) == 'string') {
+		@if (starts-with($num, 'var(--')) {
+			@return calc(#{$num} * -1);
+		}
 	}
 
 	@return null;
+}
+
+/// A function that returns the direct parent selector (e.g., clay-parent('#wrapper .container .row')) will return `.row`.
+/// @param {String} $selector - The full selector
+
+@function clay-parent($selector) {
+	$selector-list: simple-selectors(clay-str-replace('#{$selector}', ' ', ''));
+
+	@return nth($selector-list, length($selector-list));
+}
+
+/// A function that appends to a specific place in a CSS selector (e.g., clay-insert-after('.container ', '.myselector ', '.container .row .col-md-12')) will return `.container .myselector .row .col-md-12`.
+/// @param {String} $location - The string to target
+/// @param {String} $insert - The string to insert after the location
+/// @param {String} $selector - The full selector
+
+@function clay-insert-after($location, $insert, $selector: &) {
+	@return clay-str-replace(
+		'#{$selector}',
+		'#{$location}',
+		'#{$location}#{$insert}'
+	);
+}
+
+/// A function that prepends to a specific place in a CSS selector (e.g., clay-insert-before('.container ', '.myselector ', '.container .row .col-md-12')) will return `.myselector .container .row .col-md-12`.
+/// @param {String} $location - The string to target
+/// @param {String} $insert - The string to insert before the location
+/// @param {String} $selector - The full selector
+
+@function clay-insert-before($location, $insert, $selector: &) {
+	$newSelector: clay-str-replace(
+		'#{&}',
+		'#{$location}',
+		'#{$insert}#{$location}'
+	);
+
+	@if ($selector == '&:focus') {
+		@return '#{$newSelector}:focus';
+	}
+
+	@return $newSelector;
 }
 
 /// A helper function for displaying warning messages for required variables.
@@ -120,7 +222,7 @@
 		$str1: '#{$str1}#{$offset} + ';
 	}
 
-	$str2: '(((#{$font-size} * #{$line-height}) - 1em) / 2)';
+	$str2: '(((#{$font-size} * #{$line-height}) - 1em) * 0.5)';
 
 	@return (calc(#{$str1}#{$str2}));
 }
@@ -135,10 +237,10 @@
 @function clay-px-to-rem($number, $add-unit: false, $base: 16) {
 	@if type-of($number) == 'number' {
 		@if unit($number) == 'px' {
-			$number: $number / 1px;
-			$number: $number / $base;
+			$number: clay-div($number, 1px);
+			$number: clay-div($number, $base);
 		} @else if unitless($number) {
-			$number: $number / $base;
+			$number: clay-div($number, $base);
 		} @else {
 			@debug 'Unable to convert: #{$number} should be a `px` value.';
 		}
@@ -156,13 +258,14 @@
 /// @param {Bool} $custom-gradient[false] - Pass in `true` as the second parameter to this function if using a custom gradient.
 
 @function clay-enable-gradients($gradient, $custom-gradient: false) {
-	$enable: setter(
+	$enable: if(
+		variable-exists(enable-gradients),
+		$enable-gradients,
 		if(
-			variable-exists(enable-gradients),
-			$enable-gradients,
-			$cadmin-enable-gradients
-		),
-		false
+			variable-exists(cadmin-enable-gradients),
+			$cadmin-enable-gradients,
+			false
+		)
 	);
 
 	@if ($enable and $gradient) {
@@ -171,7 +274,7 @@
 		} @else {
 			@return linear-gradient(
 				180deg,
-				mix(clay-get-fallback($body-bg), $gradient, 15%),
+				clay-mix($body-bg, $gradient, 15%),
 				$gradient
 			);
 		}
@@ -184,13 +287,10 @@
 /// @param {Number} $radius - The border radius.
 
 @function clay-enable-rounded($radius, $enable: null) {
-	$enable: setter(
-		if(
-			variable-exists(enable-rounded),
-			$enable-rounded,
-			$cadmin-enable-rounded
-		),
-		true
+	$enable: if(
+		variable-exists(enable-rounded),
+		$enable-rounded,
+		if(variable-exists(cadmin-enable-rounded), $cadmin-enable-rounded, true)
 	);
 
 	@if ($enable) {
@@ -209,13 +309,10 @@
 	$length: length($shadows);
 	$separator: list-separator($shadows);
 
-	$enable: setter(
-		if(
-			variable-exists(enable-shadows),
-			$enable-shadows,
-			$cadmin-enable-shadows
-		),
-		true
+	$enable: if(
+		variable-exists(enable-shadows),
+		$enable-shadows,
+		if(variable-exists(cadmin-enable-shadows), $cadmin-enable-shadows, true)
 	);
 
 	@if ($length == 2 and $separator == 'comma') {
@@ -237,17 +334,18 @@
 /// @param {List} $transitions - The transitions.
 
 @function clay-enable-transitions($transitions) {
-	$enable: setter(
+	$enable: if(
+		variable-exists(enable-transitions),
+		$enable-transitions,
 		if(
-			variable-exists(enable-transitions),
-			$enable-transitions,
-			$cadmin-enable-transitions
-		),
-		true
+			variable-exists(cadmin-enable-transitions),
+			$cadmin-enable-transitions,
+			true
+		)
 	);
 
-	@if ($enable-transitions) {
-		@return $transition;
+	@if ($enable) {
+		@return $transitions;
 	}
 
 	@return null;
@@ -257,7 +355,7 @@
 /// @param {String} $var - The CSS Custom Property to evaluate.
 
 @function clay-get-fallback($var) {
-	@if (type-of($var) == 'string' and str-slice($var, 1, 3) == 'var') {
+	@if (is-css-var($var) and str-index($var, ',')) {
 		$fallback-value: str-slice(
 			$var,
 			str-index($var, ',') + 2,
@@ -341,7 +439,17 @@
 		if(
 			variable-exists(grid-breakpoints),
 			$grid-breakpoints,
-			$cadmin-grid-breakpoints
+			if(
+				variable-exists(cadmin-grid-breakpoints),
+				$cadmin-grid-breakpoints,
+				(
+					xs: 0,
+					sm: 576px,
+					md: 768px,
+					lg: 992px,
+					xl: 1280px,
+				)
+			)
 		)
 	);
 
@@ -371,7 +479,17 @@
 		if(
 			variable-exists(grid-breakpoints),
 			$grid-breakpoints,
-			$cadmin-grid-breakpoints
+			if(
+				variable-exists(cadmin-grid-breakpoints),
+				$cadmin-grid-breakpoints,
+				(
+					xs: 0,
+					sm: 576px,
+					md: 768px,
+					lg: 992px,
+					xl: 1280px,
+				)
+			)
 		)
 	);
 
@@ -397,7 +515,17 @@
 		if(
 			variable-exists(grid-breakpoints),
 			$grid-breakpoints,
-			$cadmin-grid-breakpoints
+			if(
+				variable-exists(cadmin-grid-breakpoints),
+				$cadmin-grid-breakpoints,
+				(
+					xs: 0,
+					sm: 576px,
+					md: 768px,
+					lg: 992px,
+					xl: 1280px,
+				)
+			)
 		)
 	);
 
@@ -420,7 +548,17 @@
 		if(
 			variable-exists(grid-breakpoints),
 			$grid-breakpoints,
-			$cadmin-grid-breakpoints
+			if(
+				variable-exists(cadmin-grid-breakpoints),
+				$cadmin-grid-breakpoints,
+				(
+					xs: 0,
+					sm: 576px,
+					md: 768px,
+					lg: 992px,
+					xl: 1280px,
+				)
+			)
 		)
 	);
 	$next: breakpoint-next($name, $breakpoints);
@@ -441,7 +579,17 @@
 		if(
 			variable-exists(grid-breakpoints),
 			$grid-breakpoints,
-			$cadmin-grid-breakpoints
+			if(
+				variable-exists(cadmin-grid-breakpoints),
+				$cadmin-grid-breakpoints,
+				(
+					xs: 0,
+					sm: 576px,
+					md: 768px,
+					lg: 992px,
+					xl: 1280px,
+				)
+			)
 		)
 	);
 
@@ -452,20 +600,35 @@
 /// @param {Color} $color - The color to convert
 /// @param {Color} $dark[$yiq-text-dark] - The color to return if `$color` >= `$yiq-contrasted-threshold`
 /// @param {Color} $light[$yiq-text-light] - The color to return if `$color` < `$yiq-contrasted-threshold`
+/// @param {Bool} $fallback[$enable-clay-color-functions-process-fallback] - Force Sass to process the CSS Custom Property fallback colors
 
-@function color-yiq($color, $dark: null, $light: null, $threshold: null) {
-	$r: red($color);
-	$g: green($color);
-	$b: blue($color);
+@function color-yiq(
+	$color,
+	$dark: null,
+	$light: null,
+	$threshold: null,
+	$fallback: clay-color-functions-process-fallback()
+) {
+	@if (is-css-var($color) and not $fallback) {
+		@return $color;
+	}
 
-	$yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+	$r: clay-red($color);
+	$g: clay-green($color);
+	$b: clay-blue($color);
+
+	$yiq: (($r * 299) + ($g * 587) + ($b * 114)) * 0.001;
 
 	$dark: setter(
 		$dark,
 		if(
 			variable-exists(yiq-text-dark),
 			$yiq-text-dark,
-			$cadmin-yiq-text-dark
+			if(
+				variable-exists(cadmin-yiq-text-dark),
+				$cadmin-yiq-text-dark,
+				#000
+			)
 		)
 	);
 
@@ -474,7 +637,11 @@
 		if(
 			variable-exists(yiq-text-light),
 			$yiq-text-light,
-			$cadmin-yiq-text-light
+			if(
+				variable-exists(cadmin-yiq-text-light),
+				$cadmin-yiq-text-light,
+				#fff
+			)
 		)
 	);
 
@@ -483,7 +650,11 @@
 		if(
 			variable-exists(yiq-contrasted-threshold),
 			$yiq-contrasted-threshold,
-			$cadmin-yiq-contrasted-threshold
+			if(
+				variable-exists(cadmin-yiq-contrasted-threshold),
+				$cadmin-yiq-contrasted-threshold,
+				150
+			)
 		)
 	);
 
@@ -511,7 +682,7 @@
 		$colors: if(
 			variable-exists(theme-colors),
 			$theme-colors,
-			$cadmin-theme-colors
+			if(variable-exists(cadmin-theme-colors), $cadmin-theme-colors, ())
 		);
 	}
 
@@ -536,24 +707,36 @@
 	$level: 0,
 	$color-interval: null
 ) {
-	$black: setter(if(variable-exists('black'), $black, $cadmin-black), #000);
+	$black: if(
+		variable-exists('black'),
+		$black,
+		if(variable-exists(cadmin-black), $cadmin-black, #000)
+	);
 
-	$white: setter(if(variable-exists('white'), $white, $cadmin-white), #fff);
+	$white: if(
+		variable-exists('white'),
+		$white,
+		if(variable-exists(cadmin-white), $cadmin-white, #fff)
+	);
 
 	$color: theme-color($color-name);
 	$color-base: if($level > 0, $black, $white);
 	$level: abs($level);
 
 	$color-interval: setter(
+		$color-interval,
 		if(
 			variable-exists(theme-color-interval),
 			$theme-color-interval,
-			$cadmin-theme-color-interval
-		),
-		$color-interval
+			if(
+				variable-exists(cadmin-theme-color-interval),
+				$cadmin-theme-color-interval,
+				8%
+			)
+		)
 	);
 
-	@return mix($color-base, $color, $level * $color-interval);
+	@return clay-mix($color-base, $color, $level * $color-interval);
 }
 
 /// A Bootstrap 4 function that returns a CSS `calc` addition expression. This is their workaround for returning a valid calc value with `null` variables.
@@ -634,9 +817,23 @@
 	@return max($val1, $val2);
 }
 
-// * REUSE-Snippet-Begin
+/// A function that determines whether the string `$str1` begins with the characters of the specified string `$str2`. This returns `true` if `$str1` begins with `$str2`.
+/// @param {String} $str1 - The string to search.
+/// @param {String} $str2 - The search parameter.
+
+@function starts-with($str1, $str2) {
+	$returnVal: false;
+
+	@if (str-index($str1, $str2) == 1) {
+		$returnVal: true;
+	}
+
+	@return $returnVal;
+}
+
+// * SPDX-SnippetBegin
 // * SPDX-License-Identifier: MIT
-// * SPDX-FileCopyrightText: © 2016 Hugo Giraudel <https://hugogiraudel.com/>
+// * SPDX-SnippetCopyrightText: © 2016 Hugo Giraudel <https://hugogiraudel.com/>
 // *
 
 /// A function that fetches deeply nested values from a Sass map.
@@ -649,14 +846,8 @@
 	$newMap: $map;
 
 	@each $key in $keys {
-		@if (type-of($newMap) == 'list' and length($newMap) == 0) or
-			(type-of($newMap) == 'null')
-		{
-			$newMap: map-new();
-		}
-
-		@if (type-of($newMap) != map) {
-			@error ('argument `$map: #{$map}` of `map-deep-get($map, $keys)` must be a map');
+		@if (type-of($newMap) != 'map') {
+			@return null;
 		}
 
 		$newMap: map-get($newMap, $key);
@@ -700,11 +891,11 @@
 	@return clay-str-replace($string, $search, $replace);
 }
 
-// * REUSE-Snippet-End
+// * SPDX-SnippetEnd
 
-// * REUSE-Snippet-Begin
+// * SPDX-SnippetBegin
 // * SPDX-License-Identifier: MIT
-// * SPDX-FileCopyrightText: © 2018 Jakob Eriksen <http://codepen.io/jakob-e/pen/doMoML>
+// * SPDX-SnippetCopyrightText: © 2018 Jakob Eriksen <http://codepen.io/jakob-e/pen/doMoML>
 // *
 
 /// A function to encode an SVG and provide back a data URI to be used in `background-image`. If the SVG uses double quotes to delimit attribute names and values, wrap the SVG in single quotes or vice versa.
@@ -716,7 +907,7 @@
 	$index: 0;
 	$slice: 2000;
 
-	$loops: ceil(str-length($svg) / $slice);
+	$loops: ceil(clay-div(str-length($svg), $slice));
 
 	@for $i from 1 through $loops {
 		$chunk: str-slice($svg, $index, $index + $slice - 1);
@@ -738,19 +929,28 @@
 	@return url('data:image/svg+xml;charset=utf8,#{$encoded}');
 }
 
-// * REUSE-Snippet-End
+// * SPDX-SnippetEnd
 
-// * REUSE-Snippet-Begin
+// * SPDX-SnippetBegin
 // * SPDX-License-Identifier: MIT
-// * SPDX-FileCopyrightText: © 2018 Kevin Weber <https://codepen.io/kevinweber/pen/dXWoRw>
+// * SPDX-SnippetCopyrightText: © 2018 Kevin Weber <https://codepen.io/kevinweber/pen/dXWoRw>
 // *
+
+/// A Bootstrap 4 function that converts ASCII characters in SVG's to URL encoded characters.
+/// @deprecated use clay-svg-url($svg) instead.
+/// @param {String} $string - The SVG to URL encode
+/// @param {Map} $escaped - The characters to escape
 
 @function escape-svg($string, $escaped: null) {
 	@if ($escaped == null) {
 		$escaped: if(
 			variable-exists(escaped-characters),
 			$escaped-characters,
-			$cadmin-escaped-characters
+			if(
+				variable-exists(cadmin-escaped-characters),
+				$cadmin-escaped-characters,
+				(('<', '%3c'), ('>', '%3e'), ('#', '%23'))
+			)
 		);
 	}
 
@@ -763,7 +963,7 @@
 	@return $string;
 }
 
-// * REUSE-Snippet-End
+// * SPDX-SnippetEnd
 
 /// A function that returns a specific Lexicon Icon with a specific color as a data URI to be used in `background-image`.
 /// @param {String} $name - The Lexicon Icon name (e.g., angle-right)
@@ -773,4 +973,22 @@
 	$lx-icons: clay-get-icons($color);
 
 	@return clay-svg-url(map-get($lx-icons, $name));
+}
+
+/// A function that returns the inner border radius based on the outer border radius minus the border width.
+/// @param {Number | String} $radius - The outer border-radius
+/// @param {Number | String} $width - The outer border-width
+
+@function clay-border-radius-inner(
+	$radius: $border-radius,
+	$width: $border-width
+) {
+	@if not(type-of($radius) == 'number' or type-of($radius) == 'string') {
+		@error 'The parameter `$radius` in the function `clay-border-radius-inner` cannot be a `#{type-of($radius)}`. It must be a number or a string.';
+	} @else if not (type-of($width) == 'number' or type-of($width) == 'string')
+	{
+		@error 'The parameter `$width` in the function `clay-border-radius-inner` cannot be a `#{type-of($width)}`. It must be a number or a string.';
+	}
+
+	@return calc(#{$radius} - #{$width});
 }

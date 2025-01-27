@@ -3,37 +3,34 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import {DocSearch} from '@docsearch/react';
 import React, {useEffect} from 'react';
+
+import '@docsearch/css';
 
 export default (props) => {
 	useEffect(() => {
-		if (window.docsearch) {
-			window.docsearch({
-				apiKey: 'bc205a621e5176b8720081c2a3de450c',
-				indexName: 'clay',
-				inputSelector: '#algolia-doc-search',
-			});
+		const platformUserAgent = (
+			navigator?.userAgentData?.platform || navigator?.platform
+		).toLowerCase();
+
+		if (platformUserAgent.includes('mac')) {
+			props.searchRef.current.setAttribute(
+				'aria-keyshortcuts',
+				'Control+Option+K'
+			);
+		} else if (platformUserAgent.includes('linux')) {
+			props.searchRef.current.setAttribute('aria-keyshortcuts', 'Alt+K');
 		}
 	}, []);
 
 	return (
 		<div className="page-autocomplete">
-			<div className="input-group">
-				<input
-					className="form-control"
-					id="algolia-doc-search"
-					name="q"
-					placeholder={props.placeholder}
-					required
-					type="text"
-				/>
-
-				<span className="input-group-addon">
-					<svg className="lexicon-icon">
-						<use xlinkHref="/images/icons/icons.svg#search" />
-					</svg>
-				</span>
-			</div>
+			<DocSearch
+				apiKey={process.env.GATSBY_ALGOLIA_PUBLIC_KEY}
+				appId={process.env.GATSBY_ALGOLIA_APP_ID}
+				indexName={process.env.GATSBY_ALGOLIA_INDEX}
+			/>
 		</div>
 	);
 };

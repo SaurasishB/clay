@@ -1,13 +1,11 @@
 $cadmin-card-bg: $cadmin-white !default;
 $cadmin-card-border-color: rgba($cadmin-black, 0.125) !default;
 $cadmin-card-border-style: solid !default;
-$cadmin-card-border-width: 0 !default;
+$cadmin-card-border-width: 0px !default;
 
 $cadmin-card-border-radius: $cadmin-border-radius !default;
-$cadmin-card-inner-border-radius: if(
-	$cadmin-card-border-width > 0,
-	calc(#{$cadmin-card-border-radius} - #{$cadmin-card-border-width}),
-	$cadmin-card-border-radius
+$cadmin-card-inner-border-radius: calc(
+	#{$cadmin-card-border-radius} - #{$cadmin-card-border-width}
 ) !default;
 
 $cadmin-card-box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.6) !default;
@@ -21,18 +19,57 @@ $cadmin-card-spacer-y: 12px !default;
 $cadmin-card-cap-bg: rgba($cadmin-black, 0.03) !default;
 $cadmin-card-cap-color: null !default;
 
+// .card-body
+
 $cadmin-card-body-padding-bottom: 16px !default;
 $cadmin-card-body-padding-left: 16px !default;
 $cadmin-card-body-padding-right: 16px !default;
 $cadmin-card-body-padding-top: 16px !default;
+
+// `flex` enable `flex-grow: 1` for decks and groups so that card blocks take up
+// as much space as possible, ensuring footers are aligned to the bottom.
+// `min-height` workaround for the image size bug in IE
+// See: https://github.com/twbs/bootstrap/pull/28855
+
+$cadmin-card-body: () !default;
+$cadmin-card-body: map-deep-merge(
+	(
+		color: $cadmin-card-color,
+		flex: 1 1 auto,
+		min-height: 1px,
+		padding-bottom: $cadmin-card-body-padding-bottom,
+		padding-left: $cadmin-card-body-padding-left,
+		padding-right: $cadmin-card-body-padding-right,
+		padding-top: $cadmin-card-body-padding-top,
+	),
+	$cadmin-card-body
+);
+
+// .card-section-header
 
 $cadmin-card-section-header-color: $cadmin-gray-600 !default;
 $cadmin-card-section-header-font-size: 12px !default;
 $cadmin-card-section-header-font-weight: $cadmin-font-weight-semi-bold !default;
 $cadmin-card-section-header-line-height: 2.5 !default;
 $cadmin-card-section-header-margin-bottom: 24px !default;
-$cadmin-card-section-header-padding: 0 ($cadmin-grid-gutter-width / 2) !default;
+$cadmin-card-section-header-padding: 0 ($cadmin-grid-gutter-width * 0.5) !default;
 $cadmin-card-section-header-text-transform: uppercase !default;
+
+$cadmin-card-section-header: () !default;
+$cadmin-card-section-header: map-deep-merge(
+	(
+		color: $cadmin-card-section-header-color,
+		font-size: $cadmin-card-section-header-font-size,
+		font-weight: $cadmin-card-section-header-font-weight,
+		line-height: $cadmin-card-section-header-line-height,
+		margin-bottom: $cadmin-card-section-header-margin-bottom,
+		padding: $cadmin-card-section-header-padding,
+		text-transform: $cadmin-card-section-header-text-transform,
+	),
+	$cadmin-card-section-header
+);
+
+// .card-img-overlay
 
 $cadmin-card-img-overlay-padding: 20px !default;
 
@@ -110,6 +147,47 @@ $cadmin-card-aspect-ratio-item-bottom-left: map-deep-merge(
 	$cadmin-card-aspect-ratio-item-bottom-left
 );
 
+// .card
+
+// `min-width`, see https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+
+$card: () !default;
+$card: map-deep-merge(
+	(
+		background-color: $cadmin-card-bg,
+		border-color: $cadmin-card-border-color,
+		border-radius: clay-enable-rounded($cadmin-card-border-radius),
+		border-style: $cadmin-card-border-style,
+		border-width: $cadmin-card-border-width,
+		box-shadow: clay-enable-shadows($cadmin-card-box-shadow),
+		display: block,
+		height: $cadmin-card-height,
+		margin-bottom: $cadmin-card-margin-bottom,
+		min-width: 0,
+		position: relative,
+		word-wrap: break-word,
+		aspect-ratio: (
+			label: $cadmin-card-aspect-ratio-label,
+		),
+		aspect-ratio-item-top-left: $cadmin-card-aspect-ratio-item-top-left,
+		aspect-ratio-item-top-center: $cadmin-card-aspect-ratio-item-top-center,
+		aspect-ratio-item-top-right: $cadmin-card-aspect-ratio-item-top-right,
+		aspect-ratio-item-right-middle:
+			$cadmin-card-aspect-ratio-item-right-middle,
+		aspect-ratio-item-bottom-right:
+			$cadmin-card-aspect-ratio-item-bottom-right,
+		aspect-ratio-item-bottom-center:
+			$cadmin-card-aspect-ratio-item-bottom-center,
+		aspect-ratio-item-bottom-left:
+			$cadmin-card-aspect-ratio-item-bottom-left,
+		hr: (
+			margin-left: 0,
+			margin-right: 0,
+		),
+	),
+	$card
+);
+
 // Card Title
 
 $cadmin-card-title: () !default;
@@ -128,9 +206,18 @@ $cadmin-card-title-link: () !default;
 $cadmin-card-title-link: map-deep-merge(
 	(
 		color: map-get($cadmin-card-title, color),
-		hover-color: map-get($cadmin-card-title, color),
+		hover: (
+			color: map-get($cadmin-card-title, color),
+		),
 	),
 	$cadmin-card-title-link
+);
+
+$cadmin-card-title: map-deep-merge(
+	$cadmin-card-title,
+	(
+		href: $cadmin-card-title-link,
+	)
 );
 
 // Card Subtitle
@@ -151,9 +238,18 @@ $cadmin-card-subtitle-link: () !default;
 $cadmin-card-subtitle-link: map-deep-merge(
 	(
 		color: map-get($cadmin-card-subtitle, color),
-		hover-color: $cadmin-gray-600,
+		hover: (
+			color: $cadmin-gray-600,
+		),
 	),
 	$cadmin-card-subtitle-link
+);
+
+$cadmin-card-subtitle: map-deep-merge(
+	$cadmin-card-subtitle,
+	(
+		href: $cadmin-card-subtitle-link,
+	)
 );
 
 // Card Link
@@ -171,29 +267,90 @@ $cadmin-card-link: map-deep-merge(
 	$cadmin-card-link
 );
 
-// Card Divider
+// .card-text
+
+$cadmin-card-text: () !default;
+$cadmin-card-text: map-deep-merge(
+	(
+		last-child: (
+			margin-bottom: 0,
+		),
+	),
+	$cadmin-card-text
+);
+
+// .card-divider
 
 $cadmin-card-divider-bg: $cadmin-card-border-color !default;
 $cadmin-card-divider-height: 1px !default;
 $cadmin-card-divider-spacer-x: null !default;
 $cadmin-card-divider-spacer-y: 10px !default;
 
-$cadmin-card-rounded-inner-border-radius: if(
-	$cadmin-card-border-width > 0,
-	calc(#{$cadmin-rounded-border-radius} - #{$cadmin-card-border-width}),
-	$cadmin-rounded-border-radius
-) !default;
-$cadmin-card-rounded-0-inner-border-radius: if(
-	$cadmin-rounded-0-border-radius > $cadmin-card-border-width,
-	calc(#{$cadmin-rounded-0-border-radius} - #{$cadmin-card-border-width}),
-	0
-) !default;
-$cadmin-card-rounded-circle-inner-border-radius: if(
-	$cadmin-card-border-width > 0,
-	calc(
-		#{$cadmin-rounded-circle-border-radius} - #{$cadmin-card-border-width}
+$cadmin-card-divider: () !default;
+$cadmin-card-divider: map-deep-merge(
+	(
+		background-color: $cadmin-card-divider-bg,
+		height: $cadmin-card-divider-height,
+		margin-bottom: $cadmin-card-divider-spacer-y,
+		margin-left: $cadmin-card-divider-spacer-x,
+		margin-right: $cadmin-card-divider-spacer-x,
+		margin-top: $cadmin-card-divider-spacer-y,
 	),
-	$cadmin-rounded-circle-border-radius
+	$cadmin-card-divider
+);
+
+// .card-header
+
+// `margin-bottom` removes the default margin-bottom of <hN> (h1 - h6)
+
+$cadmin-card-header: () !default;
+$cadmin-card-header: map-deep-merge(
+	(
+		background-color: $cadmin-card-cap-bg,
+		border-bottom: $cadmin-card-border-width solid $cadmin-card-border-color,
+		color: $cadmin-card-cap-color,
+		margin-bottom: 0,
+		padding: $cadmin-card-spacer-y $cadmin-card-spacer-x,
+		first-child: (
+			border-radius:
+				clay-enable-rounded(
+					$cadmin-card-inner-border-radius
+						$cadmin-card-inner-border-radius 0 0
+				),
+		),
+	),
+	$cadmin-card-header
+);
+
+// .card-footer
+
+$cadmin-card-footer: () !default;
+$cadmin-card-footer: map-deep-merge(
+	(
+		background-color: $cadmin-card-cap-bg,
+		border-top: $cadmin-card-border-width solid $cadmin-card-border-color,
+		padding: $cadmin-card-spacer-y $cadmin-card-spacer-x,
+		last-child: (
+			border-radius:
+				clay-enable-rounded(
+					0 0 $cadmin-card-inner-border-radius
+						$cadmin-card-inner-border-radius
+				),
+		),
+	),
+	$cadmin-card-footer
+);
+
+// .rounded-*
+
+$cadmin-card-rounded-inner-border-radius: calc(
+	#{$cadmin-rounded-border-radius} - #{$cadmin-card-border-width}
+) !default;
+$cadmin-card-rounded-0-inner-border-radius: calc(
+	#{$cadmin-rounded-0-border-radius} - #{$cadmin-card-border-width}
+) !default;
+$cadmin-card-rounded-circle-inner-border-radius: calc(
+	#{$cadmin-rounded-circle-border-radius} - #{$cadmin-card-border-width}
 ) !default;
 
 $cadmin-checkbox-left-card-padding: 50px !default;
@@ -202,7 +359,7 @@ $cadmin-checkbox-right-card-padding: $cadmin-checkbox-left-card-padding !default
 $cadmin-checkbox-position: 16px !default;
 
 $cadmin-form-check-card-checked-box-shadow: 0 0 0 2px
-	lighten($cadmin-component-active-bg, 22.94) !default;
+	clay-lighten($cadmin-component-active-bg, 22.94) !default;
 
 // Card Interactive
 
@@ -210,16 +367,22 @@ $cadmin-card-interactive-after-highlight: () !default;
 $cadmin-card-interactive-after-highlight: map-deep-merge(
 	(
 		border-radius: 0 0 $cadmin-card-border-radius $cadmin-card-border-radius,
-		bottom: -$cadmin-card-border-width,
+		bottom: math-sign($cadmin-card-border-width),
 		content: '',
 		height: 0,
-		left: -$cadmin-card-border-width,
+		left: math-sign($cadmin-card-border-width),
 		position: absolute,
-		right: -$cadmin-card-border-width,
+		right: math-sign($cadmin-card-border-width),
 		transition: height 0.15s ease-out,
-		hover-height: 4px,
-		focus-height: 4px,
-		active-height: 4px,
+		hover: (
+			height: 4px,
+		),
+		focus: (
+			height: 4px,
+		),
+		active: (
+			height: 4px,
+		),
 	),
 	$cadmin-card-interactive-after-highlight
 );
@@ -237,11 +400,18 @@ $cadmin-card-interactive: map-deep-merge(
 	(
 		cursor: $cadmin-link-cursor,
 		outline: 0,
-		transition: $cadmin-btn-transition,
-		hover-bg: #f7f8f9,
-		hover-text-decoration: none,
-		focus-box-shadow: 0 0 0 2px #FFF#{','} 0 0 0 4px #719aff,
-		active-bg: #f1f2f5,
+		transition: $cadmin-component-transition,
+		hover: (
+			background-color: #f7f8f9,
+			text-decoration: none,
+		),
+		focus: (
+			box-shadow: #{0 0 0 2px #fff,
+			0 0 0 4px #719aff},
+		),
+		active: (
+			background-color: #f1f2f5,
+		),
 		after-highlight: $cadmin-card-interactive-after-highlight,
 		card-body: $cadmin-card-interactive-card-body,
 	),
@@ -253,9 +423,15 @@ $cadmin-card-interactive: map-deep-merge(
 $cadmin-card-interactive-primary-after-highlight: () !default;
 $cadmin-card-interactive-primary-after-highlight: map-deep-merge(
 	(
-		hover-bg: $cadmin-component-active-bg,
-		focus-bg: $cadmin-component-active-bg,
-		active-bg: $cadmin-component-active-bg,
+		hover: (
+			background-color: $cadmin-component-active-bg,
+		),
+		focus: (
+			background-color: $cadmin-component-active-bg,
+		),
+		active: (
+			background-color: $cadmin-component-active-bg,
+		),
 	),
 	$cadmin-card-interactive-primary-after-highlight
 );
@@ -263,8 +439,12 @@ $cadmin-card-interactive-primary-after-highlight: map-deep-merge(
 $cadmin-card-interactive-primary: () !default;
 $cadmin-card-interactive-primary: map-deep-merge(
 	(
-		focus-bg: $cadmin-gray-100,
-		active-bg: $cadmin-gray-200,
+		focus: (
+			background-color: $cadmin-gray-100,
+		),
+		active: (
+			background-color: $cadmin-gray-200,
+		),
 		after-highlight: $cadmin-card-interactive-primary-after-highlight,
 	),
 	$cadmin-card-interactive-primary
@@ -276,13 +456,19 @@ $cadmin-card-interactive-secondary: () !default;
 $cadmin-card-interactive-secondary: map-deep-merge(
 	(
 		color: $cadmin-gray-900,
-		hover-color: $cadmin-gray-900,
-		hover-bg: $cadmin-white,
-		hover-border-color: transparent,
-		hover-box-shadow: 0 0 0 2px #719aff,
-		focus-border-color: transparent,
-		focus-box-shadow: 0 0 0 2px #719aff,
-		active-bg: $cadmin-white,
+		hover: (
+			background-color: $cadmin-white,
+			border-color: transparent,
+			box-shadow: 0 0 0 2px #719aff,
+			color: $cadmin-gray-900,
+		),
+		focus: (
+			border-color: transparent,
+			box-shadow: 0 0 0 2px #719aff,
+		),
+		active: (
+			background-color: $cadmin-white,
+		),
 	),
 	$cadmin-card-interactive-secondary
 );
@@ -292,8 +478,54 @@ $cadmin-card-interactive-secondary: map-deep-merge(
 $cadmin-card-type-asset: () !default;
 $cadmin-card-type-asset: map-deep-merge(
 	(
-		aspect-ratio-border-color: $cadmin-gray-300,
-		card-body-padding-top: 12px,
+		aspect-ratio: (
+			border-color: $cadmin-gray-300,
+			border-style: solid,
+			border-width: 0 0 1px 0,
+			horizontal: 16,
+			vertical: 9,
+			custom-control: (
+				label: (
+					bottom: 0,
+					cursor: $cadmin-link-cursor,
+					left: 0,
+					position: absolute,
+					right: 0,
+					top: 0,
+				),
+			),
+		),
+		card-type-asset-icon: (
+			width: 22.225%,
+			inline-item: (
+				bottom: 0,
+				left: 0,
+				position: absolute,
+				right: 0,
+				top: 0,
+			),
+			lexicon-icon: (
+				height: 100%,
+				width: 100%,
+			),
+			sticker: (
+				border-radius: 50%,
+				display: block,
+				font-size: 2vw,
+				padding-bottom: 100%,
+				width: 100%,
+			),
+		),
+		card-body: (
+			padding-top: 12px,
+		),
+		card-row: (
+			align-items: flex-start,
+		),
+		dropdown-action: (
+			margin-right: -8px,
+			margin-top: -3px,
+		),
 	),
 	$cadmin-card-type-asset
 );
@@ -303,7 +535,9 @@ $cadmin-card-type-asset: map-deep-merge(
 $cadmin-image-card: () !default;
 $cadmin-image-card: map-deep-merge(
 	(
-		aspect-ratio-checkered-fg: $cadmin-gray-300,
+		aspect-ratio: (
+			checkered-foreground-color: $cadmin-gray-300,
+		),
 	),
 	$cadmin-image-card
 );
@@ -313,7 +547,9 @@ $cadmin-image-card: map-deep-merge(
 $cadmin-file-card: () !default;
 $cadmin-file-card: map-deep-merge(
 	(
-		asset-icon-color: $cadmin-gray-400,
+		card-type-asset-icon: (
+			color: $cadmin-gray-400,
+		),
 	),
 	$cadmin-file-card
 );
@@ -324,8 +560,8 @@ $cadmin-product-card: () !default;
 $cadmin-product-card: map-deep-merge(
 	(
 		aspect-ratio: (
-			bg: $cadmin-white,
-			bg-image: linear-gradient(0deg, #ebebeb, #ebebeb),
+			background-color: $cadmin-white,
+			background-image: linear-gradient(0deg, #ebebeb, #ebebeb),
 		),
 		card-body: (
 			text-align: center,
@@ -349,11 +585,15 @@ $cadmin-product-card: map-deep-merge(
 $cadmin-user-card: () !default;
 $cadmin-user-card: map-deep-merge(
 	(
-		asset-icon-max-width: 80px,
-		asset-icon-min-width: 48px,
-		asset-icon-width: 30%,
-		asset-icon-lexicon-icon-height: auto,
-		asset-icon-lexicon-icon-width: 50%,
+		card-type-asset-icon: (
+			max-width: 80px,
+			min-width: 48px,
+			width: 30%,
+			lexicon-icon: (
+				height: auto,
+				width: 50%,
+			),
+		),
 	),
 	$cadmin-user-card
 );
@@ -369,8 +609,8 @@ $cadmin-card-page-item-asset: map-deep-merge(
 		base: (
 			breakpoint: 0,
 			min-width: 193px,
-			padding-left: $cadmin-grid-gutter-width / 2,
-			padding-right: $cadmin-grid-gutter-width / 2,
+			padding-left: $cadmin-grid-gutter-width * 0.5,
+			padding-right: $cadmin-grid-gutter-width * 0.5,
 		),
 		sm: (
 			breakpoint: map-get($cadmin-grid-breakpoints, sm),
@@ -402,8 +642,8 @@ $cadmin-card-page-item-user: map-deep-merge(
 			breakpoint: 0,
 			flex-basis: 50%,
 			max-width: 50%,
-			padding-left: $cadmin-grid-gutter-width / 2,
-			padding-right: $cadmin-grid-gutter-width / 2,
+			padding-left: $cadmin-grid-gutter-width * 0.5,
+			padding-right: $cadmin-grid-gutter-width * 0.5,
 		),
 		sm: (
 			breakpoint: map-get($cadmin-grid-breakpoints, sm),
@@ -425,7 +665,9 @@ $cadmin-card-page-item-user: map-deep-merge(
 $cadmin-card-type-directory: () !default;
 $cadmin-card-type-directory: map-deep-merge(
 	(
-		sticker-font-size: 18px,
+		sticker: (
+			font-size: 18px,
+		),
 	),
 	$cadmin-card-type-directory
 );
@@ -434,7 +676,7 @@ $cadmin-card-type-directory: map-deep-merge(
 
 $cadmin-card-page-item-directory: () !default;
 $cadmin-card-page-item-directory: map-deep-merge(
-	($cadmin-card-page-item-asset),
+	$cadmin-card-page-item-asset,
 	$cadmin-card-page-item-directory
 );
 
@@ -453,14 +695,16 @@ $cadmin-card-type-template-after-highlight: map-deep-merge(
 $cadmin-card-type-template-aspect-ratio: () !default;
 $cadmin-card-type-template-aspect-ratio: map-deep-merge(
 	(
-		bg-image: none,
+		background-image: none,
 		border-width: 0,
 		color: $cadmin-gray-600,
 		horizontal: 16,
 		text-align: center,
 		vertical: 9,
-		lexicon-icon-height: auto,
-		lexicon-icon-width: 28%,
+		lexicon-icon: (
+			height: auto,
+			width: 28%,
+		),
 	),
 	$cadmin-card-type-template-aspect-ratio
 );
@@ -497,7 +741,9 @@ $cadmin-card-type-template: map-deep-merge(
 		border-width: 1px,
 		box-shadow: none,
 		color: $cadmin-gray-900,
-		hover-color: $cadmin-gray-900,
+		hover: (
+			color: $cadmin-gray-900,
+		),
 		after-highlight: $cadmin-card-type-template-after-highlight,
 		aspect-ratio: $cadmin-card-type-template-aspect-ratio,
 		aspect-ratio-item: $cadmin-card-type-template-aspect-ratio-item,
@@ -542,8 +788,10 @@ $cadmin-template-card-horizontal-card-row: map-deep-merge(
 		margin-left: -4px,
 		margin-right: -4px,
 		width: auto,
-		autofit-col-padding-left: 4px,
-		autofit-col-padding-right: 4px,
+		autofit-col: (
+			padding-left: 4px,
+			padding-right: 4px,
+		),
 	),
 	$cadmin-template-card-horizontal-card-row
 );
@@ -561,7 +809,9 @@ $cadmin-template-card-horizontal: () !default;
 $cadmin-template-card-horizontal: map-deep-merge(
 	(
 		color: $cadmin-gray-600,
-		hover-color: $cadmin-gray-600,
+		hover: (
+			color: $cadmin-gray-600,
+		),
 		sticker: $cadmin-template-card-horizontal-sticker,
 		card-row: $cadmin-template-card-horizontal-card-row,
 		card-title: $cadmin-template-card-horizontal-card-title,

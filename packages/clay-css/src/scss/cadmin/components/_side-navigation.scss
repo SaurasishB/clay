@@ -60,6 +60,8 @@
 	z-index: $cadmin-zindex-sidenav;
 }
 
+.sidenav-end,
+&.sidenav-end,
 .sidenav-right,
 &.sidenav-right {
 	> .sidenav-content {
@@ -89,7 +91,7 @@
 	.sidenav-content,
 	.sidenav-menu,
 	.sidenav-menu-slider {
-		transition: $cadmin-sidenav-transition;
+		@include transition($cadmin-sidenav-transition);
 	}
 }
 
@@ -97,7 +99,7 @@
 
 .sidenav-transition,
 &.sidenav-transition {
-	transition: $cadmin-sidenav-transition;
+	@include transition($cadmin-sidenav-transition);
 }
 
 // Simple Sidenav
@@ -127,6 +129,7 @@
 		width: $cadmin-sidenav-width;
 	}
 
+	&.sidenav-end,
 	&.sidenav-right {
 		left: auto;
 		right: 0;

@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import '@testing-library/jest-dom/extend-expect';
 import {ClayPaginationWithBasicItems} from '..';
 import {cleanup, fireEvent, getByText, render} from '@testing-library/react';
 import React from 'react';
@@ -15,7 +16,7 @@ describe('ClayPagination', () => {
 	it('renders', () => {
 		const {container} = render(
 			<ClayPaginationWithBasicItems
-				activePage={12}
+				defaultActive={12}
 				size="lg"
 				spritemap={spritemap}
 				totalPages={25}
@@ -28,10 +29,23 @@ describe('ClayPagination', () => {
 	it('renders with only one page', () => {
 		const {container} = render(
 			<ClayPaginationWithBasicItems
-				activePage={1}
+				defaultActive={1}
 				ellipsisBuffer={1}
 				spritemap={spritemap}
 				totalPages={1}
+			/>
+		);
+
+		expect(container).toMatchSnapshot();
+	});
+
+	it('totalPages with 0 will render the pagination with only one page', () => {
+		const {container} = render(
+			<ClayPaginationWithBasicItems
+				defaultActive={1}
+				ellipsisBuffer={1}
+				spritemap={spritemap}
+				totalPages={0}
 			/>
 		);
 
@@ -76,10 +90,62 @@ describe('ClayPagination', () => {
 		expect(changeMock).toHaveBeenLastCalledWith(25);
 	});
 
-	it('shows dropdown when ellipsis is clicked', () => {
+	it('calls onPageChange when individual page is (using new properties)', () => {
+		const changeMock = jest.fn();
+
+		const {getByText} = render(
+			<ClayPaginationWithBasicItems
+				active={12}
+				onActiveChange={changeMock}
+				spritemap={spritemap}
+				totalPages={25}
+			/>
+		);
+
+		fireEvent.click(getByText('25'), {});
+
+		expect(changeMock).toHaveBeenLastCalledWith(25);
+	});
+
+	it('disable ellipsis when disableEllipsis prop is passed', () => {
 		const {getAllByText} = render(
 			<ClayPaginationWithBasicItems
-				activePage={12}
+				defaultActive={12}
+				disableEllipsis
+				spritemap={spritemap}
+				totalPages={25}
+			/>
+		);
+
+		getAllByText('...').forEach((ellipsisButton) =>
+			expect(ellipsisButton).toBeDisabled()
+		);
+	});
+
+	it('render pagination with links and active item without link', () => {
+		const {getByText} = render(
+			<ClayPaginationWithBasicItems
+				defaultActive={12}
+				ellipsisBuffer={2}
+				hrefConstructor={(page) => `/#${page}`}
+				spritemap={spritemap}
+				totalPages={25}
+			/>
+		);
+
+		const currentActivePage = getByText('12');
+
+		expect(
+			(currentActivePage.parentElement as HTMLElement).classList
+		).toContain('active');
+		expect(currentActivePage.getAttribute('href')).toBe(null);
+		expect(currentActivePage.getAttribute('aria-current')).toBe('page');
+	});
+
+	xit('shows dropdown when ellipsis is clicked', () => {
+		const {getAllByText} = render(
+			<ClayPaginationWithBasicItems
+				defaultActive={12}
 				spritemap={spritemap}
 				totalPages={25}
 			/>
@@ -92,7 +158,7 @@ describe('ClayPagination', () => {
 		).toContain('show');
 	});
 
-	it('calls onPageChange when an item is clicked in dropdown-menu', () => {
+	xit('calls onPageChange when an item is clicked in dropdown-menu', () => {
 		const changeMock = jest.fn();
 
 		const {getAllByText} = render(

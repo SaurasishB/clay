@@ -4,21 +4,22 @@
  */
 
 import ClayDropDown, {ClayDropDownWithItems} from '..';
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, getAllByRole, render} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-const DropDownWithState: React.FunctionComponent<any> = ({
-	children,
-	...others
-}) => {
+import '@testing-library/jest-dom/extend-expect';
+
+const DropDownWithState = ({children, ...others}: any) => {
 	const [active, setActive] = React.useState(false);
 
 	return (
 		<ClayDropDown
 			{...others}
 			active={active}
-			onActiveChange={(val) => setActive(val)}
-			trigger={<button>{'Click Me'}</button>}
+			onActiveChange={setActive}
+			renderMenuOnClick
+			trigger={<button>Click Me</button>}
 		>
 			{children}
 		</ClayDropDown>
@@ -49,9 +50,9 @@ describe('ClayDropDown', () => {
 			</DropDownWithState>
 		);
 
-		expect(document.body.querySelector('.dropdown-menu')).not.toContain(
-			'show'
-		);
+		expect(
+			document.body.querySelector('.dropdown-menu')
+		).not.toBeInTheDocument();
 	});
 
 	it('renders dropdown menu when clicked', () => {
@@ -104,7 +105,7 @@ describe('ClayDropDown', () => {
 					</ClayDropDown.ItemList>
 				</DropDownWithState>
 
-				<div data-testid="OUTSIDE_ELEMENT">{'outside item'}</div>
+				<div data-testid="OUTSIDE_ELEMENT">outside item</div>
 			</div>
 		);
 
@@ -116,9 +117,7 @@ describe('ClayDropDown', () => {
 			document.body.querySelector('.dropdown-menu')!.classList
 		).toContain('show');
 
-		const outsideElement = getByTestId('OUTSIDE_ELEMENT');
-
-		fireEvent.mouseDown(outsideElement as HTMLDivElement, {});
+		userEvent.click(getByTestId('OUTSIDE_ELEMENT'));
 
 		expect(
 			document.body.querySelector('.dropdown-menu')!.classList
@@ -146,7 +145,7 @@ describe('ClayDropDown', () => {
 					</ClayDropDown.ItemList>
 				</DropDownWithState>
 
-				<button data-testid="BUTTON_OUTSIDE">{'outside item'}</button>
+				<button data-testid="BUTTON_OUTSIDE">outside item</button>
 			</div>
 		);
 
@@ -287,7 +286,8 @@ describe('ClayDropDown', () => {
 						onClick: onClickFn,
 					},
 				]}
-				trigger={<button>{'Click Me'}</button>}
+				renderMenuOnClick
+				trigger={<button>Click Me</button>}
 			/>
 		);
 
@@ -326,5 +326,207 @@ describe('ClayDropDown', () => {
 		fireEvent.submit(input as HTMLInputElement, {});
 
 		expect(onSubmitFn).toHaveBeenCalled();
+	});
+
+	it('render simple dynamic content', () => {
+		const {getAllByRole, getByRole} = render(
+			<ClayDropDown
+				items={['one', 'two', 'three']}
+				trigger={<button>Click Me</button>}
+			>
+				{(item) => (
+					<ClayDropDown.Item key={item}>{item}</ClayDropDown.Item>
+				)}
+			</ClayDropDown>
+		);
+
+		const button = getByRole('button');
+
+		fireEvent.click(button);
+
+		const [one, two, three] = getAllByRole('menuitem');
+
+		expect(one).toBeDefined();
+		expect(two).toBeDefined();
+		expect(three).toBeDefined();
+	});
+
+	it('render simple static content', () => {
+		const {getAllByRole, getByRole} = render(
+			<ClayDropDown trigger={<button>Click Me</button>}>
+				<ClayDropDown.ItemList>
+					<ClayDropDown.Item>one</ClayDropDown.Item>
+					<ClayDropDown.Item>two</ClayDropDown.Item>
+					<ClayDropDown.Item>three</ClayDropDown.Item>
+				</ClayDropDown.ItemList>
+			</ClayDropDown>
+		);
+
+		const button = getByRole('button');
+
+		fireEvent.click(button);
+
+		const [one, two, three] = getAllByRole('menuitem');
+
+		expect(one).toBeDefined();
+		expect(two).toBeDefined();
+		expect(three).toBeDefined();
+	});
+
+	it('render dynamic content with search', () => {
+		const {getAllByRole, getByRole} = render(
+			<ClayDropDown trigger={<button>Click Me</button>}>
+				<ClayDropDown.Search placeholder="Type to filter" />
+				<ClayDropDown.ItemList items={['one', 'two', 'three']}>
+					{(item: string) => (
+						<ClayDropDown.Item key={item}>{item}</ClayDropDown.Item>
+					)}
+				</ClayDropDown.ItemList>
+			</ClayDropDown>
+		);
+
+		const button = getByRole('button');
+
+		fireEvent.click(button);
+
+		const [one, two, three] = getAllByRole('menuitem');
+
+		expect(one).toBeDefined();
+		expect(two).toBeDefined();
+		expect(three).toBeDefined();
+
+		const input = getByRole('textbox');
+
+		userEvent.type(input, 't');
+
+		const items = getAllByRole('menuitem');
+
+		expect(items.length).toBe(2);
+	});
+
+	it('render dynamic content with group', () => {
+		const {getAllByRole: cGetAllByRole, getByRole} = render(
+			<ClayDropDown
+				items={[
+					{
+						children: [
+							{id: 2, name: 'Apple'},
+							{id: 3, name: 'Banana'},
+							{id: 4, name: 'Mangos'},
+						],
+						id: 1,
+						name: 'Fruit',
+					},
+					{
+						children: [
+							{id: 6, name: 'Potatoes'},
+							{id: 7, name: 'Tomatoes'},
+							{id: 8, name: 'Onions'},
+						],
+						id: 5,
+						name: 'Vegetable',
+					},
+				]}
+				trigger={<button>Click Me</button>}
+			>
+				{(item: any) => (
+					<ClayDropDown.Group
+						header={item.name}
+						items={item.children}
+						key={item.name}
+					>
+						{(item: any) => (
+							<ClayDropDown.Item key={item.name}>
+								{item.name}
+							</ClayDropDown.Item>
+						)}
+					</ClayDropDown.Group>
+				)}
+			</ClayDropDown>
+		);
+
+		const button = getByRole('button');
+
+		fireEvent.click(button);
+
+		const [fruit, vegetable] = cGetAllByRole('group');
+
+		expect(fruit).toBeDefined();
+		expect(vegetable).toBeDefined();
+
+		const [fruit1, fruit2, fruit3] = getAllByRole(fruit!, 'menuitem');
+
+		expect(fruit1).toBeDefined();
+		expect(fruit2).toBeDefined();
+		expect(fruit3).toBeDefined();
+
+		const [vegetable1, vegetable2, vegetable3] = getAllByRole(
+			vegetable!,
+			'menuitem'
+		);
+
+		expect(vegetable1).toBeDefined();
+		expect(vegetable2).toBeDefined();
+		expect(vegetable3).toBeDefined();
+	});
+
+	it('render dynamic content with group and search', () => {
+		const {getAllByRole: cGetAllByRole, getByRole} = render(
+			<ClayDropDown trigger={<button>Click Me</button>}>
+				<ClayDropDown.Search placeholder="Type to filter" />
+				<ClayDropDown.ItemList
+					items={[
+						{
+							children: [
+								{id: 2, name: 'Apple'},
+								{id: 3, name: 'Banana'},
+								{id: 4, name: 'Mangos'},
+							],
+							id: 1,
+							name: 'Fruit',
+						},
+						{
+							children: [
+								{id: 6, name: 'Potatoes'},
+								{id: 7, name: 'Tomatoes'},
+								{id: 8, name: 'Onions'},
+							],
+							id: 5,
+							name: 'Vegetable',
+						},
+					]}
+				>
+					{(item: any) => (
+						<ClayDropDown.Group
+							header={item.name}
+							items={item.children}
+							key={item.name}
+						>
+							{(item: any) => (
+								<ClayDropDown.Item key={item.name}>
+									{item.name}
+								</ClayDropDown.Item>
+							)}
+						</ClayDropDown.Group>
+					)}
+				</ClayDropDown.ItemList>
+			</ClayDropDown>
+		);
+
+		const button = getByRole('button');
+
+		fireEvent.click(button);
+
+		const input = getByRole('textbox');
+
+		userEvent.type(input, 'ma');
+
+		const [fruit, vegetable] = cGetAllByRole('group');
+
+		const fruits = getAllByRole(fruit!, 'menuitem');
+		const vegetables = getAllByRole(vegetable!, 'menuitem');
+
+		expect(fruits.length).toBe(1);
+		expect(vegetables.length).toBe(1);
 	});
 });

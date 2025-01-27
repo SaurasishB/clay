@@ -13,6 +13,9 @@ mainTabURL: 'docs/components/checkbox.html'
 -   [Disabled](#css-disabled)
 -   [Without Labels](#css-without-labels)
 -   [Custom](#css-custom)
+    -   [Checkboxes](#css-custom-checkboxes)
+        -   [Indeterminate](#css-custom-checkbox-indeterminate)
+    -   [Radios](#css-custom-radios)
 
 </div>
 </div>
@@ -104,9 +107,7 @@ By default, any number of checkboxes and radios that are immediate sibling will 
 		value="option1"
 		checked
 	/>
-	<label class="form-check-label" for="exampleRadios1">
-		Default radio
-	</label>
+	<label class="form-check-label" for="exampleRadios1"> Default radio </label>
 </div>
 <div class="form-check">
 	<input
@@ -382,16 +383,20 @@ Using the `id` binding engine with `<label />`and `<input />`.
 </div>
 ```
 
+#### Custom Checkbox Indeterminate(#css-custom-checkbox-indeterminate)
+
 Custom checkboxes can also utilize the `:indeterminate` pseudo class when manually set via JavaScript (there is no available HTML attribute for specifying it).
 
 <div class="sheet-example">
-	<div class="custom-control custom-checkbox">
-		<label>
-			<input class="clay-site-custom-checkbox-indeterminate custom-control-input" type="checkbox">
-			<span class="custom-control-label">
-				<span class="custom-control-label-text">Indeterminate</span>
-			</span>
-		</label>
+	<div class="clay-site-custom-checkbox-indeterminate">
+		<div class="custom-control custom-checkbox">
+			<label>
+				<input class="custom-control-input" type="checkbox">
+				<span class="custom-control-label">
+					<span class="custom-control-label-text">Indeterminate</span>
+				</span>
+			</label>
+		</div>
 	</div>
 </div>
 
@@ -449,3 +454,13 @@ Custom checkboxes can also utilize the `:indeterminate` pseudo class when manual
 	</label>
 </div>
 ```
+
+<script>
+(function() {
+	var indeterminateCheckbox = document.querySelectorAll('.clay-site-custom-checkbox-indeterminate .custom-control-input');
+
+	indeterminateCheckbox.forEach(function(checkbox) {
+		checkbox.indeterminate = true;
+	});
+})();
+</script>

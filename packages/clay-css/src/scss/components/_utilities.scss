@@ -272,33 +272,32 @@
 // Inline Scroller
 
 .inline-scroller {
-	list-style: none;
-	margin: 0;
-	max-height: $inline-scroller-max-height;
-	overflow: auto;
+	@include clay-css($inline-scroller);
 
-	-webkit-overflow-scrolling: touch;
+	&:focus {
+		@include clay-css(map-get($inline-scroller, focus));
+	}
 
-	padding: 0;
+	&:focus-visible {
+		@include clay-css(map-get($inline-scroller, focus-visible));
+	}
 }
 
 // Inline Item
 
 .inline-item {
-	align-items: center;
-	display: inline-flex;
-	vertical-align: middle;
+	@include clay-css($inline-item);
 
 	.inline-item {
-		display: inline;
+		@include clay-css(map-get($inline-item, inline-item));
 	}
 
 	.lexicon-icon {
-		margin-top: $inline-item-lexicon-icon-margin-top;
+		@include clay-css(map-get($inline-item, lexicon-icon));
 	}
 
 	.loading-animation {
-		font-size: $inline-item-loading-animation-font-size;
+		@include clay-css(map-get($inline-item, loading-animation));
 	}
 }
 
@@ -323,6 +322,28 @@
 
 .page-header {
 	background-color: $page-header-bg;
+}
+
+// Clay Gap
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+	@include media-breakpoint-up($breakpoint) {
+		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+		@each $size, $length in $c-gap {
+			.c-gap#{$infix}-#{$size} {
+				gap: $length;
+			}
+
+			.c-gapx#{$infix}-#{$size} {
+				column-gap: $length;
+			}
+
+			.c-gapy#{$infix}-#{$size} {
+				row-gap: $length;
+			}
+		}
+	}
 }
 
 // Clay Margin and Padding
@@ -364,27 +385,27 @@
 		@each $size, $length in $spacers {
 			@if $size != 0 {
 				.c-m#{$infix}-n#{$size} {
-					margin: -$length;
+					margin: math-sign($length);
 				}
 
 				.c-mt#{$infix}-n#{$size},
 				.c-my#{$infix}-n#{$size} {
-					margin-top: -$length;
+					margin-top: math-sign($length);
 				}
 
 				.c-mr#{$infix}-n#{$size},
 				.c-mx#{$infix}-n#{$size} {
-					margin-right: -$length;
+					margin-right: math-sign($length);
 				}
 
 				.c-mb#{$infix}-n#{$size},
 				.c-my#{$infix}-n#{$size} {
-					margin-bottom: -$length;
+					margin-bottom: math-sign($length);
 				}
 
 				.c-ml#{$infix}-n#{$size},
 				.c-mx#{$infix}-n#{$size} {
-					margin-left: -$length;
+					margin-left: math-sign($length);
 				}
 			}
 		}

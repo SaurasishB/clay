@@ -6,7 +6,15 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface IProps extends React.HTMLAttributes<HTMLLIElement> {
+type State = 'error' | 'complete';
+
+type Context = {
+	state?: State;
+};
+
+export const ItemContext = React.createContext<Context>({});
+
+export interface IProps extends React.HTMLAttributes<HTMLLIElement> {
 	/**
 	 * Flag to indicate if `active` classname should be applied
 	 */
@@ -19,6 +27,7 @@ interface IProps extends React.HTMLAttributes<HTMLLIElement> {
 
 	/**
 	 * Flag to indicate if `complete` classname should be applied
+	 * @deprecated since v3.91.0 - use `state` instead.
 	 */
 	complete?: boolean;
 
@@ -26,14 +35,20 @@ interface IProps extends React.HTMLAttributes<HTMLLIElement> {
 	 * Flag to indicate if progress line should expand out from step
 	 */
 	expand?: boolean;
+
+	/**
+	 * Defines the status of the step.
+	 */
+	state?: State;
 }
 
-const ClayMultiStepNavItem: React.FunctionComponent<IProps> = ({
+const ClayMultiStepNavItem = ({
 	active,
 	children,
 	className,
 	complete,
 	expand,
+	state,
 	...otherProps
 }: IProps) => {
 	return (
@@ -41,12 +56,15 @@ const ClayMultiStepNavItem: React.FunctionComponent<IProps> = ({
 			className={classNames('multi-step-item', {
 				active,
 				className,
-				complete,
+				complete: complete ?? state === 'complete',
+				error: state === 'error',
 				['multi-step-item-expand']: expand,
 			})}
 			{...otherProps}
 		>
-			{children}
+			<ItemContext.Provider value={{state}}>
+				{children}
+			</ItemContext.Provider>
 		</li>
 	);
 };

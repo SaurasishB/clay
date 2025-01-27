@@ -4,13 +4,17 @@
  */
 
 import {ClayInput} from '@clayui/form';
+import {FocusScope} from '@clayui/shared';
 import React from 'react';
 
-import Context from './Context';
+import {Autocomplete} from './Autocomplete';
+import {LegacyContext} from './Context';
 import DropDown from './DropDown';
 import Input from './Input';
 import Item from './Item';
 import LoadingIndicator from './LoadingIndicator';
+
+import type {IProps as IAutocompleteProps} from './Autocomplete';
 
 const AutocompleteMarkup = React.forwardRef<
 	HTMLDivElement,
@@ -23,29 +27,56 @@ const AutocompleteMarkup = React.forwardRef<
 
 AutocompleteMarkup.displayName = 'ClayAutocompleteMarkup';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+/**
+ * Temporary helper function to determine which version of autocomplete
+ * is being used.
+ */
+const hasItems = (children?: React.ReactNode) => {
+	if (!children) {
+		return [];
+	}
+
+	return React.Children.map(children, (child) => {
+		if (
+			React.isValidElement(child) &&
+			// @ts-ignore
+			child.type.displayName === 'Item'
+		) {
+			return true;
+		}
+
+		return false;
+	}).filter(Boolean);
+};
+
+type IProps<T> = IAutocompleteProps<T> & {
 	/**
 	 * Div component to render. It can be a one component that will replace the markup.
 	 */
 	component?: React.ForwardRefExoticComponent<any>;
-}
+};
 
-const ClayAutocomplete = React.forwardRef<HTMLDivElement, IProps>(
-	(
-		{
-			children,
-			className,
-			component: Component = AutocompleteMarkup,
-			...otherProps
-		}: IProps,
-		ref
-	) => {
-		const containerElementRef = React.useRef<null | HTMLDivElement>(null);
-		const [loading, setLoading] = React.useState(false);
+function ClayAutocompleteInner<T extends Record<string, any> | string | number>(
+	{
+		children,
+		className,
+		component: Component = AutocompleteMarkup,
+		...otherProps
+	}: IProps<T>,
+	ref: React.Ref<HTMLInputElement>
+) {
+	const containerElementRef = React.useRef<null | HTMLDivElement>(null);
+	const [loading, setLoading] = React.useState(false);
 
-		return (
+	const isNewBehavior =
+		hasItems(children).length >= 1 || children instanceof Function;
+
+	const Container = isNewBehavior ? React.Fragment : FocusScope;
+
+	return (
+		<Container>
 			<Component
-				{...otherProps}
+				{...(isNewBehavior ? {} : otherProps)}
 				className={className}
 				ref={(r: any) => {
 					if (r) {
@@ -59,26 +90,50 @@ const ClayAutocomplete = React.forwardRef<HTMLDivElement, IProps>(
 					}
 				}}
 			>
-				<Context.Provider
-					value={{
-						containerElementRef,
-						loading,
-						onLoadingChange: (loading: boolean) =>
-							setLoading(loading),
-					}}
-				>
-					{children}
-				</Context.Provider>
+				{isNewBehavior ? (
+					<Autocomplete<T>
+						containerElementRef={containerElementRef}
+						{...otherProps}
+					>
+						{children}
+					</Autocomplete>
+				) : (
+					<LegacyContext.Provider
+						value={{
+							containerElementRef,
+							loading,
+							onLoadingChange: (loading: boolean) =>
+								setLoading(loading),
+						}}
+					>
+						{children}
+					</LegacyContext.Provider>
+				)}
 			</Component>
-		);
-	}
-);
+		</Container>
+	);
+}
+
+type ForwardRef = {
+	DropDown: typeof DropDown;
+	Input: typeof Input;
+	Item: typeof Item;
+	LoadingIndicator: typeof LoadingIndicator;
+	displayName: string;
+	<T>(props: IProps<T> & {ref?: React.Ref<HTMLInputElement>}): JSX.Element;
+};
+
+const ClayAutocomplete = React.forwardRef(
+	ClayAutocompleteInner
+) as unknown as ForwardRef;
+
+ClayAutocomplete.DropDown = DropDown;
+ClayAutocomplete.Input = Input;
+ClayAutocomplete.Item = Item;
+ClayAutocomplete.LoadingIndicator = LoadingIndicator;
 
 ClayAutocomplete.displayName = 'ClayAutocomplete';
 
-export default Object.assign(ClayAutocomplete, {
-	DropDown,
-	Input,
-	Item,
-	LoadingIndicator,
-});
+export {Autocomplete, Item};
+
+export default ClayAutocomplete;

@@ -1,3 +1,7 @@
+.c-link {
+	@include clay-link($cadmin-c-link);
+}
+
 .component-link {
 	@include clay-link($cadmin-component-link);
 }
@@ -48,18 +52,10 @@ button.link-outline {
 
 .component-title {
 	@include clay-text-typography($cadmin-component-title);
-
-	a {
-		@include clay-link($cadmin-component-title-link);
-	}
 }
 
 .component-subtitle {
 	@include clay-text-typography($cadmin-component-subtitle);
-
-	a {
-		@include clay-link($cadmin-component-subtitle-link);
-	}
 }
 
 .component-action {
@@ -74,11 +70,6 @@ button.link-outline {
 	@include clay-css($cadmin-component-icon);
 
 	.lexicon-icon {
-		$lexicon-icon: setter(
-			map-get($cadmin-component-icon, lexicon-icon),
-			()
-		);
-
-		@include clay-css($lexicon-icon);
+		@include clay-css(map-get($cadmin-component-icon, lexicon-icon));
 	}
 }

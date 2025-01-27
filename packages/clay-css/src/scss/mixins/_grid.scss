@@ -42,60 +42,68 @@
 /// - Add @link to documentation
 
 @mixin clay-container($map) {
-	$enabled: setter(map-get($map, enabled), true);
-	$breakpoint-up: map-get($map, breakpoint-up);
-	$breakpoint-down: setter(clay-breakpoint-prev($breakpoint-up), null);
+	@if (type-of($map) == 'map') {
+		$enabled: setter(map-get($map, enabled), true);
+		$breakpoint-up: map-get($map, breakpoint-up);
+		$breakpoint-down: setter(clay-breakpoint-prev($breakpoint-up), null);
 
-	$base: map-merge(
-		$map,
-		(
-			background-color:
-				setter(map-get($map, bg), map-get($map, background-color)),
-			background-image:
-				setter(map-get($map, bg-image), map-get($map, background-image)),
-			background-position:
-				setter(
-					map-get($map, bg-position),
-					map-get($map, background-position)
-				),
-			background-size:
-				setter(map-get($map, bg-size), map-get($map, background-size)),
-		)
-	);
+		$base: map-merge(
+			$map,
+			(
+				background-color:
+					setter(map-get($map, bg), map-get($map, background-color)),
+				background-image:
+					setter(
+						map-get($map, bg-image),
+						map-get($map, background-image)
+					),
+				background-position:
+					setter(
+						map-get($map, bg-position),
+						map-get($map, background-position)
+					),
+				background-size:
+					setter(
+						map-get($map, bg-size),
+						map-get($map, background-size)
+					),
+			)
+		);
 
-	$mobile: setter(map-get($map, mobile), ());
-	$mobile: map-merge(
-		$mobile,
-		(
-			padding-bottom:
-				setter(
-					map-get($map, padding-bottom-mobile),
-					map-get($mobile, padding-bottom)
-				),
-			padding-left:
-				setter(
-					map-get($map, padding-left-mobile),
-					map-get($mobile, padding-left)
-				),
-			padding-right:
-				setter(
-					map-get($map, padding-right-mobile),
-					map-get($mobile, padding-right)
-				),
-			padding-top:
-				setter(
-					map-get($map, padding-top-mobile),
-					map-get($mobile, padding-top)
-				),
-		)
-	);
+		$mobile: setter(map-get($map, mobile), ());
+		$mobile: map-merge(
+			$mobile,
+			(
+				padding-bottom:
+					setter(
+						map-get($map, padding-bottom-mobile),
+						map-get($mobile, padding-bottom)
+					),
+				padding-left:
+					setter(
+						map-get($map, padding-left-mobile),
+						map-get($mobile, padding-left)
+					),
+				padding-right:
+					setter(
+						map-get($map, padding-right-mobile),
+						map-get($mobile, padding-right)
+					),
+				padding-top:
+					setter(
+						map-get($map, padding-top-mobile),
+						map-get($mobile, padding-top)
+					),
+			)
+		);
 
-	@if ($enabled) {
-		@include clay-css($base);
+		@if ($enabled) {
+			@include clay-css($base);
 
-		@if ($breakpoint-down) {
-			@include media-breakpoint-down($breakpoint-down) {
-				@include clay-css($mobile);
+			@if ($breakpoint-down) {
+				@include media-breakpoint-down($breakpoint-down) {
+					@include clay-css($mobile);
+				}
 			}
 		}
 	}
@@ -111,65 +119,149 @@
 
 @mixin clay-row($map) {
 	@include clay-css($map);
+
+	$_media-breakpoint-down: map-get($map, media-breakpoint-down);
+	$_media-breakpoint-up: map-get($map, media-breakpoint-up);
+
+	@if ($_media-breakpoint-down) or ($_media-breakpoint-up) {
+		@include clay-generate-media-breakpoints($map, 'clay-css');
+	}
 }
 
 @mixin clay-custom-grid-columns($map) {
-	$custom-grid-props: map-merge(
-		(
-			enabled:
-				setter(
+	@if (type-of($map) == 'map') {
+		$custom-grid-props: map-merge(
+			(
+				enabled:
 					if(
 						variable-exists(enable-grid-classes),
 						$enable-grid-classes,
-						$cadmin-enable-grid-classes
+						if(
+							variable-exists(cadmin-enable-grid-classes),
+							$cadmin-enable-grid-classes,
+							true
+						)
 					),
-					true
-				),
-		),
-		$map
-	);
-
-	$enabled: map-get($custom-grid-props, enabled);
-
-	@if ($custom-grid-props and $enabled) {
-		display: block;
-		flex-basis: map-get(map-get($custom-grid-props, base), flex-basis);
-		flex-grow: 1;
-		max-width: map-get(map-get($custom-grid-props, base), max-width);
-		min-width: map-get(map-get($custom-grid-props, base), min-width);
-		padding-left: map-get(map-get($custom-grid-props, base), padding-left);
-		padding-right: map-get(
-			map-get($custom-grid-props, base),
-			padding-right
+			),
+			$map
 		);
-		position: relative;
-		width: 100%;
 
-		@each $breakpoint in map-keys($custom-grid-props) {
-			$next: breakpoint-next($breakpoint, $custom-grid-props);
+		$enabled: map-get($custom-grid-props, enabled);
 
-			@if ($next) {
-				@media (min-width: map-get(map-get($custom-grid-props, $next), breakpoint)) {
-					flex-basis: map-get(
-						map-get($custom-grid-props, $next),
-						flex-basis
-					);
-					max-width: map-get(
-						map-get($custom-grid-props, $next),
-						max-width
-					);
-					min-width: map-get(
-						map-get($custom-grid-props, $next),
-						min-width
-					);
-					padding-left: map-get(
-						map-get($custom-grid-props, $next),
-						padding-left
-					);
-					padding-right: map-get(
-						map-get($custom-grid-props, $next),
-						padding-right
-					);
+		@if ($custom-grid-props and $enabled) {
+			display: block;
+			flex-basis: map-get(map-get($custom-grid-props, base), flex-basis);
+			flex-grow: 1;
+			max-width: map-get(map-get($custom-grid-props, base), max-width);
+			min-width: map-get(map-get($custom-grid-props, base), min-width);
+			padding-left: map-get(
+				map-get($custom-grid-props, base),
+				padding-left
+			);
+			padding-right: map-get(
+				map-get($custom-grid-props, base),
+				padding-right
+			);
+			position: relative;
+			width: 100%;
+
+			@each $breakpoint in map-keys($custom-grid-props) {
+				$next: breakpoint-next($breakpoint, $custom-grid-props);
+
+				@if ($next) {
+					@media (min-width: map-get(map-get($custom-grid-props, $next), breakpoint)) {
+						flex-basis: map-get(
+							map-get($custom-grid-props, $next),
+							flex-basis
+						);
+						max-width: map-get(
+							map-get($custom-grid-props, $next),
+							max-width
+						);
+						min-width: map-get(
+							map-get($custom-grid-props, $next),
+							min-width
+						);
+						padding-left: map-get(
+							map-get($custom-grid-props, $next),
+							padding-left
+						);
+						padding-right: map-get(
+							map-get($custom-grid-props, $next),
+							padding-right
+						);
+					}
+				}
+			}
+		}
+	}
+}
+
+/// A mixin that generates media-breakpoint-{up|down} styles from a Sass map.
+/// @param {Map} $map - A map of `key: value` pairs that is passed to the `clay-css` mixin
+
+@mixin clay-generate-media-breakpoints($map, $mixin: 'clay-css') {
+	@if (type-of($map) == 'map') {
+		@if (map-get($map, media-breakpoint-up)) {
+			$media-breakpoint-up: map-get($map, media-breakpoint-up);
+
+			@each $breakpoint in map-keys($media-breakpoint-up) {
+				$breakpoint-up: map-get($media-breakpoint-up, $breakpoint);
+
+				@include media-breakpoint-up($breakpoint) {
+					@if ($mixin == 'clay-css') {
+						@include clay-css($breakpoint-up);
+					} @else if ($mixin == 'clay-button-variant') {
+						@include clay-button-variant($breakpoint-up);
+					} @else if ($mixin == 'clay-input-group-variant') {
+						@include clay-input-group-variant($breakpoint-up);
+					} @else if ($mixin == 'clay-input-group-text-variant') {
+						@include clay-input-group-text-variant($breakpoint-up);
+					} @else if ($mixin == 'clay-dropdown-menu-variant') {
+						@include clay-dropdown-menu-variant($breakpoint-up);
+					} @else if ($mixin == 'clay-map-to-css') {
+						@include clay-map-to-css($breakpoint-up);
+					} @else if ($mixin == 'clay-menubar-vertical-variant') {
+						@include clay-menubar-vertical-variant($breakpoint-up);
+					} @else if ($mixin == 'clay-modal-variant') {
+						@include clay-modal-variant($breakpoint-up);
+					} @else if ($mixin == 'clay-select-variant') {
+						@include clay-select-variant($breakpoint-up);
+					}
+				}
+			}
+		}
+
+		@if (map-get($map, media-breakpoint-down)) {
+			$media-breakpoint-down: map-get($map, media-breakpoint-down);
+
+			@each $breakpoint in map-keys($media-breakpoint-down) {
+				$breakpoint-down: map-get($media-breakpoint-down, $breakpoint);
+
+				@include media-breakpoint-down($breakpoint) {
+					@if ($mixin == 'clay-css') {
+						@include clay-css($breakpoint-down);
+					} @else if ($mixin == 'clay-button-variant') {
+						@include clay-button-variant($breakpoint-down);
+					} @else if ($mixin == 'clay-input-group-variant') {
+						@include clay-input-group-variant($breakpoint-down);
+					} @else if ($mixin == 'clay-input-group-text-variant') {
+						@include clay-input-group-text-variant(
+							$breakpoint-down
+						);
+					} @else if ($mixin == 'clay-dropdown-menu-variant') {
+						@include clay-dropdown-menu-variant($breakpoint-down);
+					} @else if ($mixin == 'clay-map-to-css') {
+						@include clay-map-to-css($breakpoint-down);
+					} @else if ($mixin == 'clay-menubar-vertical-variant') {
+						@include clay-menubar-vertical-variant(
+							$breakpoint-down
+						);
+					} @else if ($mixin == 'clay-modal-variant') {
+						@include clay-modal-variant($breakpoint-down);
+					} @else if ($mixin == 'clay-select-variant') {
+						@include clay-select-variant($breakpoint-down);
+					}
 				}
 			}
 		}
@@ -188,8 +280,8 @@
 	$breakpoints: $grid-breakpoints
 ) {
 	%grid-column {
-		padding-left: $gutter / 2;
-		padding-right: $gutter / 2;
+		padding-left: $gutter * 0.5;
+		padding-right: $gutter * 0.5;
 		position: relative;
 		width: 100%;
 	}
@@ -262,8 +354,8 @@
 @mixin make-container($gutter: $grid-gutter-width) {
 	margin-left: auto;
 	margin-right: auto;
-	padding-left: $gutter / 2;
-	padding-right: $gutter / 2;
+	padding-left: $gutter * 0.5;
+	padding-right: $gutter * 0.5;
 	width: 100%;
 }
 
@@ -290,8 +382,8 @@
 @mixin make-row($gutter: $grid-gutter-width) {
 	display: flex;
 	flex-wrap: wrap;
-	margin-left: -$gutter / 2;
-	margin-right: -$gutter / 2;
+	margin-left: math-sign($gutter * 0.5);
+	margin-right: math-sign($gutter * 0.5);
 }
 
 /// A Bootstrap 4 mixin. This mixin is deprecated, not used in Bootstrap 4.
@@ -299,8 +391,8 @@
 /// @param {Number} $gutter[$grid-gutter-width]
 
 @mixin make-col-ready($gutter: $grid-gutter-width) {
-	padding-left: $gutter / 2;
-	padding-right: $gutter / 2;
+	padding-left: $gutter * 0.5;
+	padding-right: $gutter * 0.5;
 	position: relative;
 	width: 100%;
 }
@@ -311,8 +403,8 @@
 /// @param {Number} $columns[$grid-columns]
 
 @mixin make-col($size, $columns: $grid-columns) {
-	flex: 0 0 percentage($size / $columns);
-	max-width: percentage($size / $columns);
+	flex: 0 0 calc(#{$size} / #{$columns} * 100%);
+	max-width: calc(#{$size} / #{$columns} * 100%);
 }
 
 /// A Bootstrap 4 mixin that generates styles for `.col-{bp}-auto` classes. This mixin is deprecated. This has been inlined into `components/_grid.scss`.
@@ -332,9 +424,7 @@
 /// @param {Number} $columns[$grid-columns]
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
-	$num: $size / $columns;
-
-	margin-left: if($num == 0, 0, percentage($num));
+	margin-left: calc(#{$size} / #{$columns} * 100%);
 }
 
 /// A Bootstrap 4 mixin that generates styles for `.row-cols-{bp}-*` classes. This mixin is deprecated. This has been inlined into `components/_grid.scss`.
@@ -343,7 +433,7 @@
 
 @mixin row-cols($count) {
 	& > * {
-		flex: 0 0 100% / $count;
-		max-width: 100% / $count;
+		flex: 0 0 calc(100% / #{$count});
+		max-width: calc(100% / #{$count});
 	}
 }

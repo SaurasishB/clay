@@ -1,6 +1,7 @@
 @import 'variables/_globals';
 @import 'variables/_globals-z-index';
 
+@import 'variables/_aspect-ratio';
 @import 'variables/_images';
 
 @import 'variables/_carousel';
@@ -9,6 +10,7 @@
 @import 'variables/_spinners';
 
 @import 'variables/_buttons';
+@import 'variables/_resizer';
 
 @import 'variables/_alerts';
 @import 'variables/_badges';
@@ -61,6 +63,9 @@
 @import 'variables/_timelines';
 @import 'variables/_toggle-switch';
 @import 'variables/_tooltip';
+@import 'variables/_treeview';
 @import 'variables/_type';
 
 @import 'variables/_utilities';
+
+@import 'variables/_c-root';

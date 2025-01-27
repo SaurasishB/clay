@@ -7,12 +7,21 @@ import {ClayDropDownWithItems} from '@clayui/drop-down';
 import classNames from 'classnames';
 import React from 'react';
 
-const ClayPaginationBarDropDown: React.FunctionComponent<React.ComponentProps<
-	typeof ClayDropDownWithItems
->> = ({className, ...otherProps}) => {
+/**
+ * @deprecated since v3.84.0 - use `Picker` component instead.
+ */
+const ClayPaginationBarDropDown = ({
+	className,
+	messages = 'Items Per Page',
+	trigger,
+	...otherProps
+}: React.ComponentProps<typeof ClayDropDownWithItems>) => {
 	return (
 		<ClayDropDownWithItems
 			className={classNames(className, 'pagination-items-per-page')}
+			trigger={React.cloneElement(trigger, {
+				'aria-label': messages,
+			})}
 			{...otherProps}
 		/>
 	);

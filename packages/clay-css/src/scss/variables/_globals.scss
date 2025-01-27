@@ -12,6 +12,50 @@ $c-unset: $clay-unset !default;
 
 $clay-unset-placeholder: clay-unset-placeholder !default;
 
+// Settings
+
+$enable-bs4-deprecated: true !default;
+$enable-c-inner: true !default;
+$enable-focus-visible: true !default;
+
+$focus-visible-selector: if(
+	$enable-focus-visible,
+	'&:focus-visible',
+	'&:focus'
+) !default;
+
+$c-prefers-focus-selector: if(
+	$enable-focus-visible,
+	'.c-prefers-focus &:focus',
+	null
+);
+
+$enable-lexicon-flat-colors: false !default;
+$enable-scaling-components: false !default;
+$scaling-breakpoint-down: sm !default;
+
+/// This enables Clay color functions to get the fallback color of a CSS Custom Property, convert it to the correct Sass type color, then process it using the corresponding Sass color function. The Clay color function will return a CSS color value. Set this variable to `false` if you want the Clay color function to return the CSS Custom Property without any modifications.
+/// @link https://github.com/liferay/clay/issues/4306
+
+$enable-clay-color-functions-process-fallback: false !default;
+
+$enable-caret: false !default;
+$enable-rounded: true !default;
+$enable-shadows: false !default;
+$enable-gradients: false !default;
+$enable-transitions: true !default;
+$enable-prefers-reduced-motion-media-query: true !default;
+$enable-grid-classes: true !default;
+$enable-pointer-cursor-for-buttons: true !default;
+$enable-print-styles: true !default;
+$enable-responsive-font-sizes: false !default;
+$enable-validation-icons: false !default;
+$enable-deprecation-messages: true !default;
+
+// Deprecated, no longer affects any compiled CSS
+
+$enable-hover-media-query: false !default;
+
 $white: #fff !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
@@ -40,16 +84,115 @@ $grays: map-merge(
 	$grays
 );
 
+$blue-d4: #004799 !default;
+$blue-d3: #0053b3 !default;
+$blue-d2: #005fcc !default;
+$blue-d1: #006be6 !default;
 $blue: #007bff !default;
+$blue-l1: #338fff !default;
+$blue-l2: #66abff !default;
+$blue-l3: #97c5ff !default;
+$blue-l4: #cce3ff !default;
+$blue-l5: #e5f1ff !default;
+
+$indigo-d4: #0017e5 !default;
+$indigo-d3: #001aff !default;
+$indigo-d2: #1a30ff !default;
+$indigo-d1: #3347ff !default;
 $indigo: #6610f2 !default;
+$indigo-l1: #808cff !default;
+$indigo-l2: #99a3ff !default;
+$indigo-l3: #b2baff !default;
+$indigo-l4: #ccd1ff !default;
+$indigo-l5: #e5e8ff !default;
+
+$purple-d4: #7700cc !default;
+$purple-d3: #8600e6 !default;
+$purple-d2: #9500ff !default;
+$purple-d1: #9f1aff !default;
 $purple: #6f42c1 !default;
+$purple-l1: #bf66ff !default;
+$purple-l2: #ca80ff !default;
+$purple-l3: #d499ff !default;
+$purple-l4: #dfb3ff !default;
+$purple-l5: #f2e5ff !default;
+
+$pink-d4: #800048 !default;
+$pink-d3: #990057 !default;
+$pink-d2: #b30065 !default;
+$pink-d1: #cc0074 !default;
 $pink: #e83e8c !default;
+$pink-l1: #ff4db2 !default;
+$pink-l2: #ff80c8 !default;
+$pink-l3: #ff99d3 !default;
+$pink-l4: #ffb3de !default;
+$pink-l5: #ffe5f4 !default;
+
+$red-d4: #800000 !default;
+$red-d3: #990000 !default;
+$red-d2: #b30000 !default;
+$red-d1: #cc0000 !default;
 $red: #dc3545 !default;
+$red-l1: #ff4d4d !default;
+$red-l2: #ff6666 !default;
+$red-l3: #ff8080 !default;
+$red-l4: #ff9999 !default;
+$red-l5: #ffe5e5 !default;
+
+$orange-d4: #662700 !default;
+$orange-d3: #803100 !default;
+$orange-d2: #993b00 !default;
+$orange-d1: #b34400 !default;
 $orange: #fd7e14 !default;
+$orange-l1: #ff6200 !default;
+$orange-l2: #ff8133 !default;
+$orange-l3: #ffa166 !default;
+$orange-l4: #ffc099 !default;
+$orange-l5: #fff0e5 !default;
+
+$yellow-d4: #997000 !default;
+$yellow-d3: #b38900 !default;
+$yellow-d2: #cc9600 !default;
+$yellow-d1: #e6a800 !default;
 $yellow: #ffc107 !default;
+$yellow-l1: #ffc933 !default;
+$yellow-l2: #ffd666 !default;
+$yellow-l3: #ffe499 !default;
+$yellow-l4: #fff1cc !default;
+$yellow-l5: #fff8e5 !default;
+
+$green-d4: #162d06 !default;
+$green-d3: #22430a !default;
+$green-d2: #2e590d !default;
+$green-d1: #397010 !default;
 $green: #28a745 !default;
+$green-l1: #53a117 !default;
+$green-l2: #67c91d !default;
+$green-l3: #81e236 !default;
+$green-l4: #9de963 !default;
+$green-l5: #f1fce9 !default;
+
+$teal-d4: #092a25 !default;
+$teal-d3: #0d3f37 !default;
+$teal-d2: #125449 !default;
+$teal-d1: #16695b !default;
 $teal: #20c997 !default;
+$teal-l1: #24a892 !default;
+$teal-l2: #42d7be !default;
+$teal-l3: #6ce0cc !default;
+$teal-l4: #96e9db !default;
+$teal-l5: #eafbf8 !default;
+
+$cyan-d4: #00334d !default;
+$cyan-d3: #004466 !default;
+$cyan-d2: #005580 !default;
+$cyan-d1: #006699 !default;
 $cyan: #17a2b8 !default;
+$cyan-l1: #0099e6 !default;
+$cyan-l2: #33bbff !default;
+$cyan-l3: #66ccff !default;
+$cyan-l4: #99ddff !default;
+$cyan-l5: #e5f6ff !default;
 
 $colors: () !default;
 $colors: map-merge(
@@ -72,54 +215,56 @@ $colors: map-merge(
 );
 
 $primary: $blue !default;
-$primary-d1: darken($primary, 7.5) !default;
-$primary-d2: darken($primary, 10) !default;
-$primary-l1: lighten($primary, 22.94) !default;
-$primary-l2: lighten($primary, 32.94) !default;
-$primary-l3: lighten($primary, 44.9) !default;
+$primary-d1: clay-darken($primary, 7.5) !default;
+$primary-d2: clay-darken($primary, 10) !default;
+$primary-l0: clay-lighten($primary, 17.06) !default;
+$primary-l1: clay-lighten($primary, 22.94) !default;
+$primary-l2: clay-lighten($primary, 32.94) !default;
+$primary-l3: clay-lighten($primary, 44.9) !default;
 
 $secondary: $gray-600 !default;
-$secondary-d1: darken($secondary, 7.5) !default;
-$secondary-d2: darken($secondary, 10) !default;
-$secondary-l1: lighten($secondary, 22.94) !default;
-$secondary-l2: lighten($secondary, 32.94) !default;
-$secondary-l3: lighten($secondary, 44.9) !default;
+$secondary-d1: clay-darken($secondary, 7.5) !default;
+$secondary-d2: clay-darken($secondary, 10) !default;
+$secondary-l0: clay-lighten($secondary, 15.29) !default;
+$secondary-l1: clay-lighten($secondary, 22.94) !default;
+$secondary-l2: clay-lighten($secondary, 32.94) !default;
+$secondary-l3: clay-lighten($secondary, 44.9) !default;
 
 $info: $cyan !default;
-$info-d1: darken($info, 7.5) !default;
-$info-d2: darken($info, 10) !default;
-$info-l1: lighten($info, 22.94) !default;
-$info-l2: lighten($info, 32.94) !default;
+$info-d1: clay-darken($info, 7.5) !default;
+$info-d2: clay-darken($info, 10) !default;
+$info-l1: clay-lighten($info, 22.94) !default;
+$info-l2: clay-lighten($info, 32.94) !default;
 
 $success: $green !default;
-$success-d1: darken($success, 7.5) !default;
-$success-d2: darken($success, 10) !default;
-$success-l1: lighten($success, 22.94) !default;
-$success-l2: lighten($success, 32.94) !default;
+$success-d1: clay-darken($success, 7.5) !default;
+$success-d2: clay-darken($success, 10) !default;
+$success-l1: clay-lighten($success, 22.94) !default;
+$success-l2: clay-lighten($success, 32.94) !default;
 
 $warning: $yellow !default;
-$warning-d1: darken($warning, 7.5) !default;
-$warning-d2: darken($warning, 10) !default;
-$warning-l1: lighten($warning, 22.94) !default;
-$warning-l2: lighten($warning, 32.94) !default;
+$warning-d1: clay-darken($warning, 7.5) !default;
+$warning-d2: clay-darken($warning, 10) !default;
+$warning-l1: clay-lighten($warning, 22.94) !default;
+$warning-l2: clay-lighten($warning, 32.94) !default;
 
 $danger: $red !default;
-$danger-d1: darken($danger, 7.5) !default;
-$danger-d2: darken($danger, 10) !default;
-$danger-l1: lighten($danger, 22.94) !default;
-$danger-l2: lighten($danger, 32.94) !default;
+$danger-d1: clay-darken($danger, 7.5) !default;
+$danger-d2: clay-darken($danger, 10) !default;
+$danger-l1: clay-lighten($danger, 22.94) !default;
+$danger-l2: clay-lighten($danger, 32.94) !default;
 
 $light: $gray-100 !default;
-$light-d1: darken($light, 7.5) !default;
-$light-d2: darken($light, 10) !default;
-$light-l1: lighten($light, 22.94) !default;
-$light-l2: lighten($light, 32.94) !default;
+$light-d1: clay-darken($light, 7.5) !default;
+$light-d2: clay-darken($light, 10) !default;
+$light-l1: clay-lighten($light, 22.94) !default;
+$light-l2: clay-lighten($light, 32.94) !default;
 
 $dark: $gray-800 !default;
-$dark-d1: darken($dark, 7.5) !default;
-$dark-d2: darken($dark, 10) !default;
-$dark-l1: lighten($dark, 22.94) !default;
-$dark-l2: lighten($dark, 32.94) !default;
+$dark-d1: clay-darken($dark, 7.5) !default;
+$dark-d2: clay-darken($dark, 10) !default;
+$dark-l1: clay-lighten($dark, 22.94) !default;
+$dark-l2: clay-lighten($dark, 32.94) !default;
 
 $theme-colors: () !default;
 $theme-colors: map-merge(
@@ -147,33 +292,10 @@ $yiq-contrasted-threshold: 150 !default;
 $yiq-text-dark: $gray-900 !default;
 $yiq-text-light: $white !default;
 
-// Characters which are escaped by the escape-svg function
+/// Characters which are escaped by the `escape-svg` function
+/// @deprecated as of v3.x with no replacement
 
 $escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23')) !default;
-
-// Settings
-
-$enable-bs4-deprecated: true !default;
-$enable-scaling-components: false !default;
-$enable-c-inner: true !default;
-$scaling-breakpoint-down: sm !default;
-
-$enable-caret: false !default;
-$enable-rounded: true !default;
-$enable-shadows: false !default;
-$enable-gradients: false !default;
-$enable-transitions: true !default;
-$enable-prefers-reduced-motion-media-query: true !default;
-$enable-grid-classes: true !default;
-$enable-pointer-cursor-for-buttons: true !default;
-$enable-print-styles: true !default;
-$enable-responsive-font-sizes: false !default;
-$enable-validation-icons: true !default;
-$enable-deprecation-messages: true !default;
-
-// Deprecated, no longer affects any compiled CSS
-
-$enable-hover-media-query: false !default;
 
 // Spacers
 
@@ -182,28 +304,14 @@ $spacers: () !default;
 $spacers: map-deep-merge(
 	(
 		0: 0,
-		1: (
-			$spacer * 0.25,
-		),
-		2: (
-			$spacer * 0.5,
-		),
+		1: $spacer * 0.25,
+		2: $spacer * 0.5,
 		3: $spacer,
-		4: (
-			$spacer * 1.5,
-		),
-		5: (
-			$spacer * 3,
-		),
-		6: (
-			$spacer * 4.5,
-		),
-		7: (
-			$spacer * 6,
-		),
-		8: (
-			$spacer * 7.5,
-		),
+		4: $spacer * 1.5,
+		5: $spacer * 3,
+		6: $spacer * 4.5,
+		7: $spacer * 6,
+		8: $spacer * 7.5,
 	),
 	$spacers
 );
@@ -236,15 +344,23 @@ $border-radius-sm: 0.2rem !default;
 
 $rounded-border-radius: $border-radius !default;
 $rounded-circle-border-radius: 5000px !default;
-$rounded-0-border-radius: 0 !default;
+$rounded-0-border-radius: 0px !default;
 $rounded-pill: 50rem !default;
 
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
 $box-shadow: 0 0.5rem 1rem rgba($black, 0.15) !default;
 $box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
 
+/// @deprecated as of v3.x with no replacement, Clay CSS inlines SVG icons for dropdown-toggle carets
+
 $caret-width: 0.3em !default;
+
+/// @deprecated as of v3.x with no replacement, Clay CSS inlines SVG icons for dropdown-toggle carets
+
 $caret-vertical-align: $caret-width * 0.85 !default;
+
+/// @deprecated as of v3.x with no replacement, Clay CSS inlines SVG icons for dropdown-toggle carets
+
 $caret-spacing: $caret-width * 0.85 !default;
 
 $transition-base: all 0.2s ease-in-out !default;
@@ -257,11 +373,17 @@ $embed-responsive-aspect-ratios: join(
 	$embed-responsive-aspect-ratios
 );
 
+$component-transition: color 0.15s ease-in-out,
+	background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+	box-shadow 0.15s ease-in-out !default;
+
 $component-focus-box-shadow: 0 0 0 0.2rem rgba($primary, 0.25) !default;
 $component-focus-inset-box-shadow: inset 0 0 0 0.2rem rgba($primary, 0.25) !default;
 
 $component-active-color: $white !default;
 $component-active-bg: $primary !default;
+
+$component-disabled-opacity: 0.65 !default;
 
 // Cursors
 
@@ -288,6 +410,30 @@ $grid-gutter-width: 30px !default;
 $grid-row-columns: 6 !default;
 
 // Containers
+
+$clay-container: () !default;
+$clay-container: map-merge(
+	(
+		margin-left: auto,
+		margin-right: auto,
+		padding-left: calc(#{$grid-gutter-width} * 0.5),
+		padding-right: calc(#{$grid-gutter-width} * 0.5),
+		width: 100%,
+	),
+	$clay-container
+);
+
+$clay-container-fluid: () !default;
+$clay-container-fluid: map-merge(
+	(
+		margin-left: auto,
+		margin-right: auto,
+		padding-left: calc(#{$grid-gutter-width} * 0.5),
+		padding-right: calc(#{$grid-gutter-width} * 0.5),
+		width: 100%,
+	),
+	$clay-container-fluid
+);
 
 $container-max-widths: (
 	sm: 540px,
@@ -335,9 +481,27 @@ $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
 
 $font-family-base: $font-family-sans-serif !default;
 
-$font-size-base: 1rem !default;
-$font-size-lg: $font-size-base * 1.25 !default;
-$font-size-sm: $font-size-base * 0.875 !default;
+$font-scale: () !default;
+$font-scale: map-merge(
+	(
+		1: 0.625rem,
+		2: 0.75rem,
+		3: 0.875rem,
+		4: 1rem,
+		5: 1.125rem,
+		6: 1.25rem,
+		7: 1.5rem,
+		8: 1.75rem,
+		9: 2rem,
+		10: 2.25rem,
+		11: 2.5rem,
+	),
+	$font-scale
+);
+
+$font-size-base: map-get($font-scale, 4) !default;
+$font-size-lg: map-get($font-scale, 6) !default;
+$font-size-sm: map-get($font-scale, 3) !default;
 
 $font-size-base-mobile: $font-size-base !default;
 $font-size-lg-mobile: $font-size-lg !default;
@@ -350,27 +514,136 @@ $font-weight-bold: 700 !default;
 $font-weight-bolder: 900 !default;
 
 $font-weight-base: $font-weight-normal !default;
+
 $line-height-base: 1.5 !default;
 
-$h1-font-size: $font-size-base * 2.5 !default;
-$h2-font-size: $font-size-base * 2 !default;
-$h3-font-size: $font-size-base * 1.75 !default;
-$h4-font-size: $font-size-base * 1.5 !default;
-$h5-font-size: $font-size-base * 1.25 !default;
-$h6-font-size: $font-size-base !default;
+// h1, .h1
 
+$h1-font-size: calc(#{$font-size-base} * 2.5) !default;
 $h1-font-size-mobile: null !default;
+
+$h1: () !default;
+$h1: map-deep-merge(
+	(
+		font-size: $h1-font-size,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $h1-font-size-mobile,
+			),
+		),
+	),
+	$h1
+);
+
+// h2, .h2
+
+$h2-font-size: calc(#{$font-size-base} * 2) !default;
 $h2-font-size-mobile: null !default;
+
+$h2: () !default;
+$h2: map-deep-merge(
+	(
+		font-size: $h2-font-size,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $h2-font-size-mobile,
+			),
+		),
+	),
+	$h2
+);
+
+// h3, .h3
+
+$h3-font-size: calc(#{$font-size-base} * 1.75) !default;
 $h3-font-size-mobile: null !default;
+
+$h3: () !default;
+$h3: map-deep-merge(
+	(
+		font-size: $h3-font-size,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $h3-font-size-mobile,
+			),
+		),
+	),
+	$h3
+);
+
+// h4, .h4
+
+$h4-font-size: calc(#{$font-size-base} * 1.5) !default;
 $h4-font-size-mobile: null !default;
+
+$h4: () !default;
+$h4: map-deep-merge(
+	(
+		font-size: $h4-font-size,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $h4-font-size-mobile,
+			),
+		),
+	),
+	$h4
+);
+
+// h5, .h5
+
+$h5-font-size: calc(#{$font-size-base} * 1.25) !default;
 $h5-font-size-mobile: null !default;
+
+$h5: () !default;
+$h5: map-deep-merge(
+	(
+		font-size: $h5-font-size,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $h5-font-size-mobile,
+			),
+		),
+	),
+	$h5
+);
+
+// h6, .h6
+
+$h6-font-size: $font-size-base !default;
 $h6-font-size-mobile: null !default;
 
-$headings-margin-bottom: $spacer / 2 !default;
+$h6: () !default;
+$h6: map-deep-merge(
+	(
+		font-size: $h6-font-size,
+		media-breakpoint-down: (
+			sm: (
+				font-size: $h6-font-size-mobile,
+			),
+		),
+	),
+	$h6
+);
+
+// Headings h1-h6
+
+$headings-margin-bottom: 0.5rem !default;
 $headings-font-family: null !default;
 $headings-font-weight: 500 !default;
 $headings-line-height: 1.2 !default;
 $headings-color: null !default;
+
+$headings: () !default;
+$headings: map-deep-merge(
+	(
+		color: $headings-color,
+		font-family: $headings-font-family,
+		font-weight: $headings-font-weight,
+		line-height: $headings-line-height,
+		margin-bottom: $headings-margin-bottom,
+	),
+	$headings
+);
 
 // Body
 
@@ -413,10 +686,31 @@ $c-button-base: map-merge(
 
 $link-color: $primary !default;
 $link-decoration: none !default;
-$link-hover-color: darken($link-color, 15%) !default;
+$link-hover-color: clay-darken($link-color, 15%) !default;
 $link-hover-decoration: underline !default;
 
-// Darken percentage for links with `.text-*` class (e.g. `.text-success`)
+$link: () !default;
+$link: map-deep-merge(
+	(
+		border-radius: 1px,
+		color: $link-color,
+		text-decoration: $link-decoration,
+		text-underline-offset: 0.23em,
+		transition: clay-enable-transitions($component-transition),
+		hover: (
+			color: $link-hover-color,
+			text-decoration: $link-hover-decoration,
+		),
+		focus: (
+			box-shadow: $component-focus-box-shadow,
+			outline: 0,
+		),
+	),
+	$link
+);
+
+/// Darken percentage for links with `.text-*` class (e.g. `.text-success`)
+/// @deprecated as of v3.x with no replacement, fixed percentages do not propagate well for all colors; manually define them for each theme color in `$text-theme-colors`.
 
 $emphasized-link-hover-darken-percentage: 15% !default;
 
@@ -424,18 +718,71 @@ $emphasized-link-hover-darken-percentage: 15% !default;
 
 $paragraph-margin-bottom: 1rem !default;
 
-$display1-size: 6rem !default;
-$display2-size: 5.5rem !default;
-$display3-size: 4.5rem !default;
-$display4-size: 3.5rem !default;
+// Display
 
-$display1-weight: 300 !default;
-$display2-weight: 300 !default;
-$display3-weight: 300 !default;
-$display4-weight: 300 !default;
 $display-line-height: $headings-line-height !default;
 
-$lead-font-size: $font-size-base * 1.25 !default;
+// .display-1
+
+$display1-size: 6rem !default;
+$display1-weight: 300 !default;
+
+$display-1: () !default;
+$display-1: map-deep-merge(
+	(
+		font-size: $display1-size,
+		font-weight: $display1-weight,
+		line-height: $display-line-height,
+	),
+	$display-1
+);
+
+// .display-2
+
+$display2-size: 5.5rem !default;
+$display2-weight: 300 !default;
+
+$display-2: () !default;
+$display-2: map-deep-merge(
+	(
+		font-size: $display2-size,
+		font-weight: $display2-weight,
+		line-height: $display-line-height,
+	),
+	$display-2
+);
+
+// .display-3
+
+$display3-size: 4.5rem !default;
+$display3-weight: 300 !default;
+
+$display-3: () !default;
+$display-3: map-deep-merge(
+	(
+		font-size: $display3-size,
+		font-weight: $display3-weight,
+		line-height: $display-line-height,
+	),
+	$display-3
+);
+
+// .display-4
+
+$display4-size: 3.5rem !default;
+$display4-weight: 300 !default;
+
+$display-4: () !default;
+$display-4: map-deep-merge(
+	(
+		font-size: $display4-size,
+		font-weight: $display4-weight,
+		line-height: $display-line-height,
+	),
+	$display-4
+);
+
+$lead-font-size: calc(#{$font-size-base} * 1.25) !default;
 $lead-font-weight: 300 !default;
 
 $small-font-size: 80% !default;
@@ -444,13 +791,38 @@ $text-muted: $gray-600 !default;
 
 $blockquote-small-color: $gray-600 !default;
 $blockquote-small-font-size: $small-font-size !default;
-$blockquote-font-size: $font-size-base * 1.25 !default;
+$blockquote-font-size: calc(#{$font-size-base} * 1.25) !default;
 
 $hr-border-color: rgba($black, 0.1) !default;
 $hr-border-width: $border-width !default;
 $hr-margin-y: $spacer !default;
 
-$mark-padding: 0.2em !default;
+$mark-bg: #fcf8e3 !default;
+$mark-color: null !default;
+$mark-padding: null !default;
+
+$mark: () !default;
+$mark: map-deep-merge(
+	(
+		background-color: $mark-bg,
+		color: $mark-color,
+		display: inline,
+		line-height: normal,
+		padding: $mark-padding,
+		position: relative,
+		white-space: pre-wrap,
+	),
+	$mark
+);
+
+$clay-dark-mark: () !default;
+$clay-dark-mark: map-deep-merge(
+	(
+		background-color: $dark-l2,
+		color: $white,
+	),
+	$clay-dark-mark
+);
 
 $dt-font-weight: $font-weight-bold !default;
 
@@ -471,7 +843,45 @@ $pre-scrollable-max-height: 340px !default;
 
 $list-inline-padding: 0.5rem !default;
 
-$mark-bg: #fcf8e3 !default;
+// fieldset
+
+// `min-width`: Browsers set a default `min-width: min-content;` on fieldsets, unlike e.g. `<div>`s, which have `min-width: 0;` by default. So we reset that to ensure fieldsets behave more like a standard block element.
+// See https://github.com/twbs/bootstrap/issues/12359 and https://html.spec.whatwg.org/multipage/#the-fieldset-and-legend-elements
+// `padding`: Reset the default outline behavior of fieldsets so they don't affect page layout.
+
+$fieldset: () !default;
+$fieldset: map-merge(
+	(
+		border: 0,
+		margin: 0,
+		min-width: 0,
+		padding: 0,
+	),
+	$fieldset
+);
+
+// legend
+
+// `color`: Correct the color inheritance from `fieldset` elements in IE
+// `max-width`: Correct the text wrapping in Edge and IE
+// `white-space`: Correct the text wrapping in Edge and IE
+// `width`: Correct the text wrapping in Edge and IE
+
+$legend: () !default;
+$legend: map-merge(
+	(
+		color: inherit,
+		display: block,
+		font-size: 1.5rem,
+		line-height: inherit,
+		margin-bottom: 0.5rem,
+		max-width: 100%,
+		padding: 0,
+		white-space: normal,
+		width: 100%,
+	),
+	$legend
+);
 
 // Buttons + Forms
 

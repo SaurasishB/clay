@@ -1,5 +1,5 @@
 $card-border-radius: $border-radius !default;
-$card-border-width: 0 !default;
+$card-border-width: 0px !default;
 $card-box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.6) !default;
 
 $card-body-padding-bottom: 1rem !default;
@@ -7,11 +7,21 @@ $card-body-padding-left: 1rem !default;
 $card-body-padding-right: 1rem !default;
 $card-body-padding-top: 1rem !default;
 
-$card-inner-border-radius: if(
-	$card-border-width > 0,
-	calc(#{$card-border-radius} - #{$card-border-width}),
-	$card-border-radius
+$card-inner-border-radius: calc(
+	#{$card-border-radius} - #{$card-border-width}
 ) !default;
+
+// min-width, see https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+
+$card: () !default;
+$card: map-deep-merge(
+	(
+		border-radius: clay-enable-rounded($card-border-radius),
+		border-width: $card-border-width,
+		box-shadow: clay-enable-shadows($card-box-shadow),
+	),
+	$card
+);
 
 // Card Title
 
@@ -72,7 +82,7 @@ $card-link: map-deep-merge(
 $checkbox-left-card-padding: 50px !default;
 
 $form-check-card-checked-box-shadow: 0 0 0 2px
-	lighten($component-active-bg, 22.94) !default;
+	clay-lighten($component-active-bg, 22.94) !default;
 
 // Card Interactive
 
@@ -84,8 +94,7 @@ $card-interactive: map-deep-merge(
 		),
 		focus: (
 			border-color: null,
-			box-shadow: #{0 0 0 2px #fff,
-			0 0 0 4px #719aff},
+			box-shadow: $component-focus-box-shadow,
 		),
 		active: (
 			background-color: #f1f2f5,
@@ -101,11 +110,11 @@ $card-interactive-secondary: map-deep-merge(
 	(
 		hover: (
 			border-color: transparent,
-			box-shadow: 0 0 0 2px #719aff,
+			box-shadow: 0 0 0 2px $primary-l0,
 		),
 		focus: (
 			border-color: transparent,
-			box-shadow: 0 0 0 2px #719aff,
+			box-shadow: 0 0 0 2px $primary-l0,
 		),
 	),
 	$card-interactive-secondary
@@ -139,7 +148,7 @@ $image-card: map-deep-merge(
 $file-card: () !default;
 $file-card: map-deep-merge(
 	(
-		asset-icon: (
+		card-type-asset-icon: (
 			color: $gray-400,
 		),
 	),

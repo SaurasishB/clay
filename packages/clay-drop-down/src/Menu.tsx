@@ -3,15 +3,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {
-	ClayPortal,
-	IPortalBaseProps,
-	Keys,
-	doAlign,
-	observeRect,
-} from '@clayui/shared';
+import {IPortalBaseProps, Overlay, useOverlayPosition} from '@clayui/shared';
 import classNames from 'classnames';
-import React, {useEffect, useLayoutEffect, useRef} from 'react';
+import React, {useRef} from 'react';
+
+import type {AlignPoints} from '@clayui/shared';
 
 export const Align = {
 	BottomCenter: 4,
@@ -28,66 +24,7 @@ export const Align = {
 	TopRight: 1,
 } as const;
 
-const ALIGN_INVERSE = {
-	0: 'TopCenter',
-	1: 'TopRight',
-	2: 'RightCenter',
-	3: 'BottomRight',
-	4: 'BottomCenter',
-	5: 'BottomLeft',
-	6: 'LeftCenter',
-	7: 'TopLeft',
-	8: 'RightTop',
-	9: 'RightBottom',
-	10: 'LeftTop',
-	11: 'LeftBottom',
-} as const;
-
-const ALIGN_MAP = {
-	BottomCenter: ['tc', 'bc'],
-	BottomLeft: ['tl', 'bl'],
-	BottomRight: ['tr', 'br'],
-	LeftBottom: ['br', 'bl'],
-	LeftCenter: ['cr', 'cl'],
-	LeftTop: ['tr', 'tl'],
-	RightBottom: ['bl', 'br'],
-	RightCenter: ['cl', 'cr'],
-	RightTop: ['tl', 'tr'],
-	TopCenter: ['bc', 'tc'],
-	TopLeft: ['bl', 'tl'],
-	TopRight: ['br', 'tr'],
-} as const;
-
-type TPointOptions = typeof ALIGN_MAP[keyof typeof ALIGN_MAP];
-
-/**
- * For backwards compatability, we are creating a util here so that `metal-position`
- * number values are used in the same manner and result in the same alignment direction.
- */
-const getAlignPoints = (val: keyof typeof ALIGN_INVERSE) =>
-	ALIGN_MAP[ALIGN_INVERSE[val]];
-
-const BOTTOM_OFFSET = [0, 4] as const;
-const LEFT_OFFSET = [-4, 0] as const;
-const RIGHT_OFFSET = [4, 0] as const;
-const TOP_OFFSET = [0, -4] as const;
-
-const OFFSET_MAP = {
-	bctc: TOP_OFFSET,
-	blbr: RIGHT_OFFSET,
-	bltl: TOP_OFFSET,
-	brbl: LEFT_OFFSET,
-	brtr: TOP_OFFSET,
-	clcr: RIGHT_OFFSET,
-	crcl: LEFT_OFFSET,
-	tcbc: BOTTOM_OFFSET,
-	tlbl: BOTTOM_OFFSET,
-	tltr: RIGHT_OFFSET,
-	trbr: BOTTOM_OFFSET,
-	trtl: LEFT_OFFSET,
-};
-
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Flag to indicate if menu is showing or not.
 	 */
@@ -97,6 +34,11 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	 * HTML element that the menu should be aligned to
 	 */
 	alignElementRef: React.RefObject<HTMLElement>;
+
+	/**
+	 * Flag to align the DropDown menu within the viewport.
+	 */
+	alignmentByViewport?: boolean;
 
 	/**
 	 * Flag to suggest or not the best region to align menu element.
@@ -123,7 +65,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	 * Points can be 't'(top), 'b'(bottom), 'c'(center), 'l'(left), 'r'(right).
 	 * For example: `['tl', 'bl']` corresponds to the bottom left alignment.
 	 */
-	alignmentPosition?: number | TPointOptions;
+	alignmentPosition?: number | AlignPoints;
 
 	/**
 	 * Flag to indicate if clicking outside of the menu should automatically close it.
@@ -134,6 +76,11 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	 * Props to add to the outer most container.
 	 */
 	containerProps?: IPortalBaseProps;
+
+	/**
+	 * @ignore
+	 */
+	deps?: Array<any>;
 
 	/**
 	 * Flag to indicate if menu is displaying a clay-icon on the left.
@@ -151,156 +98,123 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	height?: 'auto';
 
 	/**
+	 * Flag to lock focus within the scope.
+	 */
+	lock?: boolean;
+
+	/**
 	 * Element ref to call focus() on after menu is closed via Escape key
+	 * @deprecated since v3.80.0 - use `triggerRef` instead.
 	 */
 	focusRefOnEsc?: React.RefObject<HTMLElement>;
 
 	/**
 	 * Function for setting the offset of the menu from the trigger.
 	 */
-	offsetFn?: (points: TPointOptions) => [number, number];
+	offsetFn?: (points: AlignPoints) => [number, number];
 
 	/**
 	 * Callback function for when active state changes.
 	 */
-	onSetActive: (val: boolean) => void;
+	onActiveChange?: (value: boolean) => void;
 
 	/**
-	 * `dropdown-menu-width-${width}`
+	 * Callback function for when active state changes.
+	 * @deprecated since v3.52.0 - use `onActiveChange` instead.
 	 */
-	width?: 'sm' | 'auto';
+	onSetActive?: (value: boolean) => void;
+
+	/**
+	 * Defines the reference of the elements that must be suppressed by the
+	 * screen reader when the menu is opened.
+	 */
+	suppress?: Array<React.RefObject<HTMLElement>>;
+
+	/**
+	 * Reference of the element that triggers the Menu.
+	 */
+	triggerRef?: React.RefObject<HTMLElement>;
+
+	/**
+	 * The modifier class `dropdown-menu-width-${width}` makes the menu expand
+	 * the full width of the page.
+	 *
+	 * - sm makes the menu 500px wide.
+	 * - shrink makes the menu auto-adjust to text and max 240px wide.
+	 * - full makes the menu 100% wide.
+	 */
+	width?: 'sm' | 'shrink' | 'full';
 }
 
-const useIsomorphicLayoutEffect =
-	typeof window === 'undefined' ? useEffect : useLayoutEffect;
-
-const ClayDropDownMenu = React.forwardRef<HTMLDivElement, IProps>(
+const Menu = React.forwardRef<HTMLDivElement, IProps>(
 	(
 		{
-			active,
+			active = false,
 			alignElementRef,
+			alignmentByViewport = false,
 			alignmentPosition = Align.BottomLeft,
 			autoBestAlign = true,
 			children,
 			className,
 			closeOnClickOutside = true,
 			containerProps = {},
+			deps = [active, children],
 			hasLeftSymbols,
 			hasRightSymbols,
 			height,
-			focusRefOnEsc,
-			offsetFn = (points) =>
-				OFFSET_MAP[points.join('') as keyof typeof OFFSET_MAP] as [
-					number,
-					number
-				],
+			lock = false,
+			offsetFn,
+			onActiveChange,
 			onSetActive,
+			role = 'presentation',
+			suppress,
+			triggerRef,
 			width,
 			...otherProps
 		}: IProps,
-		// TS + refs don't always play nicely together, which is why it is casted
-		// in so many places below.
-		// See https://github.com/microsoft/TypeScript/issues/30748#issuecomment-480197036
 		ref
 	) => {
+		const setActive = onActiveChange ?? onSetActive;
+
+		const menuInternalRef = useRef<HTMLDivElement | null>(null);
 		const subPortalRef = useRef<HTMLDivElement | null>(null);
 
-		useEffect(() => {
-			if (closeOnClickOutside) {
-				const handleClick = (event: MouseEvent) => {
-					const nodeRefs = [alignElementRef, subPortalRef];
-					const nodes: Array<Node> = (Array.isArray(nodeRefs)
-						? nodeRefs
-						: [nodeRefs]
-					)
-						.filter((ref) => ref.current)
-						.map((ref) => ref.current!);
+		let menuRef = menuInternalRef;
 
-					if (
-						event.target instanceof Node &&
-						!nodes.find((element) =>
-							element.contains(event.target as Node)
-						)
-					) {
-						onSetActive(false);
-					}
-				};
+		if (ref) {
+			menuRef = ref as React.MutableRefObject<HTMLDivElement | null>;
+		}
 
-				window.addEventListener('mousedown', handleClick);
-
-				return () => {
-					window.removeEventListener('mousedown', handleClick);
-				};
-			}
-		}, [closeOnClickOutside]);
-
-		useEffect(() => {
-			const handleEsc = (event: KeyboardEvent) => {
-				if (event.key === Keys.Esc) {
-					event.stopImmediatePropagation();
-
-					if (focusRefOnEsc && focusRefOnEsc.current) {
-						focusRefOnEsc.current.focus();
-					}
-
-					onSetActive(false);
-				}
-			};
-
-			if (active) {
-				document.addEventListener('keyup', handleEsc, true);
-			}
-
-			return () => {
-				document.removeEventListener('keyup', handleEsc, true);
-			};
-		}, [active]);
-
-		const align = () => {
-			if (alignElementRef && alignElementRef.current) {
-				let points = alignmentPosition;
-
-				if (typeof points === 'number') {
-					points = getAlignPoints(
-						points as keyof typeof ALIGN_INVERSE
-					);
-				}
-
-				if ((ref as React.RefObject<HTMLElement>).current) {
-					doAlign({
-						offset: offsetFn(points),
-						overflow: {
-							adjustX: autoBestAlign,
-							adjustY: autoBestAlign,
-						},
-						points,
-						sourceElement: (ref as React.RefObject<HTMLElement>)
-							.current!,
-						targetElement: alignElementRef.current,
-					});
-				}
-			}
-		};
-
-		useIsomorphicLayoutEffect(() => {
-			if (active) {
-				align();
-			}
-		}, [active]);
-
-		useEffect(() => {
-			if (alignElementRef && alignElementRef.current) {
-				const unobserve = observeRect(alignElementRef.current, align);
-
-				return unobserve;
-			}
-		}, []);
+		useOverlayPosition(
+			{
+				alignmentByViewport,
+				alignmentPosition,
+				autoBestAlign,
+				getOffset: offsetFn,
+				isOpen: active,
+				ref: menuRef,
+				triggerRef: alignElementRef,
+			},
+			deps
+		);
 
 		return (
-			<ClayPortal {...containerProps} subPortalRef={subPortalRef}>
-				<div ref={subPortalRef}>
+			<Overlay
+				isCloseOnInteractOutside={closeOnClickOutside}
+				isKeyboardDismiss
+				isModal={lock}
+				isOpen={active}
+				menuRef={menuRef}
+				onClose={() => setActive!(false)}
+				portalRef={subPortalRef}
+				suppress={suppress}
+				triggerRef={triggerRef ?? alignElementRef}
+			>
+				<div {...containerProps} ref={subPortalRef}>
 					<div
 						{...otherProps}
+						aria-hidden={!active ? true : undefined}
+						aria-modal={lock ? true : undefined}
 						className={classNames('dropdown-menu', className, {
 							'dropdown-menu-indicator-end': hasRightSymbols,
 							'dropdown-menu-indicator-start': hasLeftSymbols,
@@ -308,16 +222,17 @@ const ClayDropDownMenu = React.forwardRef<HTMLDivElement, IProps>(
 							[`dropdown-menu-width-${width}`]: width,
 							show: active,
 						})}
-						ref={ref}
+						ref={menuRef}
+						role={role}
 					>
 						{children}
 					</div>
 				</div>
-			</ClayPortal>
+			</Overlay>
 		);
 	}
 );
 
-ClayDropDownMenu.displayName = 'ClayDropDownMenu';
+Menu.displayName = 'ClayDropDownMenu';
 
-export default ClayDropDownMenu;
+export default Menu;

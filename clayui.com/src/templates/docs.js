@@ -3,14 +3,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+import {Heading} from '@clayui/core';
 import {ClayIconSpriteContext} from '@clayui/icon/src';
-import {ClayLinkContext} from '@clayui/link';
-import ClayTabs from '@clayui/tabs';
+import ClayLink, {ClayLinkContext} from '@clayui/link';
+import NavigationBar from '@clayui/navigation-bar';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import {MDXProvider} from '@mdx-js/react';
 import {Link, graphql} from 'gatsby';
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Helmet from 'react-helmet';
 import svg4everybody from 'svg4everybody';
 
@@ -33,6 +34,18 @@ const mapStatus = {
 	'new release': 'info',
 	pending: 'secondary',
 	stable: 'success',
+};
+
+const getStorybookUrl = (packageNpm, path) => {
+	const url = 'https://storybook.clayui.com/?path=/story/';
+
+	if (path) {
+		return url + path;
+	}
+
+	return `${url}design-system-components-${packageNpm
+		.replace('@clayui/', '')
+		.replace('-', '')}`;
 };
 
 const PackageInfo = ({fields = {}, frontmatter = {}}) => (
@@ -71,7 +84,7 @@ const PackageInfo = ({fields = {}, frontmatter = {}}) => (
 				target="_blank"
 			>
 				<span className="c-inner" tabIndex="-1">
-					{'View in Lexicon'}
+					View in Lexicon
 				</span>
 			</a>
 		)}
@@ -88,15 +101,16 @@ const PackageInfo = ({fields = {}, frontmatter = {}}) => (
 					target="_blank"
 				>
 					<span className="c-inner" tabIndex="-1">
-						{'CHANGELOG'}
+						CHANGELOG
 					</span>
 				</a>
 
 				<a
 					className="align-middle d-inline-block link-primary"
-					href={`https://storybook.clayui.com/?path=/story/components-${frontmatter.packageNpm
-						.replace('@clayui/', 'clay')
-						.replace('-', '')}`}
+					href={getStorybookUrl(
+						frontmatter.packageNpm,
+						frontmatter.storybookPath
+					)}
 					rel="noopener noreferrer"
 					target="_blank"
 				>
@@ -146,11 +160,12 @@ const Content = ({html, jsx}) =>
 		</MDXProvider>
 	) : null;
 
-export default (props) => {
+export default function Documentation(props) {
+	const skipToSearch = useRef();
 	const {
 		data,
 		location,
-		pageContext: {tabs = [], slug},
+		pageContext: {tabs = [], slug, pageRemote},
 	} = props;
 
 	const {allMarkdownRemark, allMdx, mainTab, pageMd, pageMdx} = data;
@@ -190,6 +205,23 @@ export default (props) => {
 
 	return (
 		<div className="docs">
+			<div className="overflow-hidden skippy">
+				<a
+					className="d-inline-flex m-1 p-1 sr-only sr-only-focusable"
+					href="#content"
+				>
+					Skip to main content
+				</a>
+				<a
+					accessKey="k"
+					aria-keyshortcuts="Control+K"
+					className="d-inline-flex m-1 p-1 sr-only sr-only-focusable"
+					href="#algolia-doc-search"
+					ref={skipToSearch}
+				>
+					Skip to search
+				</a>
+			</div>
 			<Helmet>
 				<title>{title}</title>
 				<meta content={excerpt} name="description" />
@@ -220,20 +252,15 @@ export default (props) => {
 									<div className="col-xl sidebar-offset">
 										<LayoutNav
 											pathname={location.pathname}
+											searchRef={skipToSearch}
 										/>
-										<header>
+										<header id="content">
 											<div className="clay-site-container container-fluid">
 												<div className="row">
 													<div className="col-12">
-														<h1 className="docs-title">
+														<Heading level={1}>
 															{frontmatter.title}
-														</h1>
-
-														{frontmatter.packageNpm && (
-															<p className="docs-subtitle">
-																{`yarn add ${frontmatter.packageNpm}`}
-															</p>
-														)}
+														</Heading>
 
 														{frontmatter.description && (
 															<p className="docs-subtitle">
@@ -242,40 +269,61 @@ export default (props) => {
 																}
 															</p>
 														)}
+
+														{frontmatter.packageNpm && (
+															<table className="docs-table table">
+																<tbody>
+																	<tr>
+																		<th>
+																			install
+																		</th>
+																		<td>{`yarn add ${frontmatter.packageNpm}`}</td>
+																	</tr>
+
+																	{fields.packageVersion && (
+																		<tr>
+																			<th>
+																				version
+																			</th>
+																			<td>
+																				{
+																					fields.packageVersion
+																				}
+																			</td>
+																		</tr>
+																	)}
+																</tbody>
+															</table>
+														)}
 													</div>
 													<div className="col-12">
 														{tabs.length > 0 && (
-															<ClayTabs
-																className="border-bottom nav-clay"
-																modern
-															>
+															<NavigationBar>
 																{tabs.map(
 																	({
 																		href,
 																		name,
 																	}) => (
-																		<ClayTabs.Item
+																		<NavigationBar.Item
 																			active={
 																				`/${href}` ===
 																				location.pathname
 																			}
-																			href={`/${href}`}
 																			key={
 																				name
 																			}
 																		>
-																			<span
-																				className="c-inner"
-																				tabIndex="-1"
+																			<ClayLink
+																				href={`/${href}`}
 																			>
 																				{
 																					name
 																				}
-																			</span>
-																		</ClayTabs.Item>
+																			</ClayLink>
+																		</NavigationBar.Item>
 																	)
 																)}
-															</ClayTabs>
+															</NavigationBar>
 														)}
 													</div>
 												</div>
@@ -303,7 +351,10 @@ export default (props) => {
 
 													<CodeClipboard>
 														<Content
-															html={html}
+															html={
+																html ||
+																pageRemote.html
+															}
 															jsx={body}
 														/>
 													</CodeClipboard>
@@ -320,15 +371,16 @@ export default (props) => {
 											<div className="border-top py-5 row">
 												<div className="col-6">
 													<p className="legal">
-														{
-															'How can this be improved? Create an issue!'
-														}
+														How can this be
+														improved? Create an
+														issue!
 													</p>
 												</div>
 												<div className="col-6 p-md-0">
 													<ul className="social-icons">
 														<li>
 															<a
+																aria-label="Github clay repository"
 																className="rounded-circle sticker sticker-secondary"
 																href="https://github.com/liferay/clay"
 																rel="noopener noreferrer"
@@ -363,10 +415,10 @@ export default (props) => {
 			</ClayLinkContext.Provider>
 		</div>
 	);
-};
+}
 
 export const pageQuery = graphql`
-	query($pathGroup: [String!], $slug: String!, $mainTabURL: String!) {
+	query ($pathGroup: [String!], $slug: String!, $mainTabURL: String!) {
 		pageMdx: mdx(fields: {slug: {eq: $slug}}) {
 			excerpt
 			timeToRead
@@ -376,6 +428,7 @@ export const pageQuery = graphql`
 				navigationParent
 				lexiconDefinition
 				packageNpm
+				storybookPath
 				title
 			}
 			fields {
@@ -402,6 +455,7 @@ export const pageQuery = graphql`
 				disableTOC
 				lexiconDefinition
 				packageNpm
+				storybookPath
 				title
 			}
 			fields {

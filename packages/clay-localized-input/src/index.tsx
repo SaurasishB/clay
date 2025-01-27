@@ -89,7 +89,7 @@ const ClayLocalizedInput = React.forwardRef<HTMLInputElement, IProps>(
 				default: 'Default',
 				openLocalizations: 'Open Localizations',
 				translated: 'Translated',
-				untranslated: 'Unstranslated',
+				untranslated: 'Untranslated',
 			},
 			helpText,
 			id,
@@ -109,7 +109,7 @@ const ClayLocalizedInput = React.forwardRef<HTMLInputElement, IProps>(
 	) => {
 		const [active, setActive] = React.useState(false);
 
-		const defaultLanguage = locales[0];
+		const defaultLanguage = locales[0]!;
 
 		return (
 			<ClayForm.Group>
@@ -130,10 +130,10 @@ const ClayLocalizedInput = React.forwardRef<HTMLInputElement, IProps>(
 						<ClayInput
 							{...otherProps}
 							id={id}
-							onChange={(e) => {
+							onChange={(event) => {
 								onTranslationsChange({
 									...translations,
-									[selectedLocale.label]: e.target.value,
+									[selectedLocale.label]: event.target.value,
 								});
 							}}
 							placeholder={placeholder}
@@ -227,7 +227,7 @@ const ClayLocalizedInput = React.forwardRef<HTMLInputElement, IProps>(
 				</ClayInput.Group>
 
 				<ClayForm.Text>
-					{resultFormatter(translations[defaultLanguage.label])}
+					{resultFormatter(translations[defaultLanguage.label]!)}
 				</ClayForm.Text>
 			</ClayForm.Group>
 		);

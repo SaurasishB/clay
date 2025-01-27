@@ -3,7 +3,7 @@
 $date-picker-dropdown-menu: () !default;
 $date-picker-dropdown-menu: map-deep-merge(
 	(
-		max-width: 368px,
+		max-width: 352px,
 	),
 	$date-picker-dropdown-menu
 );
@@ -13,12 +13,20 @@ $date-picker-dropdown-menu: map-deep-merge(
 $date-picker-nav-btn: () !default;
 $date-picker-nav-btn: map-deep-merge(
 	(
-		hover-color: $gray-900,
-		focus-bg: $gray-200,
-		focus-color: $gray-900,
-		active-bg: $gray-200,
-		disabled-color: $gray-500,
-		disabled-opacity: null,
+		hover: (
+			color: $gray-900,
+		),
+		focus: (
+			background-color: $gray-200,
+			color: $gray-900,
+		),
+		active: (
+			background-color: $gray-200,
+		),
+		disabled: (
+			color: $gray-500,
+			opacity: null,
+		),
 	),
 	$date-picker-nav-btn
 );
@@ -31,7 +39,7 @@ $date-picker-nav-select: map-deep-merge(
 		color: $secondary,
 		font-size: $font-size-sm,
 		font-weight: $font-weight-semi-bold,
-		height: $input-height-sm,
+		height: if(variable-exists(input-height-sm), $input-height-sm, 2rem),
 		padding-bottom: 0,
 		padding-left: 0.5rem,
 		padding-top: 0,
@@ -45,7 +53,12 @@ $date-picker-nav-select: map-deep-merge(
 		),
 		disabled: (
 			background-color: transparent,
-			color: $input-disabled-color,
+			color:
+				if(
+					variable-exists(input-disabled-color),
+					$input-disabled-color,
+					$gray-500
+				),
 		),
 	),
 	$date-picker-nav-select
@@ -56,11 +69,17 @@ $date-picker-nav-select: map-deep-merge(
 $date-picker-date: () !default;
 $date-picker-date: map-deep-merge(
 	(
-		hover-color: $gray-900,
-		focus-bg: $gray-200,
-		focus-color: $gray-900,
-		disabled-color: $gray-500,
-		disabled-opacity: null,
+		hover: (
+			color: $gray-900,
+		),
+		focus: (
+			background-color: $gray-200,
+			color: $gray-900,
+		),
+		disabled: (
+			color: $gray-500,
+			opacity: null,
+		),
 	),
 	$date-picker-date
 );
@@ -70,7 +89,9 @@ $date-picker-previous-month-date: map-deep-merge(
 	(
 		color: $gray-500,
 		opacity: null,
-		focus-opacity: null,
+		focus: (
+			opacity: null,
+		),
 		active: (
 			background-color: $primary-l2,
 		),
@@ -83,7 +104,9 @@ $date-picker-next-month-date: map-deep-merge(
 	(
 		color: $gray-500,
 		opacity: null,
-		focus-opacity: null,
+		focus: (
+			opacity: null,
+		),
 		active: (
 			background-color: $primary-l2,
 		),

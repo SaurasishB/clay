@@ -12,7 +12,7 @@ import React from 'react';
 import ClayCard from './Card';
 import {ClayCardNavigation} from './CardNavigation';
 
-interface IProps
+export interface IProps
 	extends React.BaseHTMLAttributes<HTMLAnchorElement | HTMLDivElement> {
 	children?: React.ReactNode;
 
@@ -52,6 +52,11 @@ interface IProps
 	spritemap?: string;
 
 	/**
+	 * Title for bottom-left icon.
+	 */
+	stickerTitle?: string;
+
+	/**
 	 * Value displayed for the card's title
 	 */
 	title?: string;
@@ -59,7 +64,8 @@ interface IProps
 
 const noop = () => {};
 
-export const ClayCardWithNavigation: React.FunctionComponent<IProps> = ({
+export const ClayCardWithNavigation = ({
+	'aria-label': ariaLabel,
 	children,
 	description,
 	horizontal = false,
@@ -68,6 +74,7 @@ export const ClayCardWithNavigation: React.FunctionComponent<IProps> = ({
 	onClick,
 	onKeyDown = noop,
 	spritemap,
+	stickerTitle,
 	title,
 	...otherProps
 }: IProps) => {
@@ -107,6 +114,7 @@ export const ClayCardWithNavigation: React.FunctionComponent<IProps> = ({
 						<>
 							{title && (
 								<ClayCard.Description
+									aria-label={title}
 									displayType="title"
 									truncate
 								>
@@ -128,7 +136,7 @@ export const ClayCardWithNavigation: React.FunctionComponent<IProps> = ({
 					{horizontal && (
 						<ClayCard.Row>
 							<ClayLayout.ContentCol>
-								<ClaySticker inline>
+								<ClaySticker inline title={stickerTitle}>
 									<ClayIcon
 										spritemap={spritemap}
 										symbol={horizontalSymbol}
@@ -139,6 +147,7 @@ export const ClayCardWithNavigation: React.FunctionComponent<IProps> = ({
 								<ClayLayout.ContentCol expand>
 									<ClayLayout.ContentSection>
 										<ClayCard.Description
+											aria-label={ariaLabel ?? title}
 											displayType="title"
 											truncate
 										>

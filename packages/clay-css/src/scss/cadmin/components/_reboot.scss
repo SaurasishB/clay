@@ -1,6 +1,6 @@
-/* REUSE-Snippet-Begin
+/* SPDX-SnippetBegin
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: © 2016 Nicolas Gallagher and Jonathan Neal <https://github.com/necolas/normalize.css>
+ * SPDX-SnippetCopyrightText: © 2016 Nicolas Gallagher and Jonathan Neal <https://github.com/necolas/normalize.css>
  */
 
 html#{$cadmin-selector} {
@@ -173,14 +173,7 @@ html#{$cadmin-selector} {
 		}
 
 		a {
-			color: $cadmin-link-color;
-			cursor: $cadmin-link-cursor;
-			text-decoration: $cadmin-link-decoration;
-
-			&:hover {
-				color: $cadmin-link-hover-color;
-				text-decoration: $cadmin-link-hover-decoration;
-			}
+			@include clay-link($cadmin-link);
 		}
 
 		// Code
@@ -400,4 +393,4 @@ html#{$cadmin-selector} {
 	}
 }
 
-/* REUSE-Snippet-End */
+/* SPDX-SnippetEnd */

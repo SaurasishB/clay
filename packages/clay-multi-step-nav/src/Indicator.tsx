@@ -4,11 +4,14 @@
  */
 
 import ClayIcon from '@clayui/icon';
-import React from 'react';
+import React, {useContext} from 'react';
 
-interface IProps {
+import {ItemContext} from './Item';
+
+export type Props = {
 	/**
 	 * Flag to indicate if step should show its been completed
+	 * @deprecated since v3.91.0 - this is no longer necessary.
 	 */
 	complete?: boolean;
 
@@ -33,30 +36,35 @@ interface IProps {
 	 * Value to display below step icon
 	 */
 	subTitle?: React.ReactText;
-}
+};
 
-const ClayMultiStepNavIndicator = React.forwardRef<HTMLDivElement, IProps>(
-	(
-		{complete, innerRef, label, onClick, spritemap, subTitle}: IProps,
-		ref
-	) => (
-		<div className="multi-step-indicator" ref={ref}>
-			{subTitle && (
-				<div className="multi-step-indicator-label">{subTitle}</div>
-			)}
+const ClayMultiStepNavIndicator = React.forwardRef<HTMLDivElement, Props>(
+	({complete, innerRef, label, onClick, spritemap, subTitle}: Props, ref) => {
+		const {state} = useContext(ItemContext);
 
-			<button
-				className="multi-step-icon"
-				onClick={onClick}
-				ref={innerRef}
-				type="button"
-			>
-				{complete && <ClayIcon spritemap={spritemap} symbol="check" />}
+		const isComplete = complete ?? state === 'complete';
 
-				{!complete && label}
-			</button>
-		</div>
-	)
+		return (
+			<div className="multi-step-indicator" ref={ref}>
+				{subTitle && (
+					<div className="multi-step-indicator-label">{subTitle}</div>
+				)}
+
+				<button
+					className="multi-step-icon"
+					onClick={onClick}
+					ref={innerRef}
+					type="button"
+				>
+					{isComplete && (
+						<ClayIcon spritemap={spritemap} symbol="check" />
+					)}
+
+					{!isComplete && state !== 'error' && label}
+				</button>
+			</div>
+		);
+	}
 );
 
 ClayMultiStepNavIndicator.displayName = 'ClayMultiStepNavIndicator';

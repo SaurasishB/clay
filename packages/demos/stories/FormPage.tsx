@@ -4,33 +4,31 @@
  */
 
 import ClayButton from '@clayui/button';
-const spritemap = require('@clayui/css/lib/images/icons/icons.svg');
 import ClayDatePicker from '@clayui/date-picker';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayLayout from '@clayui/layout';
 import ClayMultiSelect from '@clayui/multi-select';
 import {ClayVerticalNav} from '@clayui/nav';
 import ClayPanel from '@clayui/panel';
-import React from 'react';
+import React, {useState} from 'react';
 
 const ClayDatePickerWithState = (props: {[key: string]: any}) => {
-	const [value, setValue] = React.useState<string | Date>('');
+	const [value, setValue] = useState<string | Date>('');
 
 	return (
 		<ClayDatePicker
 			{...props}
 			onValueChange={setValue}
-			spritemap={spritemap}
 			value={value as string}
 		/>
 	);
 };
 
-export default () => {
-	const [formValues, setFormValues] = React.useState<any>({});
-	const [activePage, setActivePage] = React.useState(0);
-	const [value, setValue] = React.useState('');
-	const [selectedItems, setSelectedItems] = React.useState<any>([]);
+export default function DemoFormPage() {
+	const [formValues, setFormValues] = useState<any>({});
+	const [activePage, setActivePage] = useState(0);
+	const [value, setValue] = useState('');
+	const [selectedItems, setSelectedItems] = useState<any>([]);
 
 	return (
 		<ClayLayout.ContainerFluid>
@@ -49,7 +47,6 @@ export default () => {
 								onClick: () => setActivePage(1),
 							},
 						]}
-						spritemap={spritemap}
 					/>
 				</div>
 
@@ -60,35 +57,36 @@ export default () => {
 							onSubmit={() => alert(JSON.stringify(formValues))}
 						>
 							<div className="sheet-header">
-								<h2 className="sheet-title">{'Form Input'}</h2>
+								<h2 className="sheet-title">Form Input</h2>
 							</div>
 
 							<ClayPanel.Group>
 								<ClayPanel
-									displayTitle={'Organization Information'}
+									displayTitle="Organization Information"
 									displayType="unstyled"
-									spritemap={spritemap}
 								>
 									<ClayPanel.Body>
 										<ClayForm.Group>
-											<label>{'Name'}</label>
+											<label>Name</label>
 											<ClayInput
-												onChange={(e) =>
+												onChange={(event) =>
 													setFormValues({
 														...formValues,
-														name: e.target.value,
+														name: event.target
+															.value,
 													})
 												}
 												placeholder="Name"
 											/>
 										</ClayForm.Group>
 										<ClayForm.Group>
-											<label>{'Country'}</label>
+											<label>Country</label>
 											<ClayInput
-												onChange={(e) =>
+												onChange={(event) =>
 													setFormValues({
 														...formValues,
-														country: e.target.value,
+														country:
+															event.target.value,
 													})
 												}
 												placeholder="Country"
@@ -96,27 +94,28 @@ export default () => {
 										</ClayForm.Group>
 
 										<ClayForm.Group>
-											<label>{'Date'}</label>
+											<label>Date</label>
 											<ClayDatePickerWithState />
 										</ClayForm.Group>
 
 										<ClayForm.Group>
-											<label>{'State'}</label>
+											<label>State</label>
 											<select
 												className="form-control"
-												onChange={(e) =>
+												onChange={(event) =>
 													setFormValues({
 														...formValues,
-														state: e.target.value,
+														state: event.target
+															.value,
 													})
 												}
 											>
 												<option disabled selected>
-													{'-- select an option --'}
+													-- select an option --
 												</option>
-												<option>{'Happy'}</option>
-												<option>{'Mad'}</option>
-												<option>{'Sad'}</option>
+												<option>Happy</option>
+												<option>Mad</option>
+												<option>Sad</option>
 											</select>
 										</ClayForm.Group>
 									</ClayPanel.Body>
@@ -125,22 +124,21 @@ export default () => {
 								<ClayPanel
 									collapsable
 									defaultExpanded
-									displayTitle={'More Information'}
+									displayTitle="More Information"
 									displayType="unstyled"
 									showCollapseIcon
-									spritemap={spritemap}
 								>
 									<ClayPanel.Body>
 										<ClayForm.Group>
 											<ClayForm.Text>
-												{
-													'You can use this space to provide more information in this form.'
-												}
+												You can use this space to
+												provide more information in this
+												form.
 											</ClayForm.Text>
 										</ClayForm.Group>
 
 										<ClayForm.Group>
-											<label>{'Tags'}</label>
+											<label>Tags</label>
 
 											<ClayInput.Group>
 												<ClayInput.GroupItem>
@@ -161,14 +159,12 @@ export default () => {
 															);
 														}}
 														placeholder="Tags..."
-														spritemap={spritemap}
 													/>
 
 													<ClayForm.FeedbackGroup>
 														<ClayForm.Text>
-															{
-																'Use comma to enter tags'
-															}
+															Use comma to enter
+															tags
 														</ClayForm.Text>
 													</ClayForm.FeedbackGroup>
 												</ClayInput.GroupItem>
@@ -182,12 +178,12 @@ export default () => {
 								<ClayButton.Group>
 									<div className="btn-group-item">
 										<ClayButton type="submit">
-											{'Submit'}
+											Submit
 										</ClayButton>
 									</div>
 									<div className="btn-group-item">
 										<ClayButton displayType="secondary">
-											{'Cancel'}
+											Cancel
 										</ClayButton>
 									</div>
 								</ClayButton.Group>
@@ -195,9 +191,9 @@ export default () => {
 						</ClayForm>
 					)}
 
-					{activePage === 1 && <div>{'Some other page...'}</div>}
+					{activePage === 1 && <div>Some other page...</div>}
 				</div>
 			</div>
 		</ClayLayout.ContainerFluid>
 	);
-};
+}

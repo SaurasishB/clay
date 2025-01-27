@@ -6,9 +6,11 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const Section: React.FunctionComponent<React.HTMLAttributes<
-	HTMLDivElement
->> = ({children, className, ...otherProps}) => (
+const Section = ({
+	children,
+	className,
+	...otherProps
+}: React.HTMLAttributes<HTMLDivElement>) => (
 	<div className={classNames(className, 'tbar-section')} {...otherProps}>
 		{children}
 	</div>

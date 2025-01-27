@@ -25,25 +25,35 @@
 // Background
 
 @each $color, $value in $bg-theme-colors {
-	$hover: setter(map-get($value, hover), ());
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.bg-', 1)
+		);
 
-	.bg-#{$color} {
-		@include clay-css(setter($value, ()));
-	}
+		#{$selector} {
+			@include clay-css($value);
+		}
 
-	a.bg-#{$color},
-	button.bg-#{$color} {
-		&:hover,
-		&:focus {
-			@include clay-css($hover);
+		a#{$selector},
+		button#{$selector} {
+			&:hover,
+			&:focus {
+				@include clay-css(map-get($value, hover));
+			}
 		}
 	}
 }
 
 @if $enable-gradients {
 	@each $color, $value in $bg-gradient-theme-colors {
-		.bg-gradient-#{$color} {
-			@include clay-css(setter($value, ()));
+		@if not clay-is-map-unset($value) {
+			.bg-gradient-#{$color} {
+				@include clay-css($value);
+			}
 		}
 	}
 }
@@ -91,8 +101,18 @@
 }
 
 @each $color, $value in $border-theme-colors {
-	.border-#{$color} {
-		@include clay-css(setter($value, ()));
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.border-', 1)
+		);
+
+		#{$selector} {
+			@include clay-css($value);
+		}
 	}
 }
 
@@ -166,6 +186,10 @@
 	}
 }
 
+.hide {
+	display: none !important;
+}
+
 // Display Print
 
 @media print {
@@ -176,9 +200,9 @@
 	}
 }
 
-/* REUSE-Snippet-Begin
+/* SPDX-SnippetBegin
  * SPDX-License-Identifier: MIT
- * SPDX-Copyright: © 2012 Nicolas Gallagher <https://github.com/suitcss/components-flex-embed>
+ * SPDX-SnippetCopyrightText: © 2012 Nicolas Gallagher <https://github.com/suitcss/components-flex-embed>
  */
 
 .embed-responsive {
@@ -214,15 +238,16 @@
 
 	.embed-responsive-#{$embed-responsive-aspect-ratio-x}by#{$embed-responsive-aspect-ratio-y} {
 		&::before {
-			padding-top: percentage(
-				$embed-responsive-aspect-ratio-y /
-					$embed-responsive-aspect-ratio-x
+			padding-top: calc(
+				#{$embed-responsive-aspect-ratio-y} /
+					#{$embed-responsive-aspect-ratio-x} *
+					100%
 			);
 		}
 	}
 }
 
-/* REUSE-Snippet-End */
+/* SPDX-SnippetEnd */
 
 // Flex
 
@@ -548,27 +573,27 @@
 		@each $size, $length in $spacers {
 			@if $size != 0 {
 				.m#{$infix}-n#{$size} {
-					margin: -$length !important;
+					margin: math-sign($length) !important;
 				}
 
 				.mt#{$infix}-n#{$size},
 				.my#{$infix}-n#{$size} {
-					margin-top: -$length !important;
+					margin-top: math-sign($length) !important;
 				}
 
 				.mr#{$infix}-n#{$size},
 				.mx#{$infix}-n#{$size} {
-					margin-right: -$length !important;
+					margin-right: math-sign($length) !important;
 				}
 
 				.mb#{$infix}-n#{$size},
 				.my#{$infix}-n#{$size} {
-					margin-bottom: -$length !important;
+					margin-bottom: math-sign($length) !important;
 				}
 
 				.ml#{$infix}-n#{$size},
 				.mx#{$infix}-n#{$size} {
-					margin-left: -$length !important;
+					margin-left: math-sign($length) !important;
 				}
 			}
 		}
@@ -614,12 +639,6 @@
 	}
 }
 
-// Text
-
-.text-monospace {
-	font-family: $font-family-monospace !important;
-}
-
 // Text Alignment
 
 .text-justify {
@@ -635,9 +654,11 @@
 }
 
 .text-truncate {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	@include clay-css($text-truncate);
+}
+
+.text-truncate-inline {
+	@include clay-map-to-css($text-truncate-inline);
 }
 
 // Responsive Text Alignment
@@ -676,32 +697,62 @@
 
 // Font Weight and Italics
 
-.font-weight-light {
-	font-weight: $font-weight-light !important;
-}
-
-.font-weight-lighter {
+.font-weight-lighter,
+.text-weight-lighter {
 	font-weight: $font-weight-lighter !important;
 }
 
-.font-weight-normal {
+.font-weight-light,
+.text-weight-light {
+	font-weight: $font-weight-light !important;
+}
+
+.font-weight-normal,
+.text-weight-normal {
 	font-weight: $font-weight-normal !important;
 }
 
-.font-weight-semi-bold {
+.font-weight-semi-bold,
+.text-weight-semi-bold {
 	font-weight: $font-weight-semi-bold !important;
 }
 
-.font-weight-bold {
+.font-weight-bold,
+.text-weight-bold {
 	font-weight: $font-weight-bold !important;
 }
 
-.font-weight-bolder {
+.font-weight-bolder,
+.text-weight-bolder {
 	font-weight: $font-weight-bolder !important;
 }
 
-.font-italic {
+.font-italic,
+.text-italic {
 	font-style: italic !important;
+}
+
+.font-monospace,
+.text-monospace {
+	font-family: $font-family-monospace !important;
+}
+
+// Font Sizes
+
+@each $selector, $value in $font-sizes {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($selector, '.') or
+				starts-with($selector, '#') or
+				starts-with($selector, '%'),
+			$selector,
+			str-insert($selector, '.', 1)
+		);
+
+		#{$selector} {
+			@include clay-css($value);
+		}
+	}
 }
 
 // Contextual Colors
@@ -711,16 +762,24 @@
 }
 
 @each $color, $value in $text-theme-colors {
-	$hover: setter(map-get($value, hover), ());
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.text-', 1)
+		);
 
-	.text-#{$color} {
-		@include clay-css(setter($value, ()));
-	}
+		#{$selector} {
+			@include clay-css($value);
+		}
 
-	a.text-#{$color} {
-		&:hover,
-		&:focus {
-			@include clay-css($hover);
+		a#{$selector} {
+			&:hover,
+			&:focus {
+				@include clay-css(map-get($value, hover));
+			}
 		}
 	}
 }
@@ -735,8 +794,20 @@
 	text-shadow: none;
 }
 
-.text-decoration-none {
-	text-decoration: none !important;
+@each $key, $value in $text-decorations {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($key, '.') or
+				starts-with($key, '#') or
+				starts-with($key, '%'),
+			$key,
+			str-insert($key, '.', 1)
+		);
+
+		#{$selector} {
+			@include clay-link($value);
+		}
+	}
 }
 
 .text-break {
@@ -758,4 +829,30 @@
 
 .invisible {
 	visibility: hidden !important;
+}
+
+// C Prefers Expanded Text
+
+%c-prefers-expanded-text {
+	overflow-wrap: break-word !important;
+	white-space: normal !important;
+	word-wrap: break-word !important;
+}
+
+// C Prefers Link Underline
+
+@include clay-map-to-css($c-prefers-link-underline);
+
+// C Prefers Letter Spacing
+
+@include clay-map-to-css($c-prefers-letter-spacing);
+
+// Display C Reduced Motion
+
+@include clay-map-to-css($displays-c-prefers-reduced-motion);
+
+// C Prefers Reduced Motion
+
+.c-prefers-reduced-motion {
+	@include clay-css($c-prefers-reduced-motion);
 }

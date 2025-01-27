@@ -157,9 +157,9 @@ ClayInputGroupInsetItem.displayName = 'ClayInputGroupInsetItem';
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	/**
-	 * Input component to render. Can either be a string like 'input' or a component.
+	 * Input component to render. Can either be a string like 'input' or 'textarea' or a component.
 	 */
-	component?: 'input' | React.ForwardRefExoticComponent<any>;
+	component?: 'input' | 'textarea' | React.ForwardRefExoticComponent<any>;
 
 	/**
 	 * Flag to indicate if `input-group-inset-after` class should be applied
@@ -174,7 +174,7 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	/**
 	 * Selects the height of the input.
 	 */
-	sizing?: 'lg' | 'sm';
+	sizing?: 'lg' | 'regular' | 'sm';
 }
 
 const ClayInput = React.forwardRef<HTMLInputElement, IProps>(
@@ -184,7 +184,7 @@ const ClayInput = React.forwardRef<HTMLInputElement, IProps>(
 			component: Component = 'input',
 			insetAfter,
 			insetBefore,
-			sizing,
+			sizing = 'regular',
 			type = 'text',
 			...otherProps
 		}: IProps,
@@ -193,7 +193,7 @@ const ClayInput = React.forwardRef<HTMLInputElement, IProps>(
 		<Component
 			{...otherProps}
 			className={classNames('form-control', className, {
-				[`form-control-${sizing}`]: sizing,
+				[`form-control-${sizing}`]: sizing && sizing !== 'regular',
 				['input-group-inset']: insetAfter || insetBefore,
 				['input-group-inset-after']: insetAfter,
 				['input-group-inset-before']: insetBefore,

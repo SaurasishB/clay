@@ -10,8 +10,9 @@
 
 .multi-step-indicator-label-bottom {
 	.multi-step-item {
-		padding-bottom: $multi-step-indicator-label-font-size *
-			$line-height-base;
+		padding-bottom: calc(
+			#{$multi-step-indicator-label-font-size} * #{$line-height-base}
+		);
 	}
 
 	.multi-step-indicator-label {
@@ -21,31 +22,35 @@
 
 .multi-step-indicator-label-top {
 	.multi-step-item {
-		padding-top: $multi-step-indicator-label-font-size * $line-height-base;
+		padding-top: calc(
+			#{$multi-step-indicator-label-font-size} * #{$line-height-base}
+		);
 	}
 
 	.multi-step-indicator-label {
-		bottom: $multi-step-icon-size + $multi-step-divider-height;
+		bottom: calc(#{$multi-step-icon-size} + #{$multi-step-divider-height});
 	}
 }
 
 .multi-step-title-center {
+	@include clay-css($multi-step-title-center);
+
 	.multi-step-title {
-		margin-left: $multi-step-icon-size / 2;
-		max-width: $multi-step-title-max-width;
-		overflow: hidden;
-		position: relative;
-		text-align: center;
-		text-overflow: ellipsis;
-		transform: translateX(-50%);
-		white-space: nowrap;
-		width: auto;
+		@include clay-text-typography(
+			map-get($multi-step-title-center, multi-step-title)
+		);
 	}
 }
 
 .multi-step-item {
 	margin-bottom: $multi-step-item-margin-bottom;
 	position: relative;
+
+	&:last-child {
+		.multi-step-divider {
+			display: none;
+		}
+	}
 
 	&.active {
 		.multi-step-icon {
@@ -59,7 +64,9 @@
 			@if ($multi-step-icon-active-bg-image) {
 				&[data-multi-step-icon] {
 					&:before {
-						content: normal;
+						// https://issues.liferay.com/browse/LPS-147457
+
+						content: none;
 					}
 				}
 			}
@@ -97,7 +104,9 @@
 
 				&[data-multi-step-icon] {
 					&:before {
-						content: normal;
+						// https://issues.liferay.com/browse/LPS-147457
+
+						content: none;
 					}
 				}
 
@@ -114,9 +123,48 @@
 		}
 	}
 
+	&.error {
+		@include clay-css($multi-step-item-error);
+
+		.multi-step-title {
+			@include clay-text-typography(
+				map-get($multi-step-item-error, multi-step-title)
+			);
+		}
+
+		.multi-step-icon {
+			$_multi-step-icon: setter(
+				map-get($multi-step-item-error, multi-step-icon)
+			);
+
+			@include clay-css($_multi-step-icon);
+
+			&[data-multi-step-icon] {
+				$_data-multi-step-icon: setter(
+					map-get($_multi-step-icon, data-multi-step-icon),
+					()
+				);
+
+				&::before {
+					@include clay-css(map-get($_data-multi-step-icon, before));
+				}
+			}
+
+			.lexicon-icon {
+				@include clay-css(map-get($_multi-step-icon, lexicon-icon));
+			}
+		}
+
+		.multi-step-divider {
+			@include clay-css(
+				map-get($multi-step-item-error, multi-step-divider)
+			);
+		}
+	}
+
 	&.disabled {
 		.multi-step-title {
-			color: $multi-step-title-disabled-color;
+			@include clay-text-typography($multi-step-title-disabled);
 		}
 
 		.multi-step-icon {
@@ -132,13 +180,19 @@
 			@if ($multi-step-icon-disabled-bg-image) {
 				&[data-multi-step-icon] {
 					&:before {
-						content: normal;
+						// https://issues.liferay.com/browse/LPS-147457
+
+						content: none;
 					}
 				}
 			}
 
-			&:focus {
-				box-shadow: $multi-step-icon-disabled-focus-box-shadow;
+			@at-root {
+				&.focus,
+				#{$focus-visible-selector},
+				.c-prefers-focus &:focus {
+					box-shadow: $multi-step-icon-disabled-focus-box-shadow;
+				}
 			}
 		}
 
@@ -153,12 +207,7 @@
 }
 
 .multi-step-title {
-	color: $multi-step-title-color;
-	font-size: $multi-step-title-font-size;
-	font-weight: $multi-step-title-font-weight;
-	line-height: normal;
-	margin-bottom: $multi-step-title-margin-bottom;
-	word-wrap: break-word;
+	@include clay-text-typography($multi-step-title);
 }
 
 .multi-step-item-expand {
@@ -170,14 +219,13 @@
 	background-color: $multi-step-divider-bg;
 	height: $multi-step-divider-height;
 	margin-left: $multi-step-icon-size;
-	margin-top: -$multi-step-divider-height;
+	margin-top: math-sign($multi-step-divider-height);
 	position: relative;
 	top: $multi-step-divider-top;
 }
 
 .multi-step-indicator {
-	position: relative;
-	width: $multi-step-indicator-width;
+	@include clay-css($multi-step-indicator);
 
 	.dropdown-item-indicator,
 	.dropdown-item-indicator-start,
@@ -194,21 +242,18 @@
 	}
 
 	.multi-step-indicator-label {
-		color: $multi-step-indicator-label-color;
-		font-size: $multi-step-indicator-label-font-size;
-		font-weight: $multi-step-indicator-label-font-weight;
-		left: 50%;
-		max-width: $multi-step-indicator-label-max-width;
-		position: absolute;
-		transform: translateX(-50%);
-
-		@include text-truncate;
+		@include clay-css(
+			map-get($multi-step-indicator, multi-step-indicator-label)
+		);
 	}
 }
 
 .multi-step-icon {
 	align-items: center;
 	background-color: $multi-step-icon-bg;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: $multi-step-icon-font-size;
 	border-color: $multi-step-icon-border-color;
 	border-radius: $multi-step-icon-border-radius;
 	border-style: $multi-step-icon-border-style;
@@ -224,7 +269,10 @@
 	padding-left: $multi-step-icon-padding-left;
 	padding-right: $multi-step-icon-padding-right;
 	padding-top: $multi-step-icon-padding-top;
-	transition: $multi-step-icon-transition;
+	position: relative;
+
+	@include transition($multi-step-icon-transition);
+
 	width: $multi-step-icon-size;
 
 	&:hover {
@@ -233,16 +281,20 @@
 		text-decoration: $multi-step-icon-hover-text-decoration;
 	}
 
-	&:focus {
-		background-color: $multi-step-icon-focus-bg;
-		box-shadow: $multi-step-icon-focus-box-shadow;
-		color: $multi-step-icon-focus-color;
-		outline: $multi-step-icon-focus-outline;
-		text-decoration: $multi-step-icon-focus-text-decoration;
+	@at-root {
+		&.focus,
+		#{$focus-visible-selector},
+		.c-prefers-focus &:focus {
+			background-color: $multi-step-icon-focus-bg;
+			box-shadow: $multi-step-icon-focus-box-shadow;
+			color: $multi-step-icon-focus-color;
+			outline: $multi-step-icon-focus-outline;
+			text-decoration: $multi-step-icon-focus-text-decoration;
+		}
 	}
 
-	&[data-multi-step-icon]:before {
-		content: attr(data-multi-step-icon);
+	&[data-multi-step-icon]::before {
+		content: $data-multi-step-icon-before-content;
 		height: $multi-step-icon-size;
 		line-height: $multi-step-icon-size;
 		text-align: center;
@@ -278,6 +330,30 @@
 	}
 }
 
+.multi-step-nav-center {
+	@include clay-css($multi-step-nav-center);
+
+	.multi-step-item {
+		$_item: setter(map-get($multi-step-nav-center, multi-step-item), ());
+
+		@include clay-css($_item);
+	}
+
+	.multi-step-divider {
+		@include clay-css(map-get($multi-step-nav-center, multi-step-divider));
+	}
+
+	.multi-step-indicator {
+		@include clay-css(
+			map-get($multi-step-nav-center, multi-step-indicator)
+		);
+	}
+
+	.multi-step-title {
+		@include clay-css(map-get($multi-step-nav-center, multi-step-title));
+	}
+}
+
 .multi-step-nav-collapse-sm {
 	@include media-breakpoint-down(sm) {
 		flex-wrap: nowrap;
@@ -300,6 +376,29 @@
 			.multi-step-title {
 				margin-left: 0;
 				max-width: none;
+				transform: none;
+			}
+		}
+
+		&.multi-step-nav-center {
+			.multi-step-item {
+				flex-grow: 0;
+				width: auto;
+			}
+
+			.multi-step-item-expand {
+				flex-grow: 1;
+				width: 75px;
+			}
+
+			.multi-step-divider {
+				left: auto;
+				margin-left: $multi-step-icon-size;
+				width: auto;
+			}
+
+			.multi-step-indicator {
+				left: auto;
 				transform: none;
 			}
 		}
@@ -337,9 +436,10 @@
 		.multi-step-item {
 			margin-bottom: 0;
 			min-width: $multi-step-icon-size;
-			padding-top: $multi-step-title-font-size +
-				$multi-step-title-margin-bottom +
-				($multi-step-divider-height / 2);
+			padding-top: calc(
+				#{$multi-step-title-font-size} + #{$multi-step-title-margin-bottom} +
+					(#{$multi-step-divider-height} * 0.5)
+			);
 		}
 
 		.multi-step-title {

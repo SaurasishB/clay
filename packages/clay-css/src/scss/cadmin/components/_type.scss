@@ -12,66 +12,51 @@ h6,
 .h4,
 .h5,
 .h6 {
-	color: $cadmin-headings-color;
-	font-family: $cadmin-headings-font-family;
-	font-weight: $cadmin-headings-font-weight;
-	line-height: $cadmin-headings-line-height;
-	margin-bottom: $cadmin-headings-margin-bottom;
-	margin-top: 0;
+	@include clay-css($cadmin-headings);
+
+	@include clay-generate-media-breakpoints($cadmin-headings);
 }
 
 h1,
 .h1 {
-	font-size: $cadmin-h1-font-size;
+	@include clay-css($cadmin-h1);
 
-	@include clay-scale-component {
-		font-size: $cadmin-h1-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($cadmin-h1);
 }
 
 h2,
 .h2 {
-	font-size: $cadmin-h2-font-size;
+	@include clay-css($cadmin-h2);
 
-	@include clay-scale-component {
-		font-size: $cadmin-h2-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($cadmin-h2);
 }
 
 h3,
 .h3 {
-	font-size: $cadmin-h3-font-size;
+	@include clay-css($cadmin-h3);
 
-	@include clay-scale-component {
-		font-size: $cadmin-h3-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($cadmin-h3);
 }
 
 h4,
 .h4 {
-	font-size: $cadmin-h4-font-size;
+	@include clay-css($cadmin-h4);
 
-	@include clay-scale-component {
-		font-size: $cadmin-h4-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($cadmin-h4);
 }
 
 h5,
 .h5 {
-	font-size: $cadmin-h5-font-size;
+	@include clay-css($cadmin-h5);
 
-	@include clay-scale-component {
-		font-size: $cadmin-h5-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($cadmin-h5);
 }
 
 h6,
 .h6 {
-	font-size: $cadmin-h6-font-size;
+	@include clay-css($cadmin-h6);
 
-	@include clay-scale-component {
-		font-size: $cadmin-h6-font-size-mobile;
-	}
+	@include clay-generate-media-breakpoints($cadmin-h6);
 }
 
 .lead {
@@ -82,27 +67,27 @@ h6,
 // Type display classes
 
 .display-1 {
-	font-size: $cadmin-display1-size;
-	font-weight: $cadmin-display1-weight;
-	line-height: $cadmin-display-line-height;
+	@include clay-css($cadmin-display-1);
+
+	@include clay-generate-media-breakpoints($cadmin-display-1);
 }
 
 .display-2 {
-	font-size: $cadmin-display2-size;
-	font-weight: $cadmin-display2-weight;
-	line-height: $cadmin-display-line-height;
+	@include clay-css($cadmin-display-2);
+
+	@include clay-generate-media-breakpoints($cadmin-display-2);
 }
 
 .display-3 {
-	font-size: $cadmin-display3-size;
-	font-weight: $cadmin-display3-weight;
-	line-height: $cadmin-display-line-height;
+	@include clay-css($cadmin-display-3);
+
+	@include clay-generate-media-breakpoints($cadmin-display-3);
 }
 
 .display-4 {
-	font-size: $cadmin-display4-size;
-	font-weight: $cadmin-display4-weight;
-	line-height: $cadmin-display-line-height;
+	@include clay-css($cadmin-display-4);
+
+	@include clay-generate-media-breakpoints($cadmin-display-4);
 }
 
 // Horizontal rules
@@ -125,7 +110,22 @@ small,
 
 mark,
 .mark {
-	@include clay-highlight-text($cadmin-mark-bg, $cadmin-mark-color);
+	@include clay-css($cadmin-mark);
+
+	&::before {
+		@include clay-css(map-get($cadmin-mark, before));
+	}
+}
+
+mark.clay-dark,
+.clay-dark.mark,
+.clay-dark mark,
+.clay-dark .mark {
+	@include clay-css($cadmin-clay-dark-mark);
+
+	&::before {
+		@include clay-css(map-get($cadmin-clay-dark-mark, before));
+	}
 }
 
 // Lists
@@ -191,10 +191,11 @@ strong {
 // Reference Mark
 
 .reference-mark {
-	display: inline-block;
-	font-size: $cadmin-reference-mark-font-size;
-	position: relative;
-	vertical-align: $cadmin-reference-mark-vertical-align;
+	@include clay-css($cadmin-reference-mark);
+
+	&.lexicon-icon {
+		@include clay-css(map-get($cadmin-reference-mark, lexicon-icon));
+	}
 }
 
 // Kbd
@@ -203,7 +204,7 @@ strong {
 	@include clay-css($cadmin-c-kbd-group);
 
 	> .c-kbd {
-		font-size: inherit;
+		@include clay-css(setter(map-get($cadmin-c-kbd-group, c-kbd), ()));
 	}
 }
 
@@ -266,6 +267,10 @@ strong {
 
 .c-kbd-group-sm {
 	@include clay-css($cadmin-c-kbd-group-sm);
+
+	> .c-kbd {
+		@include clay-css(setter(map-get($cadmin-c-kbd-group-sm, c-kbd), ()));
+	}
 }
 
 .c-kbd-sm,
@@ -281,6 +286,10 @@ strong {
 
 .c-kbd-group-lg {
 	@include clay-css($cadmin-c-kbd-group-lg);
+
+	> .c-kbd {
+		@include clay-css(setter(map-get($cadmin-c-kbd-group-lg, c-kbd), ()));
+	}
 }
 
 .c-kbd-lg,
@@ -306,25 +315,4 @@ strong {
 
 .c-kbd-dark {
 	@include clay-css($cadmin-c-kbd-dark);
-}
-
-// Text Truncate
-
-.text-truncate {
-	display: block;
-}
-
-.text-truncate-inline {
-	display: inline-flex;
-	max-width: 100%;
-
-	.text-truncate {
-		display: inline-block;
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		vertical-align: bottom;
-		white-space: nowrap;
-		word-wrap: normal;
-	}
 }

@@ -6,26 +6,33 @@ exports[`ClayModal renders 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-1"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         >
           <div
             class="modal-header"
           >
-            <div
+            <h1
               class="modal-title"
+              id="clay-modal-label-1"
+              tabindex="-1"
             >
               Foo
-            </div>
+            </h1>
             <button
               aria-label="close"
               class="close btn btn-unstyled"
@@ -36,7 +43,7 @@ exports[`ClayModal renders 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="icons.svg#times"
+                  href="icons.svg#times"
                 />
               </svg>
             </button>
@@ -72,7 +79,10 @@ exports[`ClayModal renders 1`] = `
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -82,17 +92,22 @@ exports[`ClayModal renders Header w/ low-level API 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-3"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         >
           <div
             class="modal-header"
@@ -106,11 +121,13 @@ exports[`ClayModal renders Header w/ low-level API 1`] = `
                 <div
                   class="modal-title-section"
                 >
-                  <div
+                  <h1
                     class="modal-title"
+                    id="clay-modal-label-3"
+                    tabindex="-1"
                   >
                     Modal Title
-                  </div>
+                  </h1>
                 </div>
               </div>
               <div
@@ -132,7 +149,10 @@ exports[`ClayModal renders Header w/ low-level API 1`] = `
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -142,17 +162,22 @@ exports[`ClayModal renders a body component with url 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-7"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         >
           <div
             class="modal-body modal-body-iframe"
@@ -166,7 +191,10 @@ exports[`ClayModal renders a body component with url 1`] = `
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -176,17 +204,22 @@ exports[`ClayModal renders a footer component with buttons 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-8"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         >
           <div
             class="modal-footer"
@@ -226,7 +259,10 @@ exports[`ClayModal renders a footer component with buttons 1`] = `
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -236,26 +272,33 @@ exports[`ClayModal renders with Header 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-2"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         >
           <div
             class="modal-header"
           >
-            <div
+            <h1
               class="modal-title"
+              id="clay-modal-label-2"
+              tabindex="-1"
             >
               Foo
-            </div>
+            </h1>
             <button
               aria-label="close"
               class="close btn btn-unstyled"
@@ -266,7 +309,7 @@ exports[`ClayModal renders with Header 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="icons.svg#times"
+                  href="icons.svg#times"
                 />
               </svg>
             </button>
@@ -275,7 +318,10 @@ exports[`ClayModal renders with Header 1`] = `
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -285,22 +331,30 @@ exports[`ClayModal renders with center 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog modal-dialog-centered"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-6"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         />
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -310,22 +364,30 @@ exports[`ClayModal renders with size 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog modal-lg"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-4"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         />
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;
 
@@ -335,21 +397,29 @@ exports[`ClayModal renders with status 1`] = `
 >
   <div>
     <div
+      aria-hidden="true"
       class="modal-backdrop fade show"
+      data-suppressed="true"
     />
     <div
       class="fade modal d-block show"
     >
       <div
         class="modal-dialog modal-success"
-        tabindex="-1"
       >
         <div
+          aria-labelledby="clay-modal-label-5"
+          aria-modal="true"
           class="modal-content"
+          role="dialog"
+          tabindex="-1"
         />
       </div>
     </div>
   </div>
-  <div />
+  <div
+    aria-hidden="true"
+    data-suppressed="true"
+  />
 </body>
 `;

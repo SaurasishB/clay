@@ -31,8 +31,9 @@ describe('ClayDropDownWithItems', () => {
 						label: 'linkable',
 					},
 				]}
+				renderMenuOnClick
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 
@@ -61,8 +62,9 @@ describe('ClayDropDownWithItems', () => {
 						type: 'radiogroup' as const,
 					},
 				]}
+				renderMenuOnClick
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 
@@ -90,8 +92,9 @@ describe('ClayDropDownWithItems', () => {
 						type: 'group' as const,
 					},
 				]}
+				renderMenuOnClick
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 
@@ -108,8 +111,9 @@ describe('ClayDropDownWithItems', () => {
 						label: 'linkable',
 					},
 				]}
+				renderMenuOnClick
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 
@@ -119,15 +123,16 @@ describe('ClayDropDownWithItems', () => {
 	it('renders a DropDownWithItems with footer content', () => {
 		render(
 			<ClayDropDownWithItems
-				footerContent={<ClayButton>{'Done'}</ClayButton>}
+				footerContent={<ClayButton>Done</ClayButton>}
 				items={[
 					{
 						href: '#',
 						label: 'linkable',
 					},
 				]}
+				renderMenuOnClick
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 
@@ -144,8 +149,9 @@ describe('ClayDropDownWithItems', () => {
 						label: 'linkable',
 					},
 				]}
+				renderMenuOnClick
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 
@@ -162,10 +168,11 @@ describe('ClayDropDownWithItems', () => {
 					},
 				]}
 				onSearchValueChange={() => {}}
+				renderMenuOnClick
 				searchValue="Search"
 				searchable
 				spritemap={spritemap}
-				trigger={<ClayButton>{'Click Me'}</ClayButton>}
+				trigger={<ClayButton>Click Me</ClayButton>}
 			/>
 		);
 

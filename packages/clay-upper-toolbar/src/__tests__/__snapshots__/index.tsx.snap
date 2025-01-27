@@ -27,7 +27,7 @@ exports[`ClayUpperToolbar renders 1`] = `
               role="presentation"
             >
               <use
-                xlink:href="/test.svg#lock"
+                href="/test.svg#lock"
               />
             </svg>
           </div>
@@ -64,6 +64,7 @@ exports[`ClayUpperToolbar renders 1`] = `
               role="group"
             >
               <button
+                aria-label="Left"
                 class="btn btn-monospaced btn-sm btn-secondary"
                 type="button"
               >
@@ -72,11 +73,12 @@ exports[`ClayUpperToolbar renders 1`] = `
                   role="presentation"
                 >
                   <use
-                    xlink:href="/test.svg#angle-left"
+                    href="/test.svg#angle-left"
                   />
                 </svg>
               </button>
               <button
+                aria-label="Right"
                 class="btn btn-monospaced btn-sm btn-secondary"
                 type="button"
               >
@@ -85,7 +87,7 @@ exports[`ClayUpperToolbar renders 1`] = `
                   role="presentation"
                 >
                   <use
-                    xlink:href="/test.svg#angle-right"
+                    href="/test.svg#angle-right"
                   />
                 </svg>
               </button>
@@ -122,8 +124,11 @@ exports[`ClayUpperToolbar renders 1`] = `
               class="dropdown"
             >
               <button
+                aria-controls="clay-dropdown-menu-1"
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-label="More actions"
                 class="dropdown-toggle btn btn-monospaced btn-sm btn-unstyled"
-                style=""
                 type="button"
               >
                 <svg
@@ -131,7 +136,7 @@ exports[`ClayUpperToolbar renders 1`] = `
                   role="presentation"
                 >
                   <use
-                    xlink:href="/test.svg#ellipsis-v"
+                    href="/test.svg#ellipsis-v"
                   />
                 </svg>
               </button>

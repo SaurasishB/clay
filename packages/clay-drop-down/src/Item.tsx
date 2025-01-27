@@ -6,9 +6,11 @@
 import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import classNames from 'classnames';
-import React from 'react';
+import React, {useContext} from 'react';
 
-interface IProps
+import {DropDownContext} from './DropDownContext';
+
+export interface IProps
 	extends React.HTMLAttributes<
 		HTMLSpanElement | HTMLButtonElement | HTMLAnchorElement
 	> {
@@ -23,11 +25,22 @@ interface IProps
 	disabled?: boolean;
 
 	/**
+	 * @ignore
+	 */
+	'data-index'?: number;
+
+	/**
 	 * Path for item to link to.
 	 */
 	href?: string;
 
 	innerRef?: React.Ref<any>;
+
+	/**
+	 * Sets the role accessibility property of the item. Set the item's
+	 * container (<li />) role use the role="" prop instead of roleItem="".
+	 */
+	roleItem?: string;
 
 	/**
 	 * Path to icon spritemap from clay-css.
@@ -51,11 +64,15 @@ const ClayDropDownItem = React.forwardRef<HTMLLIElement, IProps>(
 			active,
 			children,
 			className,
+			'data-index': dataIndex,
 			disabled,
 			href,
 			innerRef,
 			onClick,
+			role = 'presentation',
+			roleItem = 'menuitem',
 			spritemap,
+			style,
 			symbolLeft,
 			symbolRight,
 			tabIndex,
@@ -66,8 +83,16 @@ const ClayDropDownItem = React.forwardRef<HTMLLIElement, IProps>(
 		const clickableElement = onClick ? 'button' : 'span';
 		const ItemElement = href ? ClayLink : clickableElement;
 
+		const {close, closeOnClick, tabFocus} = useContext(DropDownContext);
+
 		return (
-			<li aria-selected={active} ref={ref}>
+			<li
+				aria-selected={active}
+				data-index={dataIndex}
+				ref={ref}
+				role={role}
+				style={style}
+			>
 				<ItemElement
 					{...otherProps}
 					className={classNames('dropdown-item', className, {
@@ -76,9 +101,27 @@ const ClayDropDownItem = React.forwardRef<HTMLLIElement, IProps>(
 					})}
 					disabled={disabled}
 					href={href}
-					onClick={onClick}
+					onClick={(
+						event: React.MouseEvent<
+							HTMLButtonElement | HTMLAnchorElement,
+							MouseEvent
+						>
+					) => {
+						if (onClick) {
+							onClick(event);
+						}
+
+						if (event.defaultPrevented) {
+							return;
+						}
+
+						if (closeOnClick) {
+							close();
+						}
+					}}
 					ref={innerRef}
-					tabIndex={disabled ? -1 : tabIndex}
+					role={roleItem}
+					tabIndex={disabled || !tabFocus ? -1 : tabIndex}
 				>
 					{symbolLeft && (
 						<span className="dropdown-item-indicator-start">

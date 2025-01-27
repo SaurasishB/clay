@@ -3,12 +3,22 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import React from 'react';
+import React, {Children, useContext} from 'react';
 
 import {Keys} from './Keys';
 import {useFocusManagement} from './useFocusManagement';
 
-interface IProps {
+type Children = React.ReactElement & {
+	ref?:
+		| React.MutableRefObject<HTMLElement>
+		| ((ref: HTMLElement | null) => void);
+};
+
+type ChildrenFunction =
+	| Children
+	| ((focusManager: ReturnType<typeof useFocusManagement>) => Children);
+
+type Props = {
 	/**
 	 * Flag indicates whether the focus will also be controlled with the right
 	 * and left arrow keys.
@@ -21,65 +31,101 @@ interface IProps {
 	 */
 	arrowKeysUpDown?: boolean;
 
-	children: React.ReactElement & {
-		ref?: React.MutableRefObject<HTMLElement>;
-	};
-}
+	children: ChildrenFunction;
+
+	onFocus?: (element: HTMLElement) => void;
+};
+
+/**
+ * The context helps to identify if the FocusScope is being declared nested, to
+ * avoid focus being controlled by more than one focus manager, we stop event
+ * propagation to prevent the parent focus generator from doing anything.
+ */
+const FocusConflictContext = React.createContext<boolean>(false);
 
 /**
  * FocusScope is a component only for controlling focus and listening
  * for children's key down events, since the component handles the `onKeyDown`
  * event.
  */
-export const FocusScope: React.FunctionComponent<IProps> = ({
+export const FocusScope = ({
 	arrowKeysLeftRight = false,
 	arrowKeysUpDown = true,
 	children,
-}) => {
+	onFocus,
+}: Props) => {
 	const elRef = React.useRef<null | HTMLElement>(null);
 	const focusManager = useFocusManagement(elRef);
 
+	const hasParentFocus = useContext(FocusConflictContext);
+
 	const onKeyDown = (event: React.KeyboardEvent<any>) => {
 		const {key, shiftKey} = event;
+
 		if (
 			(arrowKeysUpDown && key === Keys.Down) ||
 			(arrowKeysLeftRight && key === Keys.Right) ||
 			(key === Keys.Tab && !shiftKey)
 		) {
-			if (focusManager.focusNext()) {
+			const next = focusManager.focusNext();
+
+			if (next) {
 				event.preventDefault();
+
+				if (onFocus) {
+					onFocus(next);
+				}
 			}
 		} else if (
 			(arrowKeysUpDown && key === Keys.Up) ||
 			(arrowKeysLeftRight && key === Keys.Left) ||
 			(key === Keys.Tab && shiftKey)
 		) {
-			if (focusManager.focusPrevious()) {
+			const previous = focusManager.focusPrevious();
+
+			if (previous) {
 				event.preventDefault();
+
+				if (onFocus) {
+					onFocus(previous);
+				}
 			}
 		}
 	};
 
-	return React.cloneElement(children, {
-		onKeyDown: (event: React.KeyboardEvent) => {
-			onKeyDown(event);
+	const child =
+		typeof children === 'function' ? children(focusManager) : children;
 
-			// If the element already exists a `onKeyDown` event should
-			// invoke it as well.
-			if (children.props.onKeyDown) {
-				children.props.onKeyDown(event);
-			}
-		},
-		ref: (r: HTMLElement) => {
-			if (r) {
-				elRef.current = r;
-				const {ref} = children;
-				if (ref) {
-					if (typeof ref === 'object') {
-						ref.current = r;
+	return (
+		<FocusConflictContext.Provider value>
+			{React.cloneElement(child, {
+				onKeyDown: (event: React.KeyboardEvent) => {
+					if (hasParentFocus) {
+						event.stopPropagation();
 					}
-				}
-			}
-		},
-	});
+
+					// If the element already exists a `onKeyDown` event should
+					// invoke it as well.
+					if (child.props.onKeyDown) {
+						child.props.onKeyDown(event);
+					}
+					onKeyDown(event);
+				},
+				ref: (r: HTMLElement) => {
+					if (r) {
+						elRef.current = r;
+						const {ref} = child;
+
+						if (ref) {
+							if (typeof ref === 'object') {
+								ref.current = r;
+							} else if (typeof ref === 'function') {
+								ref(r);
+							}
+						}
+					}
+				},
+			})}
+		</FocusConflictContext.Provider>
+	);
 };

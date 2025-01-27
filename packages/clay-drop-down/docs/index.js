@@ -14,13 +14,9 @@ import React from 'react';
 const dropDownImportsCode = `import ClayDropDown from '@clayui/drop-down';`;
 
 const dropDownCode = `const Component = () => {
-	const [active, setActive] = useState(false);
-
 	return (
 		<ClayDropDown
-			trigger={<button className="btn btn-primary">Click here!</button>}
-			active={active}
-			onActiveChange={setActive}
+			closeOnClick
 			menuElementAttrs={{
 				className: 'my-custom-dropdown-menu',
 				containerProps: {
@@ -28,16 +24,18 @@ const dropDownCode = `const Component = () => {
 					id: 'dropdownMenuReactPortalDiv',
 				},
 			}}
+			trigger={<button className="btn btn-primary">Click here!</button>}
+			triggerIcon='caret-bottom'
 		>
 			<ClayDropDown.Help>{'Can I help you?'}</ClayDropDown.Help>
 			<ClayDropDown.ItemList>
 				<ClayDropDown.Group header="Group #1">
 					{[
-						{href: '#one', label: 'one'},
-						{href: '#two', label: 'two'},
-						{href: '#three', label: 'three'},
+						{label: 'one'},
+						{label: 'two'},
+						{label: 'three'},
 					].map((item, i) => (
-						<ClayDropDown.Item href={item.href} key={i}>
+						<ClayDropDown.Item onClick={() => {}} key={i}>
 							{item.label}
 						</ClayDropDown.Item>
 					))}
@@ -90,57 +88,55 @@ import {ClayDropDownWithItems} from '@clayui/drop-down';`;
 
 const dropDownWithItemsCode = `const Component = () => {
 	const [value, setValue] = useState();
-    const items = [
-      {
-        label: 'clickable',
-        onClick: () => {
-          alert('you clicked!');
-        },
-      },
-      {
-        type: 'divider',
-      },
-      {
-        items: [
-          {
-            label: 'one',
-            type: 'radio',
-            value: 'one',
-          },
-          {
-            label: 'two',
-            type: 'radio',
-            value: 'two',
-          },
-        ],
-        label: 'radio',
-        name: 'radio',
-        onChange: (value) => alert('New Radio checked'),
-        type: 'radiogroup',
-      },
-      {
-        items: [
-          {
-            checked: true,
-            label: 'checkbox',
-            onChange: () => alert('checkbox changed'),
-            type: 'checkbox',
-          },
-          {
-            checked: true,
-            label: 'checkbox 1',
-            onChange: () => alert('checkbox changed'),
-            type: 'checkbox',
-          },
-        ],
-        label: 'checkbox',
-        type: 'group',
-      },
-      {
-        href: '#',
-        label: 'linkable',
-      },
-    ];
+	const items = [
+		{
+			label: 'clickable',
+			onClick: (event) => event.preventDefault(),
+		},
+		{
+			type: 'divider',
+		},
+		{
+			items: [
+				{
+					label: 'one',
+					type: 'radio',
+					value: 'one',
+				},
+				{
+					label: 'two',
+					type: 'radio',
+					value: 'two',
+				},
+			],
+			label: 'radio',
+			name: 'radio',
+			onChange: (value) => alert('New Radio checked'),
+			type: 'radiogroup',
+		},
+		{
+			items: [
+				{
+					checked: true,
+					label: 'checkbox',
+					onChange: () => alert('checkbox changed'),
+					type: 'checkbox',
+				},
+				{
+					checked: true,
+					label: 'checkbox 1',
+					onChange: () => alert('checkbox changed'),
+					type: 'checkbox',
+				},
+			],
+			label: 'checkbox',
+			type: 'group',
+		},
+		{
+			href: '#',
+			label: 'linkable',
+		},
+	];
 
 	return (
 		<ClayDropDownWithItems
@@ -158,6 +154,7 @@ const dropDownWithItemsCode = `const Component = () => {
 			searchable={true}
 			spritemap={spritemap}
 			trigger={<ClayButton>{'Click Me'}</ClayButton>}
+			triggerIcon='caret-bottom'
 		/>
     );
 }
@@ -182,7 +179,7 @@ import {ClayDropDownWithDrilldown} from '@clayui/drop-down';`;
 const dropDownWithDrilldownCode = `const Component = () => {
 	return (
 		<ClayDropDownWithDrilldown
-			initialActiveMenu="x0a3"
+			defaultActiveMenu="x0a3"
 			menus={{
 				x0a3: [
 					{href: '#', title: 'Hash Link'},
@@ -199,6 +196,7 @@ const dropDownWithDrilldownCode = `const Component = () => {
 			}}
 			spritemap={spritemap}
 			trigger={<ClayButton>{'Click Me'}</ClayButton>}
+			triggerIcon='caret-bottom'
 		/>
     );
 }
@@ -217,4 +215,74 @@ const DropDownWithDrilldown = () => {
 	);
 };
 
-export {DropDown, DropDownWithItems, DropDownWithDrilldown};
+const dropDownExampleImportsCode = `import Button from '@clayui/button';
+import DropDown from '@clayui/drop-down';`;
+
+const dropDownExampleCode = `const Component = () => {
+	const items = [
+		{
+			children: [
+				{id: 2, name: 'Apple'},
+				{id: 3, name: 'Banana'},
+				{id: 4, name: 'Mangos'},
+			],
+			id: 1,
+			name: 'Fruit',
+		},
+		{
+			children: [
+				{id: 6, name: 'Potatoes'},
+				{id: 7, name: 'Tomatoes'},
+				{id: 8, name: 'Onions'},
+			],
+			id: 5,
+			name: 'Vegetable',
+		},
+	];
+
+	return (
+		<DropDown
+			filterKey="name"
+			trigger={<Button>Select</Button>}
+			triggerIcon='caret-bottom'
+		>
+			<DropDown.Search placeholder="Type to filter" />
+			<DropDown.ItemList items={items}>
+				{(item) => (
+					<DropDown.Group
+						header={item.name}
+						items={item.children}
+						key={item.name}
+					>
+						{(item) => (
+							<DropDown.Item
+								key={item.name}
+								onClick={() => {
+									// logic stuff...
+								}}
+							>
+								{item.name}
+							</DropDown.Item>
+						)}
+					</DropDown.Group>
+				)}
+			</DropDown.ItemList>
+		</DropDown>
+	);
+}
+
+render(<Component />)`;
+
+const DropDownExample = () => {
+	const scope = {Button: ClayButton, DropDown: ClayDropDown};
+
+	return (
+		<Editor
+			code={dropDownExampleCode}
+			imports={dropDownExampleImportsCode}
+			scope={scope}
+		/>
+	);
+};
+
+export {DropDown, DropDownExample, DropDownWithItems, DropDownWithDrilldown};

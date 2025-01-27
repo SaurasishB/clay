@@ -4,24 +4,24 @@
  */
 
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-const spritemap = require('@clayui/css/lib/images/icons/icons.svg');
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import {ClayCheckbox, ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import {ClayListWithItems} from '@clayui/list';
 import ClayManagementToolbar from '@clayui/management-toolbar';
 import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
-import {sub} from '@clayui/shared';
-import React from 'react';
+import {sub, useId} from '@clayui/shared';
+import {ClayTooltipProvider} from '@clayui/tooltip';
+import React, {useState} from 'react';
 
-export default () => {
-	const [selectedMap, setSelectedMap] = React.useState({});
-	const [searchMobile, setSearchMobile] = React.useState<boolean>(false);
-	const [checked, setChecked] = React.useState<boolean>(false);
-	const [sortAsc, setSortAsc] = React.useState<boolean>(true);
-	const [value, setValue] = React.useState<string>('');
-	const [activePage, setActivePage] = React.useState<number>(1);
-	const [delta, setDelta] = React.useState<number>(10);
+export default function ListPage() {
+	const [selectedMap, setSelectedMap] = useState({});
+	const [searchMobile, setSearchMobile] = useState<boolean>(false);
+	const [checked, setChecked] = useState<boolean>(false);
+	const [sortAsc, setSortAsc] = useState<boolean>(true);
+	const [value, setValue] = useState<string>('');
+	const [activePage, setActivePage] = useState<number>(1);
+	const [delta, setDelta] = useState<number>(10);
 
 	const filterItems = [
 		{label: 'Filter Action 1', onClick: () => alert('Filter clicked')},
@@ -89,233 +89,245 @@ export default () => {
 
 	const isActive = !!numOfSelected;
 
+	const checkboxDescribedby = useId();
+
 	return (
-		<div>
-			<ClayManagementToolbar active={isActive}>
-				<ClayManagementToolbar.ItemList expand={isActive}>
-					<ClayManagementToolbar.Item>
-						<ClayCheckbox
-							checked={allSelected}
-							onChange={() => {
-								const newMap: any = {};
-
-								for (let i = 0; i < totalItems; i++) {
-									newMap[`${startingIndex + i}`] = true;
+		<ClayTooltipProvider>
+			<div>
+				<ClayManagementToolbar active={isActive}>
+					<ClayManagementToolbar.ItemList expand={isActive}>
+						<ClayManagementToolbar.Item>
+							<ClayCheckbox
+								aria-describedby={checkboxDescribedby}
+								aria-label={
+									numOfSelected === totalItems
+										? 'Unselect all'
+										: 'Select all'
 								}
+								checked={allSelected}
+								data-tooltip-align="top"
+								onChange={() => {
+									const newMap: any = {};
 
-								setSelectedMap(!checked ? newMap : {});
+									for (let i = 0; i < totalItems; i++) {
+										newMap[`${startingIndex + i}`] = true;
+									}
 
-								setChecked(!checked);
-							}}
-						/>
-					</ClayManagementToolbar.Item>
+									setSelectedMap(!checked ? newMap : {});
 
-					{isActive && (
-						<>
-							<ClayManagementToolbar.Item>
-								<span className="navbar-text">
-									{numOfSelected === totalItems ? (
-										'All Selected'
-									) : (
-										<>
-											{sub('{0} of {1}', [
-												numOfSelected,
-												totalItems,
-											])}{' '}
-											<span className="navbar-breakpoint-down-d-none">
-												{'Selected'}
-											</span>
-										</>
-									)}
-								</span>
-							</ClayManagementToolbar.Item>
-							<ClayManagementToolbar.Item className="nav-item-shrink">
-								<ClayButton
-									className="nav-link"
-									displayType="unstyled"
-									onClick={() => {
-										setSelectedMap({});
-										setChecked(false);
-									}}
-									type="button"
-								>
-									<span className="text-truncate-inline">
-										<span className="text-truncate">
-											{'Clear'}
-										</span>
+									setChecked(!checked);
+								}}
+								title="Select all"
+							/>
+						</ClayManagementToolbar.Item>
+
+						{isActive && (
+							<>
+								<ClayManagementToolbar.Item>
+									<span
+										className="navbar-text"
+										id={checkboxDescribedby}
+									>
+										{numOfSelected === totalItems ? (
+											'All Selected'
+										) : (
+											<>
+												{sub('{0} of {1}', [
+													numOfSelected,
+													totalItems,
+												])}{' '}
+												<span className="navbar-breakpoint-down-d-none">
+													Selected
+												</span>
+											</>
+										)}
 									</span>
-								</ClayButton>
-							</ClayManagementToolbar.Item>
-						</>
-					)}
-
-					{!isActive && (
-						<>
-							<ClayDropDownWithItems
-								items={filterItems}
-								spritemap={spritemap}
-								trigger={
+								</ClayManagementToolbar.Item>
+								<ClayManagementToolbar.Item className="nav-item-shrink">
 									<ClayButton
 										className="nav-link"
 										displayType="unstyled"
+										onClick={() => {
+											setSelectedMap({});
+											setChecked(false);
+										}}
+										type="button"
 									>
-										<span className="navbar-breakpoint-down-d-none">
-											<span className="navbar-text-truncate">
-												{'Filter and Order'}
+										<span className="text-truncate-inline">
+											<span className="text-truncate">
+												Clear
 											</span>
-
-											<ClayIcon
-												className="inline-item inline-item-after"
-												spritemap={spritemap}
-												symbol="caret-bottom"
-											/>
-										</span>
-										<span className="navbar-breakpoint-d-none">
-											<ClayIcon
-												spritemap={spritemap}
-												symbol="filter"
-											/>
 										</span>
 									</ClayButton>
-								}
-							/>
+								</ClayManagementToolbar.Item>
+							</>
+						)}
 
-							<ClayManagementToolbar.Item>
-								<ClayButton
-									className="nav-link nav-link-monospaced"
-									displayType="unstyled"
-									onClick={() => setSortAsc(!sortAsc)}
-								>
-									<ClayIcon
-										spritemap={spritemap}
-										symbol={
-											sortAsc
-												? 'order-list-up'
-												: 'order-list-down'
-										}
-									/>
-								</ClayButton>
-							</ClayManagementToolbar.Item>
-						</>
-					)}
-				</ClayManagementToolbar.ItemList>
-
-				{!isActive && (
-					<>
-						<ClayManagementToolbar.Search showMobile={searchMobile}>
-							<ClayInput.Group>
-								<ClayInput.GroupItem>
-									<ClayInput
-										aria-label="Search"
-										className="form-control input-group-inset input-group-inset-after"
-										defaultValue="Red"
-										onChange={(event) =>
-											setValue(event.target.value)
-										}
-										type="text"
-										value={value}
-									/>
-									<ClayInput.GroupInsetItem after tag="span">
-										<ClayButtonWithIcon
-											className="navbar-breakpoint-d-none"
-											displayType="unstyled"
-											onClick={() =>
-												setSearchMobile(false)
-											}
-											spritemap={spritemap}
-											symbol="times"
-										/>
-										<ClayButtonWithIcon
-											displayType="unstyled"
-											spritemap={spritemap}
-											symbol="search"
-											type="submit"
-										/>
-									</ClayInput.GroupInsetItem>
-								</ClayInput.GroupItem>
-							</ClayInput.Group>
-						</ClayManagementToolbar.Search>
-
-						<ClayManagementToolbar.ItemList>
-							<ClayManagementToolbar.Item className="navbar-breakpoint-d-none">
-								<ClayButton
-									className="nav-link nav-link-monospaced"
-									displayType="unstyled"
-									onClick={() => setSearchMobile(true)}
-								>
-									<ClayIcon
-										spritemap={spritemap}
-										symbol="search"
-									/>
-								</ClayButton>
-							</ClayManagementToolbar.Item>
-
-							<ClayManagementToolbar.Item>
-								<ClayButton
-									className="nav-link nav-link-monospaced"
-									displayType="unstyled"
-									onClick={() => {}}
-								>
-									<ClayIcon
-										spritemap={spritemap}
-										symbol="info-circle-open"
-									/>
-								</ClayButton>
-							</ClayManagementToolbar.Item>
-
-							<ClayManagementToolbar.Item>
+						{!isActive && (
+							<>
 								<ClayDropDownWithItems
-									items={viewTypes}
-									spritemap={spritemap}
+									items={filterItems}
 									trigger={
 										<ClayButton
-											className="nav-link nav-link-monospaced"
+											className="nav-link"
 											displayType="unstyled"
 										>
-											<ClayIcon
-												spritemap={spritemap}
-												symbol="list"
-											/>
+											<span className="navbar-breakpoint-down-d-none">
+												<span className="navbar-text-truncate">
+													Filter and Order
+												</span>
+
+												<ClayIcon
+													className="inline-item inline-item-after"
+													symbol="caret-bottom"
+												/>
+											</span>
+											<span className="navbar-breakpoint-d-none">
+												<ClayIcon symbol="filter" />
+											</span>
 										</ClayButton>
 									}
 								/>
-							</ClayManagementToolbar.Item>
 
-							<ClayManagementToolbar.Item>
-								<ClayButtonWithIcon
-									className="nav-btn nav-btn-monospaced"
-									spritemap={spritemap}
-									symbol="plus"
-								/>
-							</ClayManagementToolbar.Item>
-						</ClayManagementToolbar.ItemList>
-					</>
-				)}
-			</ClayManagementToolbar>
+								<ClayManagementToolbar.Item>
+									<ClayButton
+										aria-label={
+											sortAsc
+												? 'Order list up'
+												: 'Order list down'
+										}
+										className="nav-link nav-link-monospaced"
+										displayType="unstyled"
+										onClick={() => setSortAsc(!sortAsc)}
+									>
+										<ClayIcon
+											symbol={
+												sortAsc
+													? 'order-list-up'
+													: 'order-list-down'
+											}
+										/>
+									</ClayButton>
+								</ClayManagementToolbar.Item>
+							</>
+						)}
+					</ClayManagementToolbar.ItemList>
 
-			<div className="container" style={{paddingTop: 8}}>
-				<ClayListWithItems
-					itemIdentifier="classPK"
-					items={[
-						{
-							header: 'List of Items',
-							items,
-						},
-					]}
-					onSelectedItemsChange={setSelectedMap}
-					selectedItemsMap={selectedMap}
-					spritemap={spritemap}
-				/>
+					{!isActive && (
+						<>
+							<ClayManagementToolbar.Search
+								showMobile={searchMobile}
+							>
+								<ClayInput.Group>
+									<ClayInput.GroupItem>
+										<ClayInput
+											aria-label="Search"
+											className="form-control input-group-inset input-group-inset-after"
+											defaultValue="Red"
+											onChange={(event) =>
+												setValue(event.target.value)
+											}
+											type="text"
+											value={value}
+										/>
+										<ClayInput.GroupInsetItem
+											after
+											tag="span"
+										>
+											<ClayButtonWithIcon
+												aria-label="Close"
+												className="navbar-breakpoint-d-none"
+												displayType="unstyled"
+												onClick={() =>
+													setSearchMobile(false)
+												}
+												symbol="times"
+											/>
+											<ClayButtonWithIcon
+												aria-label="Search for..."
+												displayType="unstyled"
+												symbol="search"
+												type="submit"
+											/>
+										</ClayInput.GroupInsetItem>
+									</ClayInput.GroupItem>
+								</ClayInput.Group>
+							</ClayManagementToolbar.Search>
 
-				<ClayPaginationBarWithBasicItems
-					activeDelta={delta}
-					activePage={activePage}
-					onDeltaChange={setDelta}
-					onPageChange={setActivePage}
-					spritemap={spritemap}
-					totalItems={totalItems}
-				/>
+							<ClayManagementToolbar.ItemList>
+								<ClayManagementToolbar.Item className="navbar-breakpoint-d-none">
+									<ClayButton
+										aria-label="Search"
+										className="nav-link nav-link-monospaced"
+										displayType="unstyled"
+										onClick={() => setSearchMobile(true)}
+									>
+										<ClayIcon symbol="search" />
+									</ClayButton>
+								</ClayManagementToolbar.Item>
+
+								<ClayManagementToolbar.Item>
+									<ClayButton
+										aria-label="Info"
+										className="nav-link nav-link-monospaced"
+										displayType="unstyled"
+										onClick={() => {}}
+									>
+										<ClayIcon symbol="info-circle-open" />
+									</ClayButton>
+								</ClayManagementToolbar.Item>
+
+								<ClayManagementToolbar.Item>
+									<ClayDropDownWithItems
+										items={viewTypes}
+										trigger={
+											<ClayButton
+												aria-label="Display view"
+												className="nav-link nav-link-monospaced"
+												displayType="unstyled"
+											>
+												<ClayIcon symbol="list" />
+											</ClayButton>
+										}
+									/>
+								</ClayManagementToolbar.Item>
+
+								<ClayManagementToolbar.Item>
+									<ClayButtonWithIcon
+										aria-label="Add New Item"
+										className="nav-btn nav-btn-monospaced"
+										data-tooltip-align="bottom"
+										symbol="plus"
+										title="Add New Item"
+									/>
+								</ClayManagementToolbar.Item>
+							</ClayManagementToolbar.ItemList>
+						</>
+					)}
+				</ClayManagementToolbar>
+
+				<div className="container" style={{paddingTop: 8}}>
+					<ClayListWithItems
+						itemIdentifier="classPK"
+						items={[
+							{
+								header: 'List of Items',
+								items,
+							},
+						]}
+						onSelectedItemsChange={setSelectedMap}
+						selectedItemsMap={selectedMap}
+					/>
+
+					<ClayPaginationBarWithBasicItems
+						activeDelta={delta}
+						activePage={activePage}
+						onDeltaChange={setDelta}
+						onPageChange={setActivePage}
+						totalItems={totalItems}
+					/>
+				</div>
 			</div>
-		</div>
+		</ClayTooltipProvider>
 	);
-};
+}

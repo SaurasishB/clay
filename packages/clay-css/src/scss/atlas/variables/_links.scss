@@ -4,7 +4,7 @@ $component-link: map-deep-merge(
 		border-radius: 1px,
 		transition: box-shadow 0.15s ease-in-out,
 		focus: (
-			color: darken($gray-600, 15%),
+			color: clay-darken($gray-600, 15%),
 			box-shadow: $component-focus-box-shadow,
 			outline: 0,
 		),
@@ -17,8 +17,12 @@ $link-primary: map-deep-merge(
 	(
 		border-radius: 1px,
 		transition: box-shadow 0.15s ease-in-out,
+		hover: (
+			background-color: $primary-l3,
+			color: clay-darken($primary, 15%),
+		),
 		focus: (
-			color: darken($primary, 15%),
+			color: clay-darken($primary, 15%),
 			box-shadow: $component-focus-box-shadow,
 			outline: 0,
 		),
@@ -32,6 +36,7 @@ $link-secondary: map-deep-merge(
 		border-radius: 1px,
 		transition: box-shadow 0.15s ease-in-out,
 		hover: (
+			background-color: $gray-200,
 			color: $gray-900,
 		),
 		focus: (
@@ -51,8 +56,25 @@ $component-title: map-deep-merge(
 		font-size: 1rem,
 		line-height: 1.25,
 		margin-bottom:
-			calc((#{$dropdown-action-toggle-size} - (1em * 1.25)) / 2),
-		margin-top: calc((#{$dropdown-action-toggle-size} - (1em * 1.25)) / 2),
+			calc(
+				(
+						#{if(
+								variable-exists(dropdown-action-toggle-size),
+								$dropdown-action-toggle-size,
+								2rem
+							)} - (1em * 1.25)
+					) / 2
+			),
+		margin-top:
+			calc(
+				(
+						#{if(
+								variable-exists(dropdown-action-toggle-size),
+								$dropdown-action-toggle-size,
+								2rem
+							)} - (1em * 1.25)
+					) / 2
+			),
 	),
 	$component-title
 );
@@ -63,7 +85,7 @@ $component-title-link: map-deep-merge(
 		border-radius: 1px,
 		transition: box-shadow 0.15s ease-in-out,
 		focus: (
-			color: darken($gray-900, 15%),
+			color: clay-darken($gray-900, 15%),
 			box-shadow: $component-focus-box-shadow,
 			outline: 0,
 		),
@@ -111,7 +133,7 @@ $component-action: map-deep-merge(
 		),
 		focus: (
 			background-color: rgba($gray-900, 0.03),
-			box-shadow: map-get($btn-secondary, focus-box-shadow),
+			box-shadow: $component-focus-box-shadow,
 			color: $gray-900,
 			outline: 0,
 		),
@@ -123,7 +145,6 @@ $component-action: map-deep-merge(
 			background-color: transparent,
 			box-shadow: none,
 		),
-		btn-focus-box-shadow: map-get($btn-secondary, focus-box-shadow),
 	),
 	$component-action
 );
@@ -139,19 +160,17 @@ $link-outline-primary: map-deep-merge(
 		),
 		focus: (
 			background-color: $primary-l3,
-			box-shadow: map-get($btn-outline-primary, focus-box-shadow),
+			box-shadow: $component-focus-box-shadow,
 			color: $primary,
-			outline: 0,
 		),
 		active: (
-			background-color: lighten(desaturate($primary, 42.05), 41.76),
+			background-color:
+				clay-lighten(clay-desaturate($primary, 42.05), 41.76),
 			color: $primary,
 		),
 		disabled: (
 			box-shadow: none,
 		),
-		btn-focus-box-shadow: map-get($btn-outline-primary, focus-box-shadow),
-		btn-focus-outline: 0,
 	),
 	$link-outline-primary
 );
@@ -166,18 +185,12 @@ $link-outline-secondary: map-deep-merge(
 		),
 		focus: (
 			background-color: rgba($gray-900, 0.03),
-			box-shadow: map-get($btn-outline-secondary, focus-box-shadow),
+			box-shadow: $component-focus-box-shadow,
 			color: $gray-900,
-			outline: 0,
 		),
-		btn-focus-box-shadow: map-get($btn-outline-secondary, focus-box-shadow),
-		btn-focus-outline: 0,
 		active: (
 			background-color: rgba($gray-900, 0.06),
 			color: $gray-900,
-		),
-		disabled: (
-			box-shadow: none,
 		),
 	),
 	$link-outline-secondary

@@ -9,52 +9,53 @@ import React from 'react';
 
 import {IDay, setDate} from './Helpers';
 
-interface IProps {
+type Props = {
 	day: IDay;
 	daysSelected: readonly [Date, Date];
 	disabled?: boolean;
-	range?: boolean;
+	index: number;
+	isFocused: boolean;
 	onClick: (date: Date) => void;
-}
+	range?: boolean;
+};
 
-const ClayDatePickerDayNumber: React.FunctionComponent<IProps> = ({
+const ClayDatePickerDayNumber = ({
 	day,
 	daysSelected,
 	disabled,
+	index,
+	isFocused,
 	onClick,
 	range,
-}) => {
+}: Props) => {
 	const {date, nextMonth, previousMonth} = day;
 	const [startDate, endDate] = daysSelected;
 
+	const isStartAndEndDateRange =
+		startDate.toDateString() !== endDate.toDateString() &&
+		isWithinInterval(date, daysSelected);
 	const hasEndDateSelected = date.toDateString() === endDate.toDateString();
 	const hasStartDateSelected =
 		date.toDateString() === startDate.toDateString();
 
-	const classNames = classnames(
-		'date-picker-date date-picker-calendar-item',
-		{
-			active: hasStartDateSelected || (range && hasEndDateSelected),
-			disabled,
-			'next-month-date': nextMonth,
-			'previous-month-date': previousMonth,
-		}
-	);
-
 	return (
 		<div
+			aria-selected={
+				isStartAndEndDateRange || hasStartDateSelected
+					? true
+					: undefined
+			}
 			className={classnames(
 				'date-picker-col',
 				range && {
-					'c-selected':
-						startDate.toDateString() !== endDate.toDateString() &&
-						isWithinInterval(date, daysSelected),
+					'c-selected': isStartAndEndDateRange,
 					'c-selected-end':
 						hasEndDateSelected && !hasStartDateSelected,
 					'c-selected-start':
 						hasStartDateSelected && !hasEndDateSelected,
 				}
 			)}
+			role="gridcell"
 		>
 			<button
 				aria-label={setDate(date, {
@@ -63,7 +64,18 @@ const ClayDatePickerDayNumber: React.FunctionComponent<IProps> = ({
 					minutes: 0,
 					seconds: 0,
 				}).toDateString()}
-				className={classNames}
+				className={classnames(
+					'date-picker-date date-picker-calendar-item',
+					{
+						active:
+							hasStartDateSelected ||
+							(range && hasEndDateSelected),
+						disabled,
+						'next-month-date': nextMonth,
+						'previous-month-date': previousMonth,
+					}
+				)}
+				data-index={index}
 				disabled={disabled}
 				onClick={() => onClick(date)}
 				onKeyDown={(event) => {
@@ -79,6 +91,7 @@ const ClayDatePickerDayNumber: React.FunctionComponent<IProps> = ({
 						onClick(date);
 					}
 				}}
+				tabIndex={isFocused ? undefined : -1}
 				type="button"
 			>
 				{date.getDate()}

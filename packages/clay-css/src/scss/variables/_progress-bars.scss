@@ -1,7 +1,7 @@
 $progress-bg: $gray-200 !default;
 $progress-border-radius: $border-radius !default;
 $progress-box-shadow: inset 0 0.1rem 0.1rem rgba($black, 0.1) !default;
-$progress-font-size: $font-size-base * 0.75 !default;
+$progress-font-size: calc(#{$font-size-base} * 0.75) !default;
 $progress-height: 1rem !default;
 $progress-min-width: 6.25rem !default;
 
@@ -15,7 +15,7 @@ $progress-bar-transition: width 0.6s ease !default;
 
 $progress-border-radius-lg: $border-radius !default;
 $progress-font-size-lg: $font-size-lg !default;
-$progress-height-lg: $progress-height * 2 !default;
+$progress-height-lg: calc(#{$progress-height} * 2) !default;
 
 // Progress Group
 
@@ -66,20 +66,36 @@ $progress-palette: () !default;
 $progress-palette: map-deep-merge(
 	(
 		success: (
-			bar-bg: $progress-bar-success-bg,
-			group-feedback-color: $progress-group-feedback-success-color,
+			progress-bar: (
+				background-color: $progress-bar-success-bg,
+			),
+			progress-group-feedback: (
+				color: $progress-group-feedback-success-color,
+			),
 		),
 		info: (
-			bar-bg: $progress-bar-info-bg,
-			group-feedback-color: $progress-group-feedback-info-color,
+			progress-bar: (
+				background-color: $progress-bar-info-bg,
+			),
+			progress-group-feedback: (
+				color: $progress-group-feedback-info-color,
+			),
 		),
 		warning: (
-			bar-bg: $progress-bar-warning-bg,
-			group-feedback-color: $progress-group-feedback-warning-color,
+			progress-bar: (
+				background-color: $progress-bar-warning-bg,
+			),
+			progress-group-feedback: (
+				color: $progress-group-feedback-warning-color,
+			),
 		),
 		danger: (
-			bar-bg: $progress-bar-danger-bg,
-			group-feedback-color: $progress-group-feedback-danger-color,
+			progress-bar: (
+				background-color: $progress-bar-danger-bg,
+			),
+			progress-group-feedback: (
+				color: $progress-group-feedback-danger-color,
+			),
 		),
 	),
 	$progress-palette

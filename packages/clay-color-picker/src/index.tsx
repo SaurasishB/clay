@@ -1,18 +1,24 @@
 /**
- * SPDX-FileCopyrightText: © 2019 Liferay, Inc. <https://liferay.com>
+ * SPDX-FileCopyrightText: © 2023 Liferay, Inc. <https://liferay.com>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
-import ClayIcon from '@clayui/icon';
-import {FocusScope, sub} from '@clayui/shared';
-import React from 'react';
+import {
+	FocusScope,
+	InternalDispatch,
+	sub,
+	useControlledState,
+} from '@clayui/shared';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import tinycolor from 'tinycolor2';
 
 import Basic from './Basic';
 import Custom from './Custom';
+import {Editor, useEditor} from './Editor';
 import Splotch from './Splotch';
+import {findColorIndex, getCSSVariableColor} from './util';
 
 const DEFAULT_COLORS = [
 	'000000',
@@ -54,7 +60,14 @@ const DEFAULT_ARIA_LABELS = {
 	selectionIs: 'Color selection is {0}',
 };
 
-interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface IProps
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+	/**
+	 * Property to define whether the DropDown menu is expanded or not
+	 * (controlled).
+	 */
+	active?: boolean;
+
 	/**
 	 * Labels for the aria attributes
 	 */
@@ -67,6 +80,16 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	 * List of color hex values
 	 */
 	colors?: Array<string>;
+
+	/**
+	 * Property to set the default value of `active` (uncontrolled).
+	 */
+	defaultActive?: boolean;
+
+	/**
+	 * Property to set the default value (uncontrolled).
+	 */
+	defaultValue?: string;
 
 	/**
 	 * Flag for adding ColorPicker in disabled state
@@ -86,9 +109,27 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 
 	/**
+	 * Message for aria-label
+	 */
+	messages?: {
+		close: string;
+		customColor: string;
+	};
+
+	/**
 	 * The input attribute for name
 	 */
 	name?: string;
+
+	/**
+	 * Callback function for when active state changes (controlled).
+	 */
+	onActiveChange?: InternalDispatch<boolean>;
+
+	/**
+	 * Callback that is called when the value changes (controlled).
+	 */
+	onChange?: InternalDispatch<string>;
 
 	/**
 	 * Callback for when the list of colors change
@@ -97,6 +138,7 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 	/**
 	 * Callback for when the selected color changes
+	 * @deprecated since v3.51.0 - use `onChange` instead.
 	 */
 	onValueChange?: (val: string) => void;
 
@@ -122,6 +164,11 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	small?: boolean;
 
 	/**
+	 * The title of the Main Splotch component
+	 */
+	splotchTitle?: string;
+
+	/**
 	 * Path to the location of the spritemap resource.
 	 */
 	spritemap?: string;
@@ -137,41 +184,76 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	useNative?: boolean;
 
 	/**
-	 * Value of the selected color hex
+	 * The value property sets the current value (controlled).
 	 */
 	value?: string;
 }
 
-const ClayColorPicker: React.FunctionComponent<IProps> = ({
+const ClayColorPicker = ({
+	active,
 	ariaLabels = DEFAULT_ARIA_LABELS,
 	colors,
+	defaultActive = false,
+	defaultValue = 'FFFFFF',
 	disabled,
 	dropDownContainerProps,
 	label,
+	messages,
 	name,
+	onActiveChange,
+	onChange,
 	onColorsChange,
-	onValueChange = () => {},
+	onValueChange,
 	predefinedColors,
 	showHex = true,
 	showPalette = true,
 	showPredefinedColorsWithCustom = false,
 	small,
+	splotchTitle,
 	spritemap,
 	title,
 	useNative = false,
-	value = 'FFFFFF',
+	value,
 	...otherProps
 }: IProps) => {
-	const [customEditorActive, setCustomEditorActive] = React.useState(
-		!showPalette
+	const [internalValue, setValue] = useControlledState({
+		defaultName: 'defaultValue',
+		defaultValue: defaultValue
+			? normalizeValueHex(defaultValue)
+			: undefined,
+		handleName: 'onChange',
+		name: 'value',
+		onChange: onChange ?? onValueChange,
+		value,
+	});
+
+	const color = useMemo(
+		() =>
+			internalValue!.includes('var(')
+				? getCSSVariableColor(internalValue!)
+				: tinycolor(internalValue),
+		[internalValue]
 	);
-	const isHex = tinycolor(value).getFormat() === 'hex';
 
-	if (isHex && value.indexOf('#') === 0) {
-		value = value.slice(1);
-	}
+	const customColors = colors
+		? colors.concat(BLANK_COLORS).slice(0, 12)
+		: BLANK_COLORS;
 
-	const inputColorTypeSupport = React.useMemo(() => {
+	const [state, dispatch] = useEditor(internalValue, color, customColors);
+
+	const [customEditorActive, setCustomEditorActive] = useState(!showPalette);
+
+	const isHex = tinycolor(internalValue).getFormat() === 'hex';
+
+	const internalToHex = (color: any) => {
+		if (color.getAlpha() < 1) {
+			return color.toHex8().toUpperCase();
+		}
+
+		return color.toHex().toUpperCase();
+	};
+
+	const inputColorTypeSupport = useMemo(() => {
 		if (typeof document !== 'undefined') {
 			var input = document.createElement('input');
 			input.setAttribute('type', 'color');
@@ -186,13 +268,26 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 		useNative = false;
 	}
 
-	const triggerElementRef = React.useRef<HTMLDivElement>(null);
-	const dropdownContainerRef = React.useRef<HTMLDivElement>(null);
-	const inputRef = React.useRef<HTMLInputElement>(null);
-	const valueInputRef = React.useRef<HTMLInputElement>(null);
-	const splotchRef = React.useRef<HTMLButtonElement>(null);
+	const triggerElementRef = useRef<HTMLDivElement>(null);
+	const dropdownContainerRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
+	const valueInputRef = useRef<HTMLInputElement>(null);
+	const splotchRef = useRef<HTMLButtonElement>(null);
 
-	const [active, setActive] = React.useState(false);
+	const [internalActive, setInternalActive] = useControlledState({
+		defaultName: 'defaultActive',
+		defaultValue: defaultActive,
+		handleName: 'onActiveChange',
+		name: 'active',
+		onChange: onActiveChange,
+		value: active,
+	});
+
+	useEffect(() => {
+		if (!internalActive) {
+			setCustomEditorActive(false);
+		}
+	}, [internalActive]);
 
 	return (
 		<FocusScope arrowKeysUpDown={false}>
@@ -208,9 +303,9 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 						{name && (
 							<input
 								name={name}
-								onChange={(e) =>
+								onChange={(event) =>
 									useNative
-										? onValueChange(e.target.value)
+										? setValue(event.target.value)
 										: null
 								}
 								ref={valueInputRef}
@@ -223,7 +318,9 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 								tabIndex={-1}
 								type={useNative ? 'color' : 'text'}
 								value={
-									value ? `${isHex ? '#' : ''}${value}` : ''
+									internalValue
+										? `${isHex ? '#' : ''}${internalValue}`
+										: ''
 								}
 							/>
 						)}
@@ -233,25 +330,39 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 								aria-label={ariaLabels.selectColor}
 								className="dropdown-toggle"
 								disabled={disabled}
-								onClick={() =>
-									useNative && valueInputRef.current
-										? valueInputRef.current.click()
-										: setActive((val: boolean) => !val)
-								}
+								onClick={() => {
+									{
+										if (
+											useNative &&
+											valueInputRef.current
+										) {
+											valueInputRef.current.click();
+										} else {
+											setInternalActive(!internalActive);
+											if (!showPalette) {
+												setCustomEditorActive(
+													!customEditorActive
+												);
+											}
+										}
+									}
+								}}
 								ref={splotchRef}
-								value={value}
+								title={splotchTitle}
+								value={internalValue}
 							/>
 						</ClayInput.GroupText>
 					</ClayInput.GroupItem>
 
 					<ClayDropDown.Menu
-						active={active}
+						active={internalActive}
 						alignElementRef={triggerElementRef}
 						className="clay-color-dropdown-menu"
 						containerProps={dropDownContainerProps}
-						focusRefOnEsc={splotchRef}
-						onSetActive={setActive}
+						deps={[internalActive]}
+						onActiveChange={setInternalActive}
 						ref={dropdownContainerRef}
+						triggerRef={splotchRef}
 					>
 						{(!onColorsChange ||
 							(showPredefinedColorsWithCustom &&
@@ -264,8 +375,8 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 								}
 								label={label}
 								onChange={(newVal) => {
-									onValueChange(newVal);
-									setActive((val: boolean) => !val);
+									setValue(newVal);
+									setInternalActive(!internalActive);
 
 									if (splotchRef.current) {
 										splotchRef.current.focus();
@@ -276,53 +387,180 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 
 						{onColorsChange && (
 							<Custom
-								colors={
-									colors
-										? colors
-												.concat(BLANK_COLORS)
-												.slice(0, 12)
-										: BLANK_COLORS
-								}
+								color={color}
+								colors={customColors}
 								editorActive={customEditorActive}
 								label={label}
-								onChange={(newVal) => {
-									onValueChange(newVal);
+								messages={messages}
+								onChange={(color, hex) => {
+									dispatch({
+										hex: internalToHex(color),
+										hue: color.toHsv().h,
+									});
+									setValue(hex);
 								}}
-								onColorsChange={onColorsChange}
+								onColorsChange={(hex, index) => {
+									const newColors = [...customColors];
+
+									newColors[index] = hex;
+
+									onColorsChange(newColors);
+								}}
 								onEditorActiveChange={setCustomEditorActive}
+								onSplotchChange={(splotch) =>
+									dispatch({splotch})
+								}
 								showPalette={showPalette}
+								splotch={state.splotch}
 								spritemap={spritemap}
+							/>
+						)}
+
+						{onColorsChange && customEditorActive && (
+							<Editor
+								color={color}
+								colors={customColors}
+								hex={state.hex}
+								hue={state.hue}
+								internalToHex={internalToHex}
+								onChange={(color, active) => {
+									const hex = internalToHex(color);
+
+									if (active) {
+										const newColors = [...customColors];
+
+										newColors[state.splotch!] = hex;
+
+										onColorsChange(newColors);
+									} else {
+										dispatch({splotch: undefined});
+									}
+
+									setValue(hex);
+								}}
+								onColorChange={(color) => {
+									const hex = internalToHex(color);
+									const newColors = [...customColors];
+
+									newColors[state.splotch!] = hex;
+
+									onColorsChange(newColors);
+									setValue(hex);
+									dispatch({hex});
+								}}
+								onHexChange={(hex) => dispatch({hex})}
+								onHueChange={(hue) => dispatch({hue})}
 							/>
 						)}
 					</ClayDropDown.Menu>
 
 					{showHex && (
-						<ClayInput.GroupItem append>
+						<ClayInput.GroupItem
+							append
+							className="input-group-item-focusable"
+						>
 							<ClayInput
 								{...otherProps}
 								aria-label={sub(ariaLabels.selectionIs, [
-									value,
+									internalValue,
 								])}
 								disabled={disabled}
 								insetBefore
+								onBlur={(event) => {
+									let value = event.target.value;
+
+									if (otherProps.onBlur) {
+										otherProps.onBlur(event);
+									}
+
+									if (event.defaultPrevented) {
+										return;
+									}
+
+									const newColor = tinycolor(value);
+
+									if (newColor.isValid()) {
+										if (
+											newColor.getFormat() ===
+											('hex' || 'hex8')
+										) {
+											value = internalToHex(newColor);
+										} else if (
+											newColor.toString() !== value
+										) {
+											value = newColor.toString();
+										}
+									} else if (!value.includes('var(')) {
+										value = '';
+									}
+
+									if (onColorsChange && !internalActive) {
+										const index = customColors.findIndex(
+											(color) =>
+												color.toUpperCase() ===
+												value.toUpperCase()
+										);
+
+										dispatch({
+											splotch:
+												index !== -1
+													? index
+													: undefined,
+										});
+									}
+
+									setValue(value);
+								}}
 								onChange={(event) => {
-									onValueChange(event.target.value);
+									const value = normalizeValueHex(
+										event.target.value
+									);
+									const color = value.includes('var(')
+										? getCSSVariableColor(value)
+										: tinycolor(value);
+
+									if (
+										onColorsChange &&
+										(color.isValid() ||
+											value.includes('var('))
+									) {
+										dispatch({
+											hex: internalToHex(color),
+											hue: color.toHsv().h,
+										});
+
+										if (internalActive) {
+											const newColors = [...customColors];
+
+											newColors[state.splotch!] =
+												internalToHex(color);
+
+											onColorsChange(newColors);
+										} else {
+											const colorIndex = findColorIndex(
+												customColors,
+												value!.includes('var(')
+													? getCSSVariableColor(
+															value!
+													  )
+													: tinycolor(value)
+											);
+
+											if (colorIndex === -1) {
+												dispatch({splotch: undefined});
+											}
+										}
+									}
+
+									setValue(value);
 								}}
 								ref={inputRef}
 								type="text"
-								value={value}
+								value={internalValue}
 							/>
 
 							<ClayInput.GroupInsetItem before tag="label">
-								{isHex ? (
-									'#'
-								) : (
-									<ClayIcon
-										spritemap={spritemap}
-										style={{width: 10}}
-										symbol="color-picker"
-									/>
-								)}
+								{isHex ? '#' : ''}
 							</ClayInput.GroupInsetItem>
 						</ClayInput.GroupItem>
 					)}
@@ -331,5 +569,15 @@ const ClayColorPicker: React.FunctionComponent<IProps> = ({
 		</FocusScope>
 	);
 };
+
+function normalizeValueHex(value: string) {
+	const isHex = tinycolor(value).getFormat() === 'hex';
+
+	if (isHex && value.indexOf('#') === 0) {
+		value = value.slice(1);
+	}
+
+	return value;
+}
 
 export default ClayColorPicker;

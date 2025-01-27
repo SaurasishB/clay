@@ -62,10 +62,7 @@ export interface ICustomDragLayerProps {
 	width: number;
 }
 
-const CustomDragLayer: React.FunctionComponent<ICustomDragLayerProps> = ({
-	columns,
-	width,
-}) => {
+const CustomDragLayer = ({columns, width}: ICustomDragLayerProps) => {
 	const {currentOffset, initialOffset, isDragging, item} = useDragLayer(
 		(monitor) => ({
 			currentOffset: monitor.getSourceClientOffset(),
@@ -115,12 +112,12 @@ export interface IColumnDragPreviewProps {
 	width: number;
 }
 
-const ColumnDragPreview: React.FunctionComponent<IColumnDragPreviewProps> = ({
+const ColumnDragPreview = ({
 	column,
 	currentOffset,
 	initialOffset,
 	width,
-}) => {
+}: IColumnDragPreviewProps) => {
 	const dragLayerStyles: React.CSSProperties = {
 		height: '100%',
 		left: 0,
@@ -205,12 +202,12 @@ interface IDragItem {
 	type: string;
 }
 
-const DraggableTableHeaderCell: React.FunctionComponent<IDraggableTableHeadingProps> = ({
+const DraggableTableHeaderCell = ({
 	id,
 	index,
 	onMove,
 	title,
-}) => {
+}: IDraggableTableHeadingProps) => {
 	const ref = React.useRef<HTMLTableHeaderCellElement>(null);
 
 	const [{canDrop}, drop] = useDrop({

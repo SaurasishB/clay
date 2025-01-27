@@ -8,58 +8,28 @@ import {
 	IPortalBaseProps,
 	Keys,
 	delegate,
-	doAlign,
+	useInteractionFocus,
 } from '@clayui/shared';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useReducer, useRef} from 'react';
 import warning from 'warning';
 
 import ClayTooltip from './Tooltip';
-
-const ALIGNMENTS = [
-	'top',
-	'top-right',
-	'right',
-	'bottom-right',
-	'bottom',
-	'bottom-left',
-	'left',
-	'top-left',
-] as const;
-
-const ALIGNMENTS_MAP = {
-	bottom: ['tc', 'bc'],
-	'bottom-left': ['tl', 'bl'],
-	'bottom-right': ['tr', 'br'],
-	left: ['cr', 'cl'],
-	right: ['cl', 'cr'],
-	top: ['bc', 'tc'],
-	'top-left': ['bl', 'tl'],
-	'top-right': ['br', 'tr'],
-} as const;
-
-const ALIGNMENTS_INVERSE_MAP = {
-	bctc: 'top',
-	bltl: 'top-left',
-	brtr: 'top-right',
-	clcr: 'right',
-	crcl: 'left',
-	tcbc: 'bottom',
-	tlbl: 'bottom-left',
-	trbr: 'bottom-right',
-} as const;
+import {Align, useAlign} from './useAlign';
+import {useClosestTitle} from './useClosestTitle';
+import {useTooltipState} from './useTooltipState';
 
 interface IState {
-	align?: typeof ALIGNMENTS[number];
-	message?: string;
-	show?: boolean;
+	align: Align;
+	floating: boolean;
 	setAsHTML?: boolean;
+	title?: string;
 }
 
 const initialState: IState = {
 	align: 'top',
-	message: '',
+	floating: false,
 	setAsHTML: false,
-	show: false,
+	title: '',
 };
 
 const TRIGGER_HIDE_EVENTS = [
@@ -77,62 +47,24 @@ const TRIGGER_SHOW_EVENTS = [
 	'touchstart',
 ] as const;
 
-interface IAction extends IState {
-	type: 'align' | 'hide' | 'show';
+interface IAction extends Partial<IState> {
+	type: 'reset' | 'update';
 }
 
 const reducer = (state: IState, {type, ...payload}: IAction): IState => {
 	switch (type) {
-		case 'align':
+		case 'update':
 			return {...state, ...payload};
-		case 'show':
-			return {...state, ...payload, show: true};
-		case 'hide':
+		case 'reset':
 			return {
 				...state,
 				align: initialState.align,
-				show: false,
+				floating: false,
 			};
 		default:
 			throw new TypeError();
 	}
 };
-
-function matches(
-	element: HTMLElement & {
-		msMatchesSelector?: HTMLElement['matches'];
-	},
-	selectorString: string
-) {
-	if (element.matches) {
-		return element.matches(selectorString);
-	} else if (element.msMatchesSelector) {
-		return element.msMatchesSelector(selectorString);
-	} else if (element.webkitMatchesSelector) {
-		return element.webkitMatchesSelector(selectorString);
-	} else {
-		return false;
-	}
-}
-
-function closestAncestor(node: HTMLElement, s: string) {
-	const el = node;
-	let ancestor: HTMLElement | null = node;
-
-	if (!document.documentElement.contains(el)) {
-		return null;
-	}
-
-	do {
-		if (matches(ancestor, s)) {
-			return ancestor;
-		}
-
-		ancestor = ancestor.parentElement;
-	} while (ancestor !== null);
-
-	return null;
-}
 
 type TContentRenderer = (props: {
 	targetNode?: HTMLElement | null;
@@ -177,193 +109,173 @@ interface IPropsWithScope extends IPropsBase {
 	scope: string;
 }
 
-const TooltipProvider: React.FunctionComponent<
-	IPropsWithChildren | IPropsWithScope
-> = ({
+const TooltipProvider = ({
 	autoAlign = true,
 	children,
 	containerProps = {},
 	contentRenderer = (props) => props.title,
 	delay = 600,
 	scope,
-}) => {
-	const [{align, message = '', setAsHTML, show}, dispatch] = React.useReducer(
+}: IPropsWithChildren | IPropsWithScope) => {
+	const [{align, floating, setAsHTML, title = ''}, dispatch] = useReducer(
 		reducer,
 		initialState
 	);
 
-	// Using `any` type since TS incorrectly infers setTimeout to be from NodeJS
-	const timeoutIdRef = React.useRef<any>();
-	const targetRef = React.useRef<HTMLElement | null>(null);
-	const titleNodeRef = React.useRef<HTMLElement | null>(null);
-	const tooltipRef = React.useRef<HTMLElement | null>(null);
+	const tooltipRef = useRef<HTMLElement>(null);
 
-	const saveTitle = useCallback((element: HTMLElement) => {
-		titleNodeRef.current = element;
+	const {getInteraction, isFocusVisible} = useInteractionFocus();
 
-		const title = element.getAttribute('title');
+	const isHovered = useRef(false);
+	const isFocused = useRef(false);
 
-		if (title) {
-			element.setAttribute('data-restore-title', title);
-			element.removeAttribute('title');
-		} else if (element.tagName === 'svg') {
-			const titleTag = element.querySelector('title');
+	const {close, isOpen, open} = useTooltipState({delay});
 
-			if (titleTag) {
-				element.setAttribute('data-restore-title', titleTag.innerHTML);
-
-				titleTag.remove();
+	const {forceHide, getProps, onHide, target, titleNode} = useClosestTitle({
+		forceHide: useCallback(() => {
+			dispatch({type: 'reset'});
+			close();
+		}, []),
+		onClick: useCallback(() => {
+			isFocused.current = false;
+			isHovered.current = false;
+		}, []),
+		onHide: useCallback(() => {
+			if (!isHovered.current && !isFocused.current) {
+				dispatch({type: 'reset'});
+				close();
 			}
-		}
-	}, []);
+		}, []),
+		tooltipRef,
+	});
 
-	const restoreTitle = useCallback(() => {
-		const element = titleNodeRef.current;
+	useAlign({
+		align,
+		autoAlign,
+		floating,
+		isOpen,
+		onAlign: useCallback((align) => dispatch({align, type: 'update'}), []),
+		sourceElement: tooltipRef,
+		targetElement: titleNode,
+		title,
+	});
 
-		if (element) {
-			const title = element.getAttribute('data-restore-title');
+	const onShow = useCallback(
+		(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+			if (isHovered.current || isFocused.current) {
+				const props = getProps(event, isHovered.current);
 
-			if (title) {
-				if (element.tagName === 'svg') {
-					const titleTag = document.createElement('title');
-
-					titleTag.innerHTML = title;
-
-					element.appendChild(titleTag);
-				} else {
-					element.setAttribute('title', title);
-				}
-
-				element.removeAttribute('data-restore-title');
-			}
-
-			titleNodeRef.current = null;
-		}
-	}, []);
-
-	const handleHide = useCallback(() => {
-		dispatch({type: 'hide'});
-
-		clearTimeout(timeoutIdRef.current);
-
-		restoreTitle();
-
-		if (targetRef.current) {
-			targetRef.current.removeEventListener('click', handleHide);
-
-			targetRef.current = null;
-		}
-	}, []);
-
-	const handleShow = useCallback(({target}: {target: HTMLElement}) => {
-		targetRef.current = target;
-
-		const hasTitle =
-			target &&
-			(target.hasAttribute('title') || target.hasAttribute('data-title'));
-
-		const titleNode = hasTitle
-			? target
-			: closestAncestor(target, '[title], [data-title]');
-
-		if (titleNode) {
-			target.addEventListener('click', handleHide);
-
-			const title =
-				titleNode.getAttribute('title') ||
-				titleNode.getAttribute('data-title') ||
-				'';
-
-			saveTitle(titleNode);
-
-			const customDelay = titleNode.getAttribute('data-tooltip-delay');
-			const newAlign = titleNode.getAttribute(
-				'data-tooltip-align'
-			) as typeof align;
-			const setAsHTML = !!titleNode.getAttribute(
-				'data-title-set-as-html'
-			);
-
-			timeoutIdRef.current = setTimeout(
-				() => {
+				if (props) {
 					dispatch({
-						align: newAlign || align,
-						message: title,
-						setAsHTML,
-						type: 'show',
+						align: (props.align as any) ?? align,
+						floating: props.floating,
+						setAsHTML: props.setAsHTML,
+						title: props.title,
+						type: 'update',
 					});
-				},
-				customDelay ? Number(customDelay) : delay
-			);
-		}
-	}, []);
+					open(
+						isFocused.current,
+						props.delay ? Number(props.delay) : undefined
+					);
+				}
+			}
+		},
+		[align]
+	);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const handleEsc = (event: KeyboardEvent) => {
-			if (show && event.key === Keys.Esc) {
+			if (isOpen && event.key === Keys.Esc) {
 				event.stopImmediatePropagation();
 
-				handleHide();
+				forceHide();
 			}
 		};
 
 		document.addEventListener('keyup', handleEsc, true);
 
 		return () => document.removeEventListener('keyup', handleEsc, true);
-	}, [show]);
+	}, [isOpen]);
 
-	React.useEffect(() => {
+	const onHoverStart = (event: any) => {
+		if (getInteraction() === 'pointer') {
+			isHovered.current = true;
+		} else {
+			isHovered.current = false;
+		}
+
+		onShow(event);
+	};
+
+	const onHoverEnd = (event: any) => {
+		isFocused.current = false;
+		isHovered.current = false;
+
+		onHide(event);
+	};
+
+	const onFocus = (event: any) => {
+		if (isFocusVisible()) {
+			isFocused.current = true;
+
+			onShow(event);
+		}
+	};
+
+	const onBlur = (event: any) => {
+		isFocused.current = false;
+		isHovered.current = false;
+
+		onHide(event);
+	};
+
+	useEffect(() => {
 		if (scope) {
-			const disposeShowEvents = TRIGGER_SHOW_EVENTS.map((eventName) => {
-				return delegate(document.body, eventName, scope, handleShow);
-			});
-			const disposeHideEvents = TRIGGER_HIDE_EVENTS.map((eventName) => {
-				return delegate(document.body, eventName, scope, handleHide);
-			});
+			const disposeShowEvents = TRIGGER_SHOW_EVENTS.map((eventName) =>
+				delegate(document.body, eventName, scope, onHoverStart)
+			);
+			const disposeHideEvents = TRIGGER_HIDE_EVENTS.map((eventName) =>
+				delegate(
+					document.body,
+					eventName,
+					`${scope}, .tooltip`,
+					onHoverEnd
+				)
+			);
+
+			const disposeShowFocus = delegate(
+				document.body,
+				'focus',
+				`${scope}, .tooltip`,
+				onFocus,
+				true
+			);
+			const disposeCloseBlur = delegate(
+				document.body,
+				'blur',
+				`${scope}, .tooltip`,
+				onBlur,
+				true
+			);
 
 			return () => {
 				disposeShowEvents.forEach(({dispose}) => dispose());
 				disposeHideEvents.forEach(({dispose}) => dispose());
+
+				disposeShowFocus.dispose();
+				disposeCloseBlur.dispose();
 			};
 		}
-	}, []);
-
-	React.useEffect(() => {
-		if (
-			titleNodeRef.current &&
-			(tooltipRef as React.RefObject<HTMLDivElement>).current
-		) {
-			const points = ALIGNMENTS_MAP[align || 'top'] as [string, string];
-
-			const newAlignmentString = doAlign({
-				overflow: {
-					adjustX: autoAlign,
-					adjustY: autoAlign,
-				},
-				points,
-				sourceElement: (tooltipRef as React.RefObject<HTMLDivElement>)
-					.current!,
-				targetElement: titleNodeRef.current,
-			}).points.join('') as keyof typeof ALIGNMENTS_INVERSE_MAP;
-
-			const pointsString = points.join('');
-
-			if (pointsString !== newAlignmentString) {
-				dispatch({
-					align: ALIGNMENTS_INVERSE_MAP[newAlignmentString],
-					type: 'align',
-				});
-			}
-		}
-	}, [align, show]);
+	}, [onShow]);
 
 	warning(
-		!children && !scope,
+		(typeof children === 'undefined' && typeof scope !== 'undefined') ||
+			(typeof scope === 'undefined' && typeof children !== 'undefined'),
 		'<TooltipProvider />: You must use at least one of the following props: `children` or `scope`.'
 	);
 
 	warning(
-		children && scope,
+		typeof children !== 'undefined' || typeof scope !== 'undefined',
 		'<TooltipProvider />: If you want to use `scope`, use <TooltipProvider /> as a singleton and do not pass `children`.'
 	);
 
@@ -373,36 +285,49 @@ const TooltipProvider: React.FunctionComponent<
 	);
 
 	const titleContent = contentRenderer({
-		targetNode: targetRef.current,
-		title: message,
+		targetNode: target.current,
+		title,
 	});
+
+	const tooltip = isOpen && (
+		<ClayPortal {...containerProps}>
+			<ClayTooltip alignPosition={align} ref={tooltipRef} show>
+				{setAsHTML && typeof titleContent === 'string' ? (
+					<span
+						dangerouslySetInnerHTML={{
+							__html: titleContent,
+						}}
+					/>
+				) : (
+					titleContent
+				)}
+			</ClayTooltip>
+		</ClayPortal>
+	);
 
 	return (
 		<>
-			{show && (
-				<ClayPortal {...containerProps}>
-					<ClayTooltip alignPosition={align} ref={tooltipRef} show>
-						{setAsHTML && typeof titleContent === 'string' ? (
-							<span
-								dangerouslySetInnerHTML={{
-									__html: titleContent,
-								}}
-							/>
-						) : (
-							titleContent
-						)}
-					</ClayTooltip>
-				</ClayPortal>
+			{scope ? (
+				<>
+					{tooltip}
+					{children}
+				</>
+			) : (
+				children &&
+				React.cloneElement(children, {
+					...children.props,
+					children: (
+						<>
+							{children.props.children}
+							{tooltip}
+						</>
+					),
+					onBlur,
+					onFocus,
+					onMouseOut: onHoverEnd,
+					onMouseOver: onHoverStart,
+				})
 			)}
-
-			{scope
-				? children
-				: children &&
-				  React.cloneElement(children, {
-						...children.props,
-						onMouseOut: handleHide,
-						onMouseOver: handleShow,
-				  })}
 		</>
 	);
 };

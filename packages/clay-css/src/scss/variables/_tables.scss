@@ -32,6 +32,8 @@ $table-color: $body-color !default;
 $table-font-size: null !default;
 $table-margin-bottom: 0 !default;
 
+// .table-hover
+
 $table-hover-bg: #ececec !default;
 $table-hover-color: $table-color !default;
 
@@ -50,9 +52,10 @@ $table-striped-order: odd !default;
 
 // Table Cell applies to `th` and `td`
 
-$table-cell-gutters: $grid-gutter-width / 2 !default; // 15px
-$table-cell-padding: 0.75rem !default;
-$table-cell-padding-sm: 0.3rem !default;
+$table-cell-gutters: 1.25rem !default;
+$table-cell-padding: 0.5rem 1rem !default;
+$table-cell-padding-sm: 0.25rem 1rem !default;
+$table-cell-padding-lg: 1.0625rem !default;
 
 $table-cell-expand-min-width: 12.5rem !default; // 200px
 
@@ -68,20 +71,14 @@ $table-cell-expand-smallest-width: 10% !default;
 // TH
 
 $table-head-bg: $white !default;
-$table-head-border-bottom-width: 2 * $table-border-width !default;
-$table-head-border-top-width: 0 !default;
+$table-head-border-bottom-width: calc(2 * #{$table-border-width}) !default;
+$table-head-border-top-width: 0px !default;
 $table-head-color: $gray-700 !default;
 $table-head-font-size: null !default;
 $table-head-font-weight: null !default;
-$table-head-height: 36px !default;
+$table-head-height: 56px !default;
 
 $c-table-thead: () !default;
-$c-table-thead: map-merge(
-	(
-		background-color: $table-head-bg,
-	),
-	$c-table-thead
-);
 
 $table-head-link: () !default;
 
@@ -97,8 +94,8 @@ $c-table-tbody: () !default;
 // TD
 
 $table-data-border-bottom-width: $table-border-width !default;
-$table-data-border-left-width: 0 !default;
-$table-data-border-right-width: 0 !default;
+$table-data-border-left-width: 0px !default;
+$table-data-border-right-width: 0px !default;
 $table-data-border-top-width: $table-border-width !default;
 
 $table-data-border-color: $table-border-color !default;
@@ -111,7 +108,7 @@ $table-divider-bg: $white !default;
 $table-divider-color: null !default;
 $table-divider-font-weight: null !default;
 $table-divider-font-size: null !default;
-$table-divider-padding: $table-cell-padding !default;
+$table-divider-padding: 0.5rem 1rem 0.5rem 1.25rem !default;
 $table-divider-text-transform: null !default;
 
 $table-quick-action-menu-align-items: flex-start !default;
@@ -143,8 +140,8 @@ $c-table-caption: () !default;
 $c-table-caption: map-merge(
 	(
 		caption-side: top,
-		padding-left: $table-cell-padding,
-		padding-right: $table-cell-padding,
+		padding-left: nth($table-cell-padding, 2),
+		padding-right: nth($table-cell-padding, 2),
 	),
 	$c-table-caption
 );
@@ -170,9 +167,18 @@ $table-title-link: () !default;
 $table-title-link: map-deep-merge(
 	(
 		color: $gray-900,
-		hover-color: $gray-900,
+		hover: (
+			color: $gray-900,
+		),
 	),
 	$table-title-link
+);
+
+$table-title: map-deep-merge(
+	$table-title,
+	(
+		href: $table-title-link,
+	)
 );
 
 // Table Link
@@ -181,7 +187,9 @@ $table-link: () !default;
 $table-link: map-deep-merge(
 	(
 		color: $gray-700,
-		hover-color: darken($gray-700, 15%),
+		hover: (
+			color: clay-darken($gray-700, 15%),
+		),
 	),
 	$table-link
 );
@@ -192,22 +200,401 @@ $table-action-link: () !default;
 $table-action-link: map-deep-merge(
 	(
 		align-items: center,
-		border-radius: $btn-border-radius,
+		border-radius:
+			if(
+				variable-exists(btn-border-radius),
+				$btn-border-radius,
+				$border-radius
+			),
 		display: inline-flex,
 		height: 2rem,
 		justify-content: center,
 		vertical-align: middle,
 		width: 2rem,
-		hover-text-decoration: none,
-		lexicon-icon-margin-top: 0,
+		hover: (
+			text-decoration: none,
+		),
+		lexicon-icon: (
+			margin-top: 0,
+		),
 	),
 	$table-action-link
+);
+
+// .table
+
+$c-table: () !default;
+$c-table: map-deep-merge(
+	(
+		background-color: $table-bg,
+		border-spacing: 0,
+		color: $table-color,
+		font-size: $table-font-size,
+		margin-bottom: $table-margin-bottom,
+		width: 100%,
+		thead:
+			map-deep-merge(
+				$c-table-thead,
+				(
+					background-color: $table-head-bg,
+					table-cell: (
+						border-bottom: $table-head-border-bottom-width solid
+							$table-border-color,
+						border-top-width: $table-head-border-top-width,
+						vertical-align: middle,
+					),
+					th: (
+						href: $table-head-link,
+					),
+					autofit-col: (
+						padding-left: 0.125rem,
+						padding-right: 0.125rem,
+						first-child: (
+							padding-left: 0,
+						),
+						last-child: (
+							padding-right: 0,
+						),
+					),
+				)
+			),
+		table-column-start: (
+			padding-left: $table-cell-gutters,
+		),
+		th: (
+			background-clip: padding-box,
+			border-top: $table-border-width solid $table-border-color,
+			color: $table-head-color,
+			font-size: $table-head-font-size,
+			font-weight: $table-head-font-weight,
+			height: $table-head-height,
+			padding: $table-cell-padding,
+			position: relative,
+			vertical-align: top,
+		),
+		td: (
+			background-clip: padding-box,
+			border-bottom-width: $table-data-border-bottom-width,
+			border-color: $table-data-border-color,
+			border-left-width: $table-data-border-left-width,
+			border-right-width: $table-data-border-right-width,
+			border-style: $table-data-border-style,
+			border-top-width: $table-data-border-top-width,
+			height: 56px,
+			padding: $table-cell-padding,
+			position: relative,
+			vertical-align: $table-data-vertical-align,
+		),
+		tbody:
+			map-deep-merge(
+				$c-table-tbody,
+				(
+					tbody: (
+						border-top: calc(2 * #{$table-border-width}) solid
+							$table-border-color,
+					),
+				)
+			),
+		tfoot: $c-table-tfoot,
+		caption: $c-table-caption,
+		table-divider: (
+			table-cell: (
+				background-color: $table-divider-bg,
+				color: $table-divider-color,
+				font-size: $table-divider-font-size,
+				font-weight: $table-divider-font-weight,
+				height: 34px,
+				line-height: 17px,
+				padding: $table-divider-padding,
+				text-transform: $table-divider-text-transform,
+			),
+		),
+		table-active: (
+			background-color: $table-active-bg,
+			quick-action-menu: (
+				background-color: $table-quick-action-menu-active-bg,
+			),
+		),
+		table-disabled: (
+			background-color: $table-disabled-bg,
+			color: $table-disabled-color,
+			table-cell: (
+				cursor: $table-disabled-cursor,
+				href: (
+					color: $table-disabled-color,
+					pointer-events: $table-disabled-pointer-events,
+				),
+			),
+			table-title: (
+				color: $table-disabled-color,
+			),
+			table-list-title: (
+				color: $table-disabled-color,
+			),
+		),
+		autofit-col: (
+			justify-content: center,
+			padding-left: nth($table-cell-padding, 2),
+			padding-right: nth($table-cell-padding, 2),
+			first-child: (
+				padding-left: 0,
+			),
+			last-child: (
+				padding-right: 0,
+			),
+		),
+		component-drag: (
+			font-size: 0.875rem,
+			height: 1rem,
+			width: 1rem,
+			focus: (
+				box-shadow: $component-focus-inset-box-shadow,
+			),
+		),
+		custom-control: (
+			margin-bottom: 0,
+		),
+		quick-action-menu: (
+			align-items: $table-quick-action-menu-align-items,
+			background-color: $table-quick-action-menu-bg,
+			padding-bottom: nth($table-cell-padding, 1),
+			padding-top: nth($table-cell-padding, 1),
+		),
+	),
+	$c-table
+);
+
+// .table-hover
+
+$c-table-hover: () !default;
+$c-table-hover: map-deep-merge(
+	(
+		tbody: (
+			tr: (
+				hover: (
+					background-color: $table-hover-bg,
+					color: $table-hover-color,
+					quick-action-menu: (
+						background-color: $table-quick-action-menu-hover-bg,
+					),
+				),
+			),
+		),
+		table-active: (
+			hover: (
+				quick-action-menu: (
+					background-color: $table-quick-action-menu-active-bg,
+				),
+			),
+		),
+		table-disabled: (
+			hover: (
+				background-color: $table-disabled-bg,
+			),
+		),
+	),
+	$c-table-hover
+);
+
+// .table-focus
+
+$c-tr-table-focus: () !default;
+$c-tr-table-focus: map-deep-merge(
+	(
+		outline: 0,
+		td: (
+			outline: 0,
+			before: (
+				box-shadow: (
+					inset 0 0.2rem 0 0 rgba($primary, 0.25),
+					inset 0 -0.2rem 0 0 rgba($primary, 0.25),
+				),
+				content: '',
+				display: block,
+				position: absolute,
+				left: math-sign($table-border-width),
+				right: math-sign($table-border-width),
+				top: math-sign($table-border-width),
+				bottom: math-sign($table-border-width),
+				pointer-events: none,
+				z-index: 1,
+			),
+			first-child: (
+				after: (
+					box-shadow: inset 0.2rem 0 0 0 rgba($primary, 0.25),
+					content: '',
+					display: block,
+					position: absolute,
+					pointer-events: none,
+					top: $table-border-width,
+					bottom: $table-border-width,
+					left: math-sign($table-border-width),
+					z-index: 1,
+					width: 0.25rem,
+				),
+			),
+			last-child: (
+				after: (
+					box-shadow: inset -0.2rem 0 0 0 rgba($primary, 0.25),
+					content: '',
+					display: block,
+					position: absolute,
+					pointer-events: none,
+					top: $table-border-width,
+					bottom: $table-border-width,
+					right: math-sign($table-border-width),
+					z-index: 1,
+					width: 0.25rem,
+				),
+			),
+		),
+	),
+	$c-tr-table-focus
+);
+
+$c-td-table-focus: () !default;
+$c-td-table-focus: map-deep-merge(
+	(
+		outline: 'none',
+		box-shadow: clay-enable-shadows($component-focus-inset-box-shadow),
+	),
+	$c-td-table-focus
+);
+
+// .table-head-bordered
+
+$c-table-head-bordered: () !default;
+$c-table-head-bordered: map-deep-merge(
+	(
+		thead: (
+			table-cell: (
+				border-left: $table-border-width solid $table-border-color,
+				table-column-start: (
+					border-left-width: 0,
+				),
+			),
+		),
+	),
+	$c-table-head-bordered
+);
+
+// .table-bordered
+
+$table-bordered-border-width: $table-border-width !default;
+
+$c-table-bordered: () !default;
+$c-table-bordered: map-deep-merge(
+	(
+		border: $table-border-width solid $table-border-color,
+		thead: (
+			table-cell: (
+				border-bottom-width: calc(2 * #{$table-border-width}),
+			),
+		),
+		table-cell: (
+			border: $table-border-width solid $table-border-color,
+		),
+	),
+	$c-table-bordered
+);
+
+// .table-sm
+
+$c-table-sm: () !default;
+$c-table-sm: map-deep-merge(
+	(
+		table-cell: (
+			height: 32px,
+			padding: $table-cell-padding-sm,
+		),
+	),
+	$c-table-sm
+);
+
+// .table-md
+
+$c-table-md: () !default;
+$c-table-md: map-deep-merge(
+	(
+		table-cell: (
+			height: 48px,
+			padding: 0.375rem 1rem,
+		),
+	),
+	$c-table-md
+);
+
+// .table-lg
+
+$c-table-lg: () !default;
+$c-table-lg: map-deep-merge(
+	(
+		table-cell: (
+			padding: $table-cell-padding-lg,
+		),
+	),
+	$c-table-lg
+);
+
+// .table-nested-rows
+
+$c-table-nested-rows: () !default;
+$c-table-nested-rows: map-deep-merge(
+	(
+		autofit-col: (
+			padding-left: 0.125rem,
+			padding-right: 0.125rem,
+			min-width: 1.75rem,
+		),
+		autofit-col-checkbox: (
+			padding-right: 0.625rem,
+		),
+		autofit-col-icon: (
+			padding-right: 0.625rem,
+		),
+		component-drag: (
+			left: 2px,
+			position: absolute,
+			top: 50%,
+			transform: translateY(-50%),
+		),
+		component-toggle: (
+			font-size: 0.875rem,
+			height: 1.5rem,
+			width: 1.5rem,
+		),
+	),
+	$c-table-nested-rows
+);
+
+// .table-sort
+
+$c-table-sort: () !default;
+$c-table-sort: map-deep-merge(
+	(
+		thead: (
+			table-cell: (
+				cursor: pointer,
+				transition: clay-enable-transitions($component-transition),
+				hover: (
+					background-color: $primary-l3,
+					color: $gray-900,
+				),
+				component-action: (
+					font-size: 0.75rem,
+					height: 1.5rem,
+					width: 1.5rem,
+				),
+			),
+		),
+	),
+	$c-table-sort
 );
 
 // Table Dark Variant
 
 $table-dark-bg: $gray-800 !default;
-$table-dark-border-color: lighten($table-dark-bg, 7.5%) !default;
+$table-dark-border-color: clay-lighten($table-dark-bg, 7.5%) !default;
 $table-dark-color: $white !default;
 
 $table-dark-hover-bg: rgba($white, 0.075) !default;
@@ -215,43 +602,28 @@ $table-dark-hover-color: $table-dark-color !default;
 
 $table-dark-accent-bg: rgba($white, 0.05) !default;
 
-// Table Bordered
-
-$table-bordered-border-width: $table-border-width !default;
+/// @deprecated as of v3.x with no replacement, this color modifier is too specific to support a variety of colors
 
 $table-bg-level: -9 !default;
+
+/// @deprecated as of v3.x with no replacement, this color modifier is too specific to support a variety of colors
+
 $table-border-level: -6 !default;
 
 // Table List
 
 $table-list-bg: $white !default;
 $table-list-border-color: $table-border-color !default;
+$table-list-border-radius: $border-radius !default;
+
 $table-list-border-x-width: 0.0625rem !default;
 $table-list-border-y-width: 0.0625rem !default;
 
 $table-list-border-width: $table-list-border-y-width $table-list-border-x-width !default;
-
-$table-list-border-radius: $border-radius !default;
 $table-list-color: null !default;
 $table-list-font-size: null !default;
 $table-list-margin-bottom: $table-list-border-y-width !default;
 $table-list-margin-top: null !default;
-
-$c-table-list: () !default;
-$c-table-list: map-merge(
-	(
-		border-collapse: separate,
-		border-color: $table-list-border-color,
-		border-style: solid,
-		border-width: $table-list-border-y-width $table-list-border-x-width,
-		border-radius: clay-enable-rounded($table-list-border-radius),
-		color: $table-list-color,
-		font-size: $table-list-font-size,
-		margin-bottom: $table-list-margin-bottom,
-		margin-top: $table-list-margin-top,
-	),
-	$c-table-list
-);
 
 // .table-list.table-striped
 
@@ -301,7 +673,16 @@ $table-list-head-link: () !default;
 $c-table-list-thead: () !default;
 $c-table-list-thead: map-merge(
 	(
-		background-color: $table-list-head-bg,
+		border-top-left-radius:
+			clay-border-radius-inner(
+				$table-list-border-radius,
+				$table-list-border-y-width
+			),
+		border-top-right-radius:
+			clay-border-radius-inner(
+				$table-list-border-radius,
+				$table-list-border-y-width
+			),
 	),
 	$c-table-list-thead
 );
@@ -311,7 +692,16 @@ $c-table-list-thead: map-merge(
 $c-table-list-tbody: () !default;
 $c-table-list-tbody: map-merge(
 	(
-		background-color: $white,
+		border-bottom-left-radius:
+			clay-border-radius-inner(
+				$table-list-border-radius,
+				$table-list-border-y-width
+			),
+		border-bottom-right-radius:
+			clay-border-radius-inner(
+				$table-list-border-radius,
+				$table-list-border-y-width
+			),
 	),
 	$c-table-list-tbody
 );
@@ -319,14 +709,8 @@ $c-table-list-tbody: map-merge(
 // Table List Tfoot
 
 $c-table-list-tfoot: () !default;
-$c-table-list-tfoot: map-merge(
-	(
-		background-color: $white,
-	),
-	$c-table-list-tfoot
-);
 
-// .table-list.table-bordered {thead,tbody,tfoot} {th,td}
+// .table.table-list.table-bordered th, .table.table-list.table-bordered td
 
 $c-table-list-bordered-cell: () !default;
 $c-table-list-bordered-cell: map-merge(
@@ -342,8 +726,8 @@ $c-table-list-caption: () !default;
 
 // .table-list .table-divider
 
-$table-list-divider-padding-x: 0.75rem !default;
-$table-list-divider-padding-y: 0.75rem !default;
+$table-list-divider-padding-x: 1rem !default;
+$table-list-divider-padding-y: 0.5rem !default;
 
 // .table-list .quick-action-menu
 
@@ -371,9 +755,18 @@ $table-list-title-link: () !default;
 $table-list-title-link: map-deep-merge(
 	(
 		color: $gray-900,
-		hover-color: $gray-900,
+		hover: (
+			color: $gray-900,
+		),
 	),
 	$table-list-title-link
+);
+
+$table-list-title: map-deep-merge(
+	$table-list-title,
+	(
+		href: $table-list-title-link,
+	)
 );
 
 // Table List Link
@@ -382,7 +775,9 @@ $table-list-link: () !default;
 $table-list-link: map-deep-merge(
 	(
 		color: $gray-700,
-		hover-color: darken($gray-700, 15%),
+		hover: (
+			color: clay-darken($gray-700, 15%),
+		),
 	),
 	$table-list-link
 );
@@ -398,10 +793,196 @@ $table-list-action-link: map-deep-merge(
 		justify-content: center,
 		vertical-align: middle,
 		width: 2rem,
-		hover-text-decoration: none,
-		lexicon-icon-margin-top: 0,
+		hover: (
+			text-decoration: none,
+		),
+		lexicon-icon: (
+			margin-top: 0,
+		),
 	),
 	$table-list-action-link
+);
+
+// .table-list
+
+$c-table-list: () !default;
+$c-table-list: map-merge(
+	(
+		border-collapse: separate,
+		border-color: $table-list-border-color,
+		border-radius: clay-enable-rounded($table-list-border-radius),
+		border-style: solid,
+		border-width: $table-list-border-y-width $table-list-border-x-width,
+		color: $table-list-color,
+		font-size: $table-list-font-size,
+		margin-bottom: $table-list-margin-bottom,
+		margin-top: $table-list-margin-top,
+		thead:
+			map-deep-merge(
+				$c-table-list-thead,
+				(
+					table-cell: (
+						border-bottom-width: 0,
+						font-size: $table-list-head-font-size,
+						font-weight: $table-list-head-font-weight,
+						height: $table-list-head-height,
+						vertical-align: $table-list-head-vertical-alignment,
+						href: $table-list-head-link,
+					),
+				)
+			),
+		table-cell: $c-table-list-cell,
+		tbody:
+			map-deep-merge(
+				$c-table-list-tbody,
+				(
+					table-cell: (
+						vertical-align: middle,
+					),
+				)
+			),
+		tfoot:
+			map-deep-merge(
+				$c-table-list-tfoot,
+				(
+					table-cell: (
+						vertical-align: middle,
+					),
+				)
+			),
+		caption: $c-table-list-caption,
+		table-divider: (
+			table-cell: (
+				padding-bottom: $table-list-divider-padding-y,
+				padding-left: 1.25rem,
+				padding-right: $table-list-divider-padding-x,
+				padding-top: $table-list-divider-padding-y,
+			),
+		),
+		table-active: (
+			background-color: $table-list-active-bg,
+			quick-action-menu: (
+				background-color: $table-list-quick-action-menu-active-bg,
+			),
+		),
+		table-disabled: (
+			background-color: $table-list-disabled-bg,
+			color: $table-list-disabled-color,
+			table-cell: (
+				href: (
+					color: $table-list-disabled-color,
+					pointer-events: $table-list-disabled-pointer-events,
+				),
+			),
+			table-title: (
+				color: $table-list-disabled-color,
+			),
+			table-list-title: (
+				color: $table-list-disabled-color,
+			),
+		),
+		table-row-start: (
+			table-cell: (
+				border-top-width: 0,
+			),
+			table-cell-start: (
+				border-top-left-radius:
+					clay-enable-rounded(
+						clay-border-radius-inner(
+							$table-list-border-radius,
+							$table-list-border-y-width
+						)
+					),
+			),
+			table-cell-end: (
+				border-top-right-radius:
+					clay-enable-rounded(
+						clay-border-radius-inner(
+							$table-list-border-radius,
+							$table-list-border-y-width
+						)
+					),
+			),
+		),
+		table-row-end: (
+			table-cell-start: (
+				border-bottom-left-radius:
+					clay-enable-rounded(
+						clay-border-radius-inner(
+							$table-list-border-radius,
+							$table-list-border-y-width
+						)
+					),
+			),
+			table-cell-end: (
+				border-bottom-right-radius:
+					clay-enable-rounded(
+						clay-border-radius-inner(
+							$table-list-border-radius,
+							$table-list-border-y-width
+						)
+					),
+			),
+		),
+		quick-action-menu: (
+			align-items: $table-list-quick-action-menu-align-items,
+			background-color: $table-list-quick-action-menu-bg,
+			bottom: 0,
+			top: 0,
+		),
+	),
+	$c-table-list
+);
+
+// .table-list.table-hover
+
+$c-table-list-table-hover: () !default;
+$c-table-list-table-hover: map-deep-merge(
+	(
+		tbody: (
+			tr: (
+				hover: (
+					background-color: $table-list-hover-bg,
+					quick-action-menu: (
+						background-color: $table-list-quick-action-menu-hover-bg,
+					),
+				),
+			),
+		),
+		table-active: (
+			hover: (
+				background-color: $table-list-active-bg,
+				quick-action-menu: (
+					background-color: $table-list-quick-action-menu-hover-bg,
+				),
+			),
+		),
+		table-disabled: (
+			background-color: $table-list-disabled-bg,
+			hover: (
+				background-color: $table-list-disabled-bg,
+			),
+		),
+	),
+	$c-table-list-table-hover
+);
+
+// .table.table-list.table-bordered
+
+$c-table-list-table-bordered: () !default;
+$c-table-list-table-bordered: map-deep-merge(
+	(
+		thead: (
+			table-cell: (
+				border-bottom-width: 0,
+			),
+		),
+		table-cell: $c-table-list-bordered-cell,
+		table-column-start: (
+			border-left-width: 0,
+		),
+	),
+	$c-table-list-table-bordered
 );
 
 // Table Valign
@@ -420,7 +1001,7 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(primary, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(primary, $table-bg-level), 5%),
+					clay-darken(theme-color-level(primary, $table-bg-level), 5%),
 			),
 		),
 		'secondary': (
@@ -428,7 +1009,10 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(secondary, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(secondary, $table-bg-level), 5%),
+					clay-darken(
+						theme-color-level(secondary, $table-bg-level),
+						5%
+					),
 			),
 		),
 		'success': (
@@ -436,7 +1020,7 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(success, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(success, $table-bg-level), 5%),
+					clay-darken(theme-color-level(success, $table-bg-level), 5%),
 			),
 		),
 		'info': (
@@ -444,7 +1028,7 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(info, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(info, $table-bg-level), 5%),
+					clay-darken(theme-color-level(info, $table-bg-level), 5%),
 			),
 		),
 		'warning': (
@@ -452,7 +1036,7 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(warning, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(warning, $table-bg-level), 5%),
+					clay-darken(theme-color-level(warning, $table-bg-level), 5%),
 			),
 		),
 		'danger': (
@@ -460,7 +1044,7 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(danger, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(danger, $table-bg-level), 5%),
+					clay-darken(theme-color-level(danger, $table-bg-level), 5%),
 			),
 		),
 		'light': (
@@ -468,7 +1052,7 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(light, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(light, $table-bg-level), 5%),
+					clay-darken(theme-color-level(light, $table-bg-level), 5%),
 			),
 		),
 		'dark': (
@@ -476,7 +1060,13 @@ $table-row-theme-colors: map-deep-merge(
 			border-color: theme-color-level(dark, $table-border-level),
 			hover: (
 				background-color:
-					darken(theme-color-level(dark, $table-bg-level), 5%),
+					clay-darken(theme-color-level(dark, $table-bg-level), 5%),
+			),
+			table-title: (
+				color: $table-dark-color,
+				href: (
+					color: inherit,
+				),
 			),
 		),
 	),

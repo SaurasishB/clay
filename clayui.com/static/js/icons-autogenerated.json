@@ -1,5 +1,9 @@
 [
     {
+        "name": "accessibility",
+        "aliases": ["human", "inclusive", "user"]
+    },
+    {
         "name": "add-cell",
         "aliases": ["center", "excel", "grid", "squares", "table"]
     },
@@ -54,6 +58,22 @@
     {
         "name": "analytics",
         "aliases": ["grow", "arrow", "increase", "bar", "data", "expand"]
+    },
+    {
+        "name": "angle-double-left-small",
+        "aliases": [""]
+    },
+    {
+        "name": "angle-double-left",
+        "aliases": [""]
+    },
+    {
+        "name": "angle-double-right-small",
+        "aliases": [""]
+    },
+    {
+        "name": "angle-double-right",
+        "aliases": [""]
     },
     {
         "name": "angle-down-small",
@@ -188,16 +208,40 @@
         "aliases": ["bind", "mapping", "thunder", "trigger"]
     },
     {
+        "name": "book",
+        "aliases": ["library", "pages"]
+    },
+    {
+        "name": "bookmarks-full",
+        "aliases": ["clip", "holder", "marker", "tag", "save"]
+    },
+    {
         "name": "bookmarks",
-        "aliases": ["clip", "holder", "marker", "tag"]
+        "aliases": ["clip", "holder", "marker", "tag", "save"]
     },
     {
         "name": "books",
         "aliases": [""]
     },
     {
+        "name": "border-style",
+        "aliases": ["line", "stroke", "dashed", "solid"]
+    },
+    {
+        "name": "border-width",
+        "aliases": ["line", "stroke", "weight", "thickness"]
+    },
+    {
         "name": "box-container",
         "aliases": ["chest", "collection", "package"]
+    },
+    {
+        "name": "braces",
+        "aliases": ["container", "curly brackets", "keys", "object", "record"]
+    },
+    {
+        "name": "brackets",
+        "aliases": ["array", "container"]
     },
     {
         "name": "breadcrumb",
@@ -344,6 +388,10 @@
         "aliases": ["change", "settings"]
     },
     {
+        "name": "coin",
+        "aliases": ["cash", "circle", "dollar", "money"]
+    },
+    {
         "name": "color-picker",
         "aliases": ["bucket", "can", "drop", "hue", "paint"]
     },
@@ -368,12 +416,24 @@
         "aliases": ["box", "grid", "rectangle", "squares"]
     },
     {
+        "name": "content-shield",
+        "aliases": ["csp", "security", "shield"]
+    },
+    {
         "name": "control-panel",
         "aliases": ["change", "effects", "settings"]
     },
     {
+        "name": "cookie",
+        "aliases": ["biscuit", "browser", "history"]
+    },
+    {
         "name": "copy",
         "aliases": ["duplicate", "paste"]
+    },
+    {
+        "name": "corner-radius",
+        "aliases": ["border radius", "smooth corners", "rounded corners"]
     },
     {
         "name": "credit-card",
@@ -396,6 +456,10 @@
         "aliases": ["copy", "editor", "paste", "scissors", "text"]
     },
     {
+        "name": "date-time",
+        "aliases": [""]
+    },
+    {
         "name": "date",
         "aliases": ["agenda", "calendar", "day", "picker", "time"]
     },
@@ -414,6 +478,10 @@
     {
         "name": "devices",
         "aliases": [""]
+    },
+    {
+        "name": "diagonal-line",
+        "aliases": ["line", "diagonal", "slash", "null", "empty"]
     },
     {
         "name": "diagram",
@@ -490,6 +558,10 @@
     {
         "name": "documents-and-media",
         "aliases": ["audio", "file", "music", "video"]
+    },
+    {
+        "name": "dollar-symbol",
+        "aliases": ["cash", "currency", "money", "price"]
     },
     {
         "name": "download",
@@ -572,6 +644,14 @@
         "aliases": ["fullscreen", "increase"]
     },
     {
+        "name": "export",
+        "aliases": [""]
+    },
+    {
+        "name": "field-area",
+        "aliases": ["field", "area"]
+    },
+    {
         "name": "fieldset",
         "aliases": [""]
     },
@@ -600,8 +680,24 @@
         "aliases": ["banner", "report"]
     },
     {
+        "name": "folder-lock-line",
+        "aliases": ["closed", "locked", "permissions", "private"]
+    },
+    {
+        "name": "folder-lock",
+        "aliases": ["closed", "locked", "permissions", "private"]
+    },
+    {
         "name": "folder",
         "aliases": ["box", "container", "file"]
+    },
+    {
+        "name": "font-family",
+        "aliases": ["text", "editor", "style"]
+    },
+    {
+        "name": "font-size",
+        "aliases": ["text", "editor", "size", "style"]
     },
     {
         "name": "form-extensions",
@@ -620,8 +716,20 @@
         "aliases": ["expand", "fullscreen", "increase"]
     },
     {
+        "name": "gallery",
+        "aliases": ["view", "media", "file", "image"]
+    },
+    {
         "name": "geolocation",
         "aliases": ["pin", "place"]
+    },
+    {
+        "name": "globe-lines",
+        "aliases": ["country", "earth", "location", "web", "world"]
+    },
+    {
+        "name": "globe-pin",
+        "aliases": ["earth", "location", "region", "web", "world"]
     },
     {
         "name": "globe",
@@ -656,6 +764,10 @@
         "aliases": [""]
     },
     {
+        "name": "heading",
+        "aliases": ["h", "title", "text", "editor"]
+    },
+    {
         "name": "heart-full",
         "aliases": [""]
     },
@@ -666,6 +778,10 @@
     {
         "name": "hidden",
         "aliases": ["eye", "hide", "see", "show", "view"]
+    },
+    {
+        "name": "hierarchy",
+        "aliases": ["browse", "layers", "elements", "rectangles", "list", "order", "sequence"]
     },
     {
         "name": "home-full",
@@ -682,6 +798,10 @@
     {
         "name": "hr",
         "aliases": ["line", "minus", "rectangle"]
+    },
+    {
+        "name": "icon-rule-builder",
+        "aliases": ["rules", "rule-builder", "logic"]
     },
     {
         "name": "import-export",
@@ -736,6 +856,10 @@
         "aliases": ["editor", "text"]
     },
     {
+        "name": "key",
+        "aliases": ["key", "security", "save"]
+    },
+    {
         "name": "liferay-ac",
         "aliases": [""]
     },
@@ -788,12 +912,20 @@
         "aliases": ["effects", "select", "wand"]
     },
     {
+        "name": "maps",
+        "aliases": ["pin", "location", "place"]
+    },
+    {
         "name": "mark-as-answer",
         "aliases": ["lines", "list", "question"]
     },
     {
         "name": "mark-as-question",
         "aliases": ["lines", "list"]
+    },
+    {
+        "name": "marketplace",
+        "aliases": ["shop", "store"]
     },
     {
         "name": "megaphone-full",
@@ -817,6 +949,10 @@
     },
     {
         "name": "mobile-device-rules",
+        "aliases": [""]
+    },
+    {
+        "name": "mobile-devices",
         "aliases": [""]
     },
     {
@@ -844,12 +980,24 @@
         "aliases": ["social"]
     },
     {
+        "name": "no-bot",
+        "aliases": ["captcha", "robot", "test"]
+    },
+    {
+        "name": "nodes",
+        "aliases": ["channel", "commerce", "marketing", "sales", "user"]
+    },
+    {
         "name": "number",
         "aliases": ["counter", "order", "sequence"]
     },
     {
         "name": "oauth",
         "aliases": [""]
+    },
+    {
+        "name": "opacity",
+        "aliases": ["transparent", "checker", "opaque"]
     },
     {
         "name": "open-id",
@@ -874,6 +1022,30 @@
     {
         "name": "order-arrow",
         "aliases": [""]
+    },
+    {
+        "name": "order-ascending",
+        "aliases": ["arrows", "filter", "alphabetical", "sort", "list"]
+    },
+    {
+        "name": "order-descending",
+        "aliases": ["arrows", "filter", "alphabetical", "sort", "list"]
+    },
+    {
+        "name": "order-form-cog",
+        "aliases": ["commerce", "configuration", "settings"]
+    },
+    {
+        "name": "order-form-pencil",
+        "aliases": ["commerce", "details"]
+    },
+    {
+        "name": "order-form-tag",
+        "aliases": ["commerce", "type"]
+    },
+    {
+        "name": "order-form",
+        "aliases": ["commerce", "list", "shop"]
     },
     {
         "name": "order-list-down",
@@ -932,6 +1104,14 @@
         "aliases": ["draft", "edit", "write"]
     },
     {
+        "name": "percentage-banner",
+        "aliases": ["discount", "flag", "label", "standard", "tag"]
+    },
+    {
+        "name": "percentage-symbol",
+        "aliases": ["%", "discount"]
+    },
+    {
         "name": "phone",
         "aliases": ["call", "contact"]
     },
@@ -966,6 +1146,10 @@
     {
         "name": "polls",
         "aliases": ["bars", "results", "statistics"]
+    },
+    {
+        "name": "price-tag",
+        "aliases": ["cash", "discount", "dollar", "money", "offer"]
     },
     {
         "name": "print",
@@ -1068,8 +1252,16 @@
         "aliases": ["notification", "updates"]
     },
     {
+        "name": "ruler",
+        "aliases": ["measure", "size"]
+    },
+    {
         "name": "rules",
         "aliases": ["condition"]
+    },
+    {
+        "name": "scim",
+        "aliases": ["shield"]
     },
     {
         "name": "search-experiences",
@@ -1096,8 +1288,16 @@
         "aliases": ["input", "multiple", "options"]
     },
     {
+        "name": "seo",
+        "aliases": ["engine", "search", "keyword"]
+    },
+    {
         "name": "separator",
         "aliases": ["divider", "group", "line"]
+    },
+    {
+        "name": "shadow",
+        "aliases": ["effect", "light"]
     },
     {
         "name": "share-alt",
@@ -1110,6 +1310,10 @@
     {
         "name": "sheets",
         "aliases": ["assets", "layers"]
+    },
+    {
+        "name": "shield-asterisk",
+        "aliases": ["authentication", "mfa", "security", "shield"]
     },
     {
         "name": "shield-check",
@@ -1200,6 +1404,14 @@
         "aliases": ["task", "workflow"]
     },
     {
+        "name": "squares-clock",
+        "aliases": ["availability", "boxes", "hour", "inventory", "time"]
+    },
+    {
+        "name": "squares",
+        "aliases": ["boxes", "inventory"]
+    },
+    {
         "name": "staging",
         "aliases": ["changes", "circle", "loading"]
     },
@@ -1214,6 +1426,10 @@
     {
         "name": "star",
         "aliases": ["favorite", "rating"]
+    },
+    {
+        "name": "stars",
+        "aliases": ["ai", "magic", "effects"]
     },
     {
         "name": "sticky",
@@ -1352,6 +1568,10 @@
         "aliases": [""]
     },
     {
+        "name": "twitter-x",
+        "aliases": ["share"]
+    },
+    {
         "name": "twitter",
         "aliases": ["deprecated"]
     },
@@ -1400,6 +1620,10 @@
         "aliases": ["arrows", "expand"]
     },
     {
+        "name": "video-streaming",
+        "aliases": ["video", "streaming", "direct", "video-streaming"]
+    },
+    {
         "name": "video",
         "aliases": ["multimedia", "play"]
     },
@@ -1410,6 +1634,10 @@
     {
         "name": "vocabulary",
         "aliases": ["abc", "editor", "order", "text"]
+    },
+    {
+        "name": "warehouse",
+        "aliases": ["boxes", "deposit", "house", "inventory", "stock"]
     },
     {
         "name": "warning-full",

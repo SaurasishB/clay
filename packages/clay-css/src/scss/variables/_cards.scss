@@ -4,7 +4,9 @@ $card-border-style: solid !default;
 $card-border-width: $border-width !default;
 
 $card-border-radius: $border-radius !default;
-$card-inner-border-radius: $card-border-radius - $card-border-width !default;
+$card-inner-border-radius: calc(
+	#{$card-border-radius} - #{$card-border-width}
+) !default;
 
 $card-box-shadow: null !default;
 $card-color: null !default;
@@ -17,18 +19,56 @@ $card-spacer-y: 0.75rem !default;
 $card-cap-bg: rgba($black, 0.03) !default;
 $card-cap-color: null !default;
 
+// .card-body
+
 $card-body-padding-bottom: $card-spacer-x !default;
 $card-body-padding-left: $card-spacer-x !default;
 $card-body-padding-right: $card-spacer-x !default;
 $card-body-padding-top: $card-spacer-x !default;
+
+// Enable `flex-grow: 1` for decks and groups so that card blocks take up
+// as much space as possible, ensuring footers are aligned to the bottom.
+
+// `min-height` workaround for the image size bug in IE
+// See: https://github.com/twbs/bootstrap/pull/28855
+
+$card-body: () !default;
+$card-body: map-deep-merge(
+	(
+		color: $card-color,
+		flex: 1 1 auto,
+		min-height: 1px,
+		padding-bottom: $card-body-padding-bottom,
+		padding-left: $card-body-padding-left,
+		padding-right: $card-body-padding-right,
+		padding-top: $card-body-padding-top,
+	),
+	$card-body
+);
+
+// .card-section-header
 
 $card-section-header-color: $gray-600 !default;
 $card-section-header-font-size: 0.75rem !default;
 $card-section-header-font-weight: $font-weight-semi-bold !default;
 $card-section-header-line-height: 2.5 !default;
 $card-section-header-margin-bottom: 1.5rem !default;
-$card-section-header-padding: 0 ($grid-gutter-width / 2) !default;
+$card-section-header-padding: 0 ($grid-gutter-width * 0.5) !default;
 $card-section-header-text-transform: uppercase !default;
+
+$card-section-header: () !default;
+$card-section-header: map-deep-merge(
+	(
+		color: $card-section-header-color,
+		font-size: $card-section-header-font-size,
+		font-weight: $card-section-header-font-weight,
+		line-height: $card-section-header-line-height,
+		margin-bottom: $card-section-header-margin-bottom,
+		padding: $card-section-header-padding,
+		text-transform: $card-section-header-text-transform,
+	),
+	$card-section-header
+);
 
 /// @deprecated as of v3.x with no replacement
 
@@ -36,7 +76,7 @@ $card-img-overlay-padding: 1.25rem !default;
 
 /// @deprecated as of v3.x with no replacement
 
-$card-group-margin: $grid-gutter-width / 2 !default;
+$card-group-margin: $grid-gutter-width * 0.5 !default;
 
 /// @deprecated as of v3.x with no replacement
 
@@ -128,7 +168,42 @@ $card-aspect-ratio-item-bottom-left: map-deep-merge(
 	$card-aspect-ratio-item-bottom-left
 );
 
-// Card Title
+// min-width, see https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+
+$card: () !default;
+$card: map-deep-merge(
+	(
+		background-color: $card-bg,
+		border-color: $card-border-color,
+		border-radius: clay-enable-rounded($card-border-radius),
+		border-style: $card-border-style,
+		border-width: $card-border-width,
+		box-shadow: clay-enable-shadows($card-box-shadow),
+		display: block,
+		height: $card-height,
+		margin-bottom: $card-margin-bottom,
+		min-width: 0,
+		position: relative,
+		word-wrap: break-word,
+		aspect-ratio: (
+			label: $card-aspect-ratio-label,
+		),
+		aspect-ratio-item-top-left: $card-aspect-ratio-item-top-left,
+		aspect-ratio-item-top-center: $card-aspect-ratio-item-top-center,
+		aspect-ratio-item-top-right: $card-aspect-ratio-item-top-right,
+		aspect-ratio-item-right-middle: $card-aspect-ratio-item-right-middle,
+		aspect-ratio-item-bottom-right: $card-aspect-ratio-item-bottom-right,
+		aspect-ratio-item-bottom-center: $card-aspect-ratio-item-bottom-center,
+		aspect-ratio-item-bottom-left: $card-aspect-ratio-item-bottom-left,
+		hr: (
+			margin-left: 0,
+			margin-right: 0,
+		),
+	),
+	$card
+);
+
+// .card-title
 
 $card-title: () !default;
 $card-title: map-deep-merge(
@@ -149,7 +224,14 @@ $card-title-link: map-deep-merge(
 	$card-title-link
 );
 
-// Card Subtitle
+$card-title: map-deep-merge(
+	$card-title,
+	(
+		href: $card-title-link,
+	)
+);
+
+// .card-subtitle
 
 $card-subtitle: () !default;
 $card-subtitle: map-deep-merge(
@@ -168,13 +250,32 @@ $card-subtitle-link: map-deep-merge(
 	(
 		color: map-get($card-subtitle, color),
 		hover: (
-			color: darken($gray-600, 15%),
+			color: clay-darken($gray-600, 15%),
 		),
 	),
 	$card-subtitle-link
 );
 
-// Card Link
+$card-subtitle: map-deep-merge(
+	$card-subtitle,
+	(
+		href: $card-subtitle-link,
+	)
+);
+
+// .card-text
+
+$card-text: () !default;
+$card-text: map-deep-merge(
+	(
+		last-child: (
+			margin-bottom: 0,
+		),
+	),
+	$card-text
+);
+
+// .card-link
 
 $card-link: () !default;
 $card-link: map-deep-merge(
@@ -188,35 +289,356 @@ $card-link: map-deep-merge(
 	$card-link
 );
 
-// Card Divider
+// .card-divider
 
 $card-divider-bg: $card-border-color !default;
 $card-divider-height: 1px !default;
 $card-divider-spacer-x: null !default;
 $card-divider-spacer-y: 10px !default;
 
-$card-rounded-inner-border-radius: if(
-	$card-border-width > 0,
-	calc(#{$rounded-border-radius} - #{$card-border-width}),
-	$rounded-border-radius
+$card-divider: () !default;
+$card-divider: map-merge(
+	(
+		background-color: $card-divider-bg,
+		height: $card-divider-height,
+		margin-bottom: $card-divider-spacer-y,
+		margin-left: $card-divider-spacer-x,
+		margin-right: $card-divider-spacer-x,
+		margin-top: $card-divider-spacer-y,
+	),
+	$card-divider
+);
+
+// .card-header
+
+// `margin-bottom`, removes the default margin-bottom of <hN> (h1 - h6)
+
+$card-header: () !default;
+$card-header: map-deep-merge(
+	(
+		background-color: $card-cap-bg,
+		border-bottom: $card-border-width solid $card-border-color,
+		color: $card-cap-color,
+		margin-bottom: 0,
+		padding: $card-spacer-y $card-spacer-x,
+		first-child: (
+			border-radius:
+				clay-enable-rounded(
+					$card-inner-border-radius $card-inner-border-radius 0 0
+				),
+		),
+	),
+	$card-header
+);
+
+// .card-footer
+
+$card-footer: () !default;
+$card-footer: map-deep-merge(
+	(
+		background-color: $card-cap-bg,
+		border-top: $card-border-width solid $card-border-color,
+		padding: $card-spacer-y $card-spacer-x,
+		last-child: (
+			border-radius:
+				clay-enable-rounded(
+					0 0 $card-inner-border-radius $card-inner-border-radius
+				),
+		),
+	),
+	$card-footer
+);
+
+// .card.rounded-*
+
+$card-rounded-inner-border-radius: calc(
+	#{$rounded-border-radius} - #{$card-border-width}
 ) !default;
-$card-rounded-0-inner-border-radius: if(
-	$rounded-0-border-radius > $card-border-width,
-	calc(#{$rounded-0-border-radius} - #{$card-border-width}),
-	0
+$card-rounded-0-inner-border-radius: calc(
+	#{$rounded-0-border-radius} - #{$card-border-width}
 ) !default;
-$card-rounded-circle-inner-border-radius: if(
-	$card-border-width > 0,
-	calc(#{$rounded-circle-border-radius} - #{$card-border-width}),
-	$rounded-circle-border-radius
+$card-rounded-circle-inner-border-radius: calc(
+	#{$rounded-circle-border-radius} - #{$card-border-width}
 ) !default;
 
+// .form-check-card
+
+$form-check-card-checked-box-shadow: $input-btn-focus-box-shadow !default;
+
+$form-check-card: () !default;
+$form-check-card: map-deep-merge(
+	(
+		margin-bottom: $card-margin-bottom,
+		margin-top: 0,
+		padding-left: 0,
+		hover: (
+			card: (
+				box-shadow: $form-check-card-checked-box-shadow,
+			),
+		),
+		active: (
+			card: (
+				box-shadow: $form-check-card-checked-box-shadow,
+			),
+		),
+		checked: (
+			card: (
+				box-shadow: $form-check-card-checked-box-shadow,
+			),
+		),
+		card: (
+			margin-bottom: 0,
+		),
+		form-check-input: (
+			margin-left: 0,
+			margin-top: 0,
+			opacity: 0,
+			position: absolute,
+			z-index: 1,
+		),
+		form-check-label: (
+			color: $body-color,
+			display: inline,
+			font-weight: $font-weight-normal,
+			padding-left: 0,
+			position: static,
+		),
+		custom-control: (
+			display: inline,
+			margin-right: 0,
+			position: static,
+			label: (
+				font-weight: $font-weight-normal,
+				padding-left: 0,
+			),
+			custom-control-label: (
+				opacity: 0,
+				position: absolute,
+				z-index: 1,
+				before: (
+					top: 0,
+				),
+				after: (
+					top: 0,
+				),
+			),
+			custom-control-input: (
+				z-index: 2,
+				checked: (
+					card: (
+						box-shadow: $form-check-card-checked-box-shadow,
+					),
+				),
+			),
+		),
+	),
+	$form-check-card
+);
+
+// .form-check-bottom-left .card-horizontal > .card-body,
+// .form-check-middle-left .card-horizontal > .card-body,
+// .form-check-top-left .card-horizontal > .card-body
+
 $checkbox-left-card-padding: 40px !default;
+
+// .form-check-bottom-right .card-horizontal > .card-body,
+// .form-check-middle-right .card-horizontal > .card-body,
+// .form-check-top-right .card-horizontal > .card-body
+
 $checkbox-right-card-padding: $checkbox-left-card-padding !default;
+
+// Form Check Positions
 
 $checkbox-position: 1rem !default;
 
-$form-check-card-checked-box-shadow: $input-btn-focus-box-shadow !default;
+// .form-check-bottom-left
+
+$form-check-bottom-left: () !default;
+$form-check-bottom-left: map-deep-merge(
+	(
+		form-check-input: (
+			bottom: $checkbox-position,
+			left: $checkbox-position,
+			opacity: 1,
+			top: auto,
+			transform: none,
+		),
+		custom-control: (
+			custom-control-input: (
+				bottom: $checkbox-position,
+				left: $checkbox-position,
+				top: auto,
+				transform: none,
+			),
+			custom-control-label: (
+				bottom: $checkbox-position,
+				left: $checkbox-position,
+				opacity: 1,
+				top: auto,
+				transform: none,
+			),
+		),
+	),
+	$form-check-bottom-left
+);
+
+// .form-check-bottom-right
+
+$form-check-bottom-right: () !default;
+$form-check-bottom-right: map-deep-merge(
+	(
+		form-check-input: (
+			bottom: $checkbox-position,
+			left: auto,
+			opacity: 1,
+			right: $checkbox-position,
+			top: auto,
+			transform: none,
+		),
+		custom-control: (
+			custom-control-input: (
+				bottom: $checkbox-position,
+				left: auto,
+				right: $checkbox-position,
+				top: auto,
+				transform: none,
+			),
+			custom-control-label: (
+				bottom: $checkbox-position,
+				left: auto,
+				opacity: 1,
+				right: $checkbox-position,
+				top: auto,
+				transform: none,
+			),
+		),
+	),
+	$form-check-bottom-right
+);
+
+// .form-check-middle-left
+
+$form-check-middle-left: () !default;
+$form-check-middle-left: map-deep-merge(
+	(
+		form-check-input: (
+			left: $checkbox-position,
+			margin-top: 0,
+			opacity: 1,
+			top: 50%,
+			transform: translateY(-50%),
+		),
+		custom-control: (
+			custom-control-input: (
+				left: $checkbox-position,
+				margin-top: 0,
+				top: 50%,
+				transform: translateY(-50%),
+			),
+			custom-control-label: (
+				left: $checkbox-position,
+				margin-top: 0,
+				opacity: 1,
+				top: 50%,
+				transform: translateY(-50%),
+			),
+		),
+	),
+	$form-check-middle-left
+);
+
+// .form-check-middle-right
+
+$form-check-middle-right: () !default;
+$form-check-middle-right: map-deep-merge(
+	(
+		form-check-input: (
+			left: auto,
+			margin-top: 0,
+			opacity: 1,
+			right: $checkbox-position,
+			top: 50%,
+			transform: translateY(-50%),
+		),
+		custom-control: (
+			custom-control-input: (
+				left: auto,
+				margin-top: 0,
+				right: $checkbox-position,
+				top: 50%,
+				transform: translateY(-50%),
+			),
+			custom-control-label: (
+				left: auto,
+				margin-top: 0,
+				opacity: 1,
+				right: $checkbox-position,
+				top: 50%,
+				transform: translateY(-50%),
+			),
+		),
+	),
+	$form-check-middle-right
+);
+
+// .form-check-top-right
+
+$form-check-top-right: () !default;
+$form-check-top-right: map-deep-merge(
+	(
+		form-check-input: (
+			left: auto,
+			opacity: 1,
+			right: $checkbox-position,
+			top: $checkbox-position,
+			transform: none,
+		),
+		custom-control: (
+			custom-control-input: (
+				left: auto,
+				right: $checkbox-position,
+				top: $checkbox-position,
+				transform: none,
+			),
+			custom-control-label: (
+				left: auto,
+				opacity: 1,
+				right: $checkbox-position,
+				top: $checkbox-position,
+				transform: none,
+			),
+		),
+	),
+	$form-check-top-right
+);
+
+// .form-check-top-left
+
+$form-check-top-left: () !default;
+$form-check-top-left: map-deep-merge(
+	(
+		form-check-input: (
+			left: $checkbox-position,
+			opacity: 1,
+			top: $checkbox-position,
+			transform: none,
+		),
+		custom-control: (
+			custom-control-input: (
+				left: $checkbox-position,
+				top: $checkbox-position,
+				transform: none,
+			),
+			custom-control-label: (
+				left: $checkbox-position,
+				opacity: 1,
+				top: $checkbox-position,
+				transform: none,
+			),
+		),
+	),
+	$form-check-top-left
+);
 
 // Card Interactive
 
@@ -224,12 +646,12 @@ $card-interactive-after-highlight: () !default;
 $card-interactive-after-highlight: map-deep-merge(
 	(
 		border-radius: 0 0 $card-border-radius $card-border-radius,
-		bottom: -$card-border-width,
+		bottom: math-sign($card-border-width),
 		content: '',
 		height: 0,
-		left: -$card-border-width,
+		left: math-sign($card-border-width),
 		position: absolute,
-		right: -$card-border-width,
+		right: math-sign($card-border-width),
 		transition: height 0.15s ease-out,
 		hover: (
 			height: 4px,
@@ -257,13 +679,13 @@ $card-interactive: map-deep-merge(
 	(
 		cursor: $link-cursor,
 		outline: 0,
-		transition: $btn-transition,
+		transition: $component-transition,
 		hover: (
 			background-color: $gray-100,
 			text-decoration: none,
 		),
 		focus: (
-			border-color: lighten($component-active-bg, 25%),
+			border-color: clay-lighten($component-active-bg, 25%),
 			box-shadow: $input-btn-focus-box-shadow,
 		),
 		active: (
@@ -315,7 +737,7 @@ $card-interactive-secondary: map-deep-merge(
 		color: $gray-900,
 		hover: (
 			background-color: $white,
-			border-color: lighten($component-active-bg, 25%),
+			border-color: clay-lighten($component-active-bg, 25%),
 			box-shadow: $input-btn-focus-box-shadow,
 			color: $gray-900,
 		),
@@ -331,12 +753,50 @@ $card-interactive-secondary: map-deep-merge(
 $card-type-asset: () !default;
 $card-type-asset: map-deep-merge(
 	(
+		aspect-ratio: (
+			border-color: $card-border-color,
+			border-style: solid,
+			border-width: 0 0 0.0625rem 0,
+			horizontal: 16,
+			vertical: 9,
+			custom-control: (
+				label: (
+					bottom: 0,
+					cursor: $link-cursor,
+					left: 0,
+					position: absolute,
+					right: 0,
+					top: 0,
+				),
+			),
+		),
 		card-type-asset-icon: (
+			width: 22.225%,
+			inline-item: (
+				bottom: 0,
+				left: 0,
+				position: absolute,
+				right: 0,
+				top: 0,
+			),
+			lexicon-icon: (
+				height: 100%,
+				width: 100%,
+			),
 			sticker: (
+				border-radius: 50%,
 				display: block,
+				font-size: 2vw,
 				padding-bottom: 100%,
 				width: 100%,
 			),
+		),
+		card-row: (
+			align-items: flex-start,
+		),
+		dropdown-action: (
+			margin-right: -0.5rem,
+			margin-top: -0.1875rem,
 		),
 	),
 	$card-type-asset
@@ -351,7 +811,7 @@ $image-card: () !default;
 $file-card: () !default;
 $file-card: map-deep-merge(
 	(
-		asset-icon: (
+		card-type-asset-icon: (
 			color: $gray-600,
 		),
 	),
@@ -389,7 +849,7 @@ $product-card: map-deep-merge(
 $user-card: () !default;
 $user-card: map-deep-merge(
 	(
-		asset-icon: (
+		card-type-asset-icon: (
 			max-width: 80px,
 			min-width: 48px,
 			width: 30%,
@@ -413,8 +873,8 @@ $card-page-item-asset: map-deep-merge(
 		base: (
 			breakpoint: 0,
 			min-width: 193px,
-			padding-left: $grid-gutter-width / 2,
-			padding-right: $grid-gutter-width / 2,
+			padding-left: $grid-gutter-width * 0.5,
+			padding-right: $grid-gutter-width * 0.5,
 		),
 		sm: (
 			breakpoint: map-get($grid-breakpoints, sm),
@@ -446,8 +906,8 @@ $card-page-item-user: map-deep-merge(
 			breakpoint: 0,
 			flex-basis: 50%,
 			max-width: 50%,
-			padding-left: $grid-gutter-width / 2,
-			padding-right: $grid-gutter-width / 2,
+			padding-left: $grid-gutter-width * 0.5,
+			padding-right: $grid-gutter-width * 0.5,
 		),
 		sm: (
 			breakpoint: map-get($grid-breakpoints, sm),
@@ -491,7 +951,7 @@ $card-type-template-after-highlight: () !default;
 $card-type-template-aspect-ratio: () !default;
 $card-type-template-aspect-ratio: map-deep-merge(
 	(
-		border-width: 0,
+		border-width: 0px,
 		color: $gray-600,
 		horizontal: 16,
 		text-align: center,

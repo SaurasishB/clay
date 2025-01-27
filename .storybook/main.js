@@ -1,7 +1,12 @@
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-
-module.exports = {
+const config = {
+	stories: ['../packages/*/stories/*.stories.@(js|jsx|ts|tsx)'],
 	addons: [
+		{
+			name: '@storybook/addon-essentials',
+			options: {
+				docs: false,
+			},
+		},
 		{
 			name: '@storybook/addon-storysource',
 			options: {
@@ -14,34 +19,25 @@ module.exports = {
 			},
 		},
 
-		'@storybook/addon-a11y/register',
-		'@storybook/addon-knobs/register',
+		'@storybook/addon-a11y',
+		'@storybook/preset-scss',
 	],
+	typescript: {
+		reactDocgen: false,
+	},
+	framework: '@storybook/react',
+	core: {
+		builder: 'webpack5',
+	},
+	features: {
+		storyStoreV7: true,
+		postcss: false,
+	},
 	webpackFinal: (config) => {
-		config.module.rules.push({
-			test: /\.(ts|tsx)$/,
-			loader: require.resolve('babel-loader'),
-		});
-
-		config.module.rules.push({
-			test: /\.scss$/,
-			use: [
-				require.resolve('style-loader'),
-				require.resolve('css-loader'),
-				require.resolve('sass-loader'),
-			],
-		});
-
-		config.resolve.mainFields = ['ts:main', 'module', 'main'];
-
-		config.resolve.extensions.push('.ts', '.tsx');
-
-		config.plugins.push(
-			new ForkTsCheckerWebpackPlugin({
-				reportFiles: ['packages/**/*.{ts,tsx}'],
-			})
-		);
+		config.resolve.mainFields = ['ts:main', ...config.resolve.mainFields];
 
 		return config;
 	},
 };
+
+module.exports = config;

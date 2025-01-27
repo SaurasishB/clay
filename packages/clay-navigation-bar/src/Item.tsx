@@ -4,9 +4,11 @@
  */
 
 import classNames from 'classnames';
-import React from 'react';
+import React, {useContext} from 'react';
 
-interface IItemProps extends React.HTMLAttributes<HTMLLIElement> {
+import {NavigationBarContext} from './context';
+
+export interface IItemProps extends React.HTMLAttributes<HTMLLIElement> {
 	/**
 	 * Determines the active state of an dropdown list item.
 	 */
@@ -18,24 +20,52 @@ interface IItemProps extends React.HTMLAttributes<HTMLLIElement> {
 	children: React.ReactElement;
 }
 
-const ClayNavigationBarIcon: React.FunctionComponent<IItemProps> = ({
+const ClayNavigationBarIcon = ({
 	active = false,
 	children,
 	className,
 	...otherProps
 }: IItemProps) => {
+	const {ariaCurrent} = useContext(NavigationBarContext);
+
 	return (
 		<li {...otherProps} className={classNames('nav-item', className)}>
 			{React.Children.map(
 				children,
-				(child: React.ReactElement<IItemProps>, index) =>
-					React.cloneElement(child, {
+				(child: React.ReactElement<IItemProps>, index) => {
+					if (
+						// @ts-ignore
+						child?.type.displayName === 'ClayLink' ||
+						// @ts-ignore
+						child?.type.displayName === 'ClayButton'
+					) {
+						return React.cloneElement(child, {
+							...child.props,
+							'aria-current': active
+								? ariaCurrent ?? undefined
+								: undefined,
+							children: <span>{child.props.children}</span>,
+							className: classNames(
+								'nav-link',
+								child.props.className?.replace('nav-link', ''),
+								{
+									active,
+								}
+							),
+							// @ts-ignore
+							displayType: null,
+							key: index,
+						});
+					}
+
+					return React.cloneElement(child, {
 						...child.props,
 						className: classNames(child.props.className, {
 							active,
 						}),
 						key: index,
-					})
+					});
+				}
 			)}
 		</li>
 	);

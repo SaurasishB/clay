@@ -17,53 +17,85 @@
 /// tbar-stacked-c-slideout-transition: {Map | Null}, // Pass parameters to `clay-css` mixin
 
 @mixin clay-slideout-variant($map) {
-	@if (setter(map-get($map, enabled), true)) {
-		@include clay-css(setter($map, ()));
+	@if (type-of($map) == 'map') {
+		$enabled: setter(map-get($map, enabled), true);
 
-		&.c-slideout-shown {
-			@include clay-css(setter(map-get($map, c-slideout-shown), ()));
-		}
+		@if ($enabled) {
+			@include clay-css($map);
 
-		&.c-slideout-tbar-shown {
-			@include clay-css(setter(map-get($map, c-slideout-tbar-shown), ()));
-		}
+			&.c-slideout-shown {
+				@include clay-css(map-get($map, c-slideout-shown));
+			}
 
-		&.c-slideout-tbar-shown .sidebar {
-			@include clay-css(
-				setter(map-get($map, c-slideout-tbar-shown-sidebar), ())
-			);
-		}
+			&.c-slideout-tbar-shown {
+				@include clay-css(map-get($map, c-slideout-tbar-shown));
+			}
 
-		.sidebar {
-			@include clay-css(setter(map-get($map, sidebar), ()));
-		}
+			&.c-slideout-tbar-shown .sidebar {
+				@include clay-css(map-get($map, c-slideout-tbar-shown-sidebar));
+			}
 
-		.sidebar.c-slideout-show {
-			@include clay-css(
-				setter(map-get($map, sidebar-c-slideout-show), ())
-			);
-		}
+			.sidebar {
+				@include clay-css(map-get($map, sidebar));
+			}
 
-		.sidebar.c-slideout-transition {
-			@include clay-css(
-				setter(map-get($map, sidebar-c-slideout-transition), ())
-			);
-		}
+			.sidebar.c-slideout-show {
+				@include clay-css(map-get($map, sidebar-c-slideout-show));
+			}
 
-		.tbar-stacked {
-			@include clay-css(setter(map-get($map, tbar-stacked), ()));
-		}
+			.sidebar.c-slideout-transition {
+				$_sidebar-c-slideout-transition: setter(
+					map-get($map, sidebar-c-slideout-transition),
+					()
+				);
 
-		.tbar-stacked.c-slideout-show {
-			@include clay-css(
-				setter(map-get($map, tbar-stacked-c-slideout-show), ())
-			);
-		}
+				@include clay-css($_sidebar-c-slideout-transition);
 
-		.tbar-stacked.c-slideout-transition {
-			@include clay-css(
-				setter(map-get($map, tbar-stacked-c-slideout-transition), ())
-			);
+				.c-horizontal-resizer {
+					@include clay-css(
+						map-get(
+							$_sidebar-c-slideout-transition,
+							c-horizontal-resizer
+						)
+					);
+				}
+			}
+
+			.tbar-stacked {
+				@include clay-css(map-get($map, tbar-stacked));
+			}
+
+			.tbar-stacked.c-slideout-show {
+				@include clay-css(map-get($map, tbar-stacked-c-slideout-show));
+			}
+
+			.tbar-stacked.c-slideout-transition {
+				@include clay-css(
+					map-get($map, tbar-stacked-c-slideout-transition)
+				);
+			}
+
+			.c-horizontal-resizer {
+				$_c-horizontal-resizer: setter(
+					map-get($map, c-horizontal-resizer),
+					()
+				);
+
+				@include clay-css($_c-horizontal-resizer);
+
+				&:hover {
+					@include clay-css(map-get($_c-horizontal-resizer, hover));
+				}
+
+				@at-root {
+					#{$focus-visible-selector},
+					#{if($c-prefers-focus-selector,$c-prefers-focus-selector,clay-insert-before('.cadmin', '.c-prefers-focus ', '&:focus'))} {
+						@include clay-css(
+							map-get($_c-horizontal-resizer, focus)
+						);
+					}
+				}
+			}
 		}
 	}
 }

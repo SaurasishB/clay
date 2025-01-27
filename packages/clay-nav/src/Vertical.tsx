@@ -3,21 +3,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import ClayIcon from '@clayui/icon';
-import {setElementFullHeight} from '@clayui/shared';
-import classNames from 'classnames';
+import {Nav, VerticalNav} from '@clayui/core';
 import React from 'react';
-import {CSSTransition} from 'react-transition-group';
 import warning from 'warning';
 
-import Nav from './Nav';
-import Trigger from './Trigger';
+export type DisplayType = null | 'primary';
 
 interface IItem extends React.ComponentProps<typeof Nav.Item> {
 	/**
 	 * Flag to indicate if item is active.
 	 */
-	active?: boolean;
+	active?: boolean | undefined;
 
 	/**
 	 * Callback for when item is clicked.
@@ -47,12 +43,32 @@ interface IItemWithItems extends IItem {
 	items?: Array<IItem>;
 }
 
-interface IProps {
+export interface IProps extends React.ComponentProps<typeof VerticalNav> {
+	/**
+	 * Flag to define if the item represents the current page. Disable this
+	 * attribute only if there are multiple navigations on the page.
+	 */
+	itemAriaCurrent?: boolean;
+
+	/**
+	 * Flag to indicate the navigation behavior in the menu.
+	 *
+	 * - manual - it will just move the focus and menu activation is done just
+	 * by pressing space or enter.
+	 * - automatic - moves the focus to the menuitem and activates the menu.
+	 */
+	activation?: 'manual' | 'automatic';
+
 	/**
 	 * Label of item that is currently active.
 	 * @deprecated since version 3.3.x
 	 */
 	activeLabel?: string;
+
+	/**
+	 * Determines the Vertical Nav variant to use.
+	 */
+	displayType?: DisplayType;
 
 	/**
 	 * Flag to activate the Decorator variation.
@@ -77,7 +93,7 @@ interface IProps {
 	/**
 	 * Custom component that will be displayed on mobile resolutions that toggles the visibility of the navigation.
 	 */
-	trigger?: typeof Trigger;
+	trigger?: typeof VerticalNav.Trigger;
 
 	/**
 	 * Path to the spritemap that Icon should use when referencing symbols.
@@ -85,141 +101,52 @@ interface IProps {
 	spritemap?: string;
 }
 
-interface INavItemProps extends IItemWithItems {
-	/**
-	 * Integer to keep track of what nested level the item is.
-	 */
-	level: number;
+function ClayVerticalNav(props: IProps): JSX.Element & {
+	Trigger: typeof VerticalNav.Trigger;
+	Item: typeof VerticalNav.Item;
+};
 
-	/**
-	 * Path to the spritemap that Icon should use when referencing symbols.
-	 */
-	spritemap?: string;
-}
-
-function Item({
-	active,
-	href,
-	initialExpanded = false,
-	items: subItems,
-	label,
-	level,
-	onClick,
-	spritemap,
-	...otherProps
-}: INavItemProps) {
-	const [expanded, setExpaned] = React.useState(!initialExpanded);
-
-	return (
-		<Nav.Item {...otherProps}>
-			<Nav.Link
-				active={active}
-				collapsed={!expanded}
-				href={href}
-				onClick={() => {
-					setExpaned(!expanded);
-
-					if (onClick) {
-						onClick();
-					}
-				}}
-				role="button"
-				showIcon={!!subItems}
-				spritemap={spritemap}
-			>
-				{label}
-			</Nav.Link>
-
-			{subItems && (
-				<CSSTransition
-					className={expanded ? undefined : 'collapse'}
-					classNames={{
-						enter: 'collapsing',
-						enterActive: `show`,
-						enterDone: 'show',
-						exit: `show`,
-						exitActive: 'collapsing',
-					}}
-					in={expanded}
-					onEnter={(el: HTMLElement) =>
-						el.setAttribute('style', `height: 0px`)
-					}
-					onEntering={(el: HTMLElement) => setElementFullHeight(el)}
-					onExit={(el) => setElementFullHeight(el)}
-					onExiting={(el) => el.setAttribute('style', `height: 0px`)}
-					timeout={250}
-				>
-					<div>
-						<Nav stacked>
-							{renderItems(subItems, spritemap, level++)}
-						</Nav>
-					</div>
-				</CSSTransition>
-			)}
-		</Nav.Item>
-	);
-}
-
-function renderItems(items: Array<IItem>, spritemap?: string, level = 0) {
-	return items.map((item, i) => {
-		const key = `${level}-${i}`;
-
-		return <Item {...item} key={key} level={level} spritemap={spritemap} />;
-	});
-}
-
-const ClayVerticalNav: React.FunctionComponent<IProps> & {
-	Trigger: typeof Trigger;
-} = ({
+function ClayVerticalNav({
 	activeLabel,
-	decorated,
-	items,
-	large,
-	spritemap,
-	trigger: CustomTrigger = Trigger,
+	children,
+	displayType,
 	triggerLabel = 'Menu',
 	...otherProps
-}: IProps) => {
-	const [active, setActive] = React.useState(false);
-
+}: IProps) {
 	warning(
 		!activeLabel,
 		'ClayVerticalNav: The `activeLabel` API has been deprecated in favor of `triggerLabel` and will be removed in the next major release.'
 	);
 
-	return (
-		<nav
-			{...otherProps}
-			className={classNames('menubar menubar-transparent', {
-				['menubar-decorated']: decorated,
-				['menubar-vertical-expand-lg']: large,
-				['menubar-vertical-expand-md']: !large,
-			})}
-		>
-			<CustomTrigger onClick={() => setActive(!active)}>
-				<span className="inline-item inline-item-before">
-					{activeLabel || triggerLabel}
-				</span>
-
-				<ClayIcon
-					focusable="false"
-					role="presentation"
-					spritemap={spritemap}
-					symbol="caret-bottom"
-				/>
-			</CustomTrigger>
-
-			<div
-				className={classNames('collapse menubar-collapse', {
-					show: active,
-				})}
+	if (children && !displayType) {
+		return (
+			<VerticalNav
+				{...otherProps}
+				triggerLabel={activeLabel ?? triggerLabel}
 			>
-				<Nav nested>{renderItems(items, spritemap)}</Nav>
-			</div>
-		</nav>
-	);
-};
+				{children}
+			</VerticalNav>
+		);
+	}
 
-ClayVerticalNav.Trigger = Trigger;
+	return (
+		<VerticalNav {...otherProps} triggerLabel={activeLabel ?? triggerLabel}>
+			{(item) => (
+				<VerticalNav.Item
+					active={item.active}
+					href={item.href}
+					initialExpanded={item.initialExpanded}
+					items={item.items}
+					onClick={item.onClick}
+				>
+					{item.label}
+				</VerticalNav.Item>
+			)}
+		</VerticalNav>
+	);
+}
+
+ClayVerticalNav.Trigger = VerticalNav.Trigger;
+ClayVerticalNav.Item = VerticalNav.Item;
 
 export {ClayVerticalNav};

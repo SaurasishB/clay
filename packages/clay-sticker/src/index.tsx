@@ -15,7 +15,17 @@ export type DisplayType =
 	| 'secondary'
 	| 'success'
 	| 'unstyled'
-	| 'warning';
+	| 'warning'
+	| 'outline-0'
+	| 'outline-1'
+	| 'outline-2'
+	| 'outline-3'
+	| 'outline-4'
+	| 'outline-5'
+	| 'outline-6'
+	| 'outline-7'
+	| 'outline-8'
+	| 'outline-9';
 
 type Shape = 'circle' | 'user-icon';
 
@@ -57,14 +67,17 @@ export interface IClayStickerProps
 	size?: Size;
 }
 
-const Overlay: React.FunctionComponent<
-	React.HTMLAttributes<HTMLSpanElement> & {
-		/**
-		 * Flag to indicate if `inline-item` class should be applied
-		 */
-		inline?: boolean;
-	}
-> = ({children, className, inline, ...otherProps}) => (
+const Overlay = ({
+	children,
+	className,
+	inline,
+	...otherProps
+}: React.HTMLAttributes<HTMLSpanElement> & {
+	/**
+	 * Flag to indicate if `inline-item` class should be applied
+	 */
+	inline?: boolean;
+}) => (
 	<span
 		className={classNames(className, 'sticker-overlay', {
 			'inline-item': inline,
@@ -75,13 +88,19 @@ const Overlay: React.FunctionComponent<
 	</span>
 );
 
-const Image: React.FunctionComponent<React.ImgHTMLAttributes<
-	HTMLImageElement
->> = ({className, ...otherProps}) => (
+const Image = ({
+	className,
+	...otherProps
+}: React.ImgHTMLAttributes<HTMLImageElement>) => (
 	<img className={classNames(className, 'sticker-img')} {...otherProps} />
 );
 
-const ClaySticker: React.FunctionComponent<IClayStickerProps> = ({
+function ClaySticker(props: IClayStickerProps): JSX.Element & {
+	Image: typeof Image;
+	Overlay: typeof Overlay;
+};
+
+function ClaySticker({
 	children,
 	className,
 	displayType,
@@ -91,19 +110,24 @@ const ClaySticker: React.FunctionComponent<IClayStickerProps> = ({
 	shape,
 	size,
 	...otherProps
-}: IClayStickerProps) => (
-	<span
-		{...otherProps}
-		className={classNames('sticker', className, {
-			[`sticker-${shape}`]: shape,
-			[`sticker-${displayType}`]: displayType,
-			[`sticker-${position}`]: position,
-			[`sticker-outside`]: position && outside,
-			[`sticker-${size}`]: size,
-		})}
-	>
-		<Overlay inline={inline}>{children}</Overlay>
-	</span>
-);
+}: IClayStickerProps) {
+	return (
+		<span
+			{...otherProps}
+			className={classNames('sticker', className, {
+				[`sticker-${shape}`]: shape,
+				[`sticker-${displayType}`]: displayType,
+				[`sticker-${position}`]: position,
+				[`sticker-outside`]: position && outside,
+				[`sticker-${size}`]: size,
+			})}
+		>
+			<Overlay inline={inline}>{children}</Overlay>
+		</span>
+	);
+}
 
-export default Object.assign(ClaySticker, {Image, Overlay});
+ClaySticker.Image = Image;
+ClaySticker.Overlay = Overlay;
+
+export default ClaySticker;

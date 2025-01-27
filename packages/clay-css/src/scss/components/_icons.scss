@@ -1,22 +1,17 @@
 .lexicon-icon {
-	display: inline-block;
-	fill: currentColor;
-	height: $lexicon-icon-size;
-	margin-top: -3px;
-	vertical-align: middle;
-	width: $lexicon-icon-size;
+	@include clay-css($lexicon-icon);
 }
 
 .lexicon-icon-sm {
-	font-size: $lexicon-icon-sm-font-size;
+	@include clay-css($lexicon-icon-sm);
 }
 
 .lexicon-icon-lg {
-	font-size: $lexicon-icon-lg-font-size;
+	@include clay-css($lexicon-icon-lg);
 }
 
 .lexicon-icon-xl {
-	font-size: $lexicon-icon-xl-font-size;
+	@include clay-css($lexicon-icon-xl);
 }
 
 .order-arrow-down-active {
@@ -34,7 +29,8 @@
 // Collapse Icon
 
 a.collapse-icon,
-button.collapse-icon {
+button.collapse-icon,
+.collapse-icon[tabindex] {
 	padding-left: $collapse-icon-padding-left;
 	padding-right: $collapse-icon-padding-right;
 

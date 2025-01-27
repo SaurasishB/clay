@@ -6,6 +6,10 @@
 const clay = require('@clayui/css');
 const path = require('path');
 
+require('dotenv').config({
+	path: `.env.${process.env.NODE_ENV}`,
+});
+
 module.exports = {
 	mapping: {
 		'MarkdownRemark.frontmatter.author': 'AuthorYaml',
@@ -25,8 +29,10 @@ module.exports = {
 		},
 		{
 			options: {
-				includePaths: [clay.includePaths[0]],
-				precision: 8,
+				sassOptions: {
+					includePaths: [clay.includePaths[0]],
+					precision: 8,
+				},
 			},
 			resolve: 'gatsby-plugin-sass',
 		},
@@ -49,6 +55,13 @@ module.exports = {
 				path: path.join(__dirname, '../packages'),
 			},
 			resolve: 'gatsby-source-filesystem',
+		},
+		{
+			options: {
+				host: process.env.LIFERAY_HOST,
+				siteId: process.env.LIFERAY_SITE_ID,
+			},
+			resolve: 'gatsby-source-liferay',
 		},
 		{
 			options: {
@@ -91,9 +104,9 @@ module.exports = {
 		},
 		{
 			options: {
-				trackingId: 'UA-37033501-10',
+				trackingIds: ['UA-790163-35'],
 			},
-			resolve: 'gatsby-plugin-google-analytics',
+			resolve: 'gatsby-plugin-google-gtag',
 		},
 		'gatsby-plugin-react-helmet',
 	],

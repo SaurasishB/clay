@@ -1,46 +1,5 @@
 .alert {
-	border-color: transparent;
-	border-style: $cadmin-alert-border-style;
-	border-width: $cadmin-alert-border-width;
-
-	@include border-radius($cadmin-alert-border-radius);
-
-	display: block;
-	font-size: $cadmin-alert-font-size;
-	margin-bottom: $cadmin-alert-margin-bottom;
-	padding: $cadmin-alert-padding-y $cadmin-alert-padding-x;
-	position: relative;
-	word-wrap: break-word;
-
-	.alert-btn {
-		@include clay-button-variant($cadmin-alert-btn);
-	}
-
-	.btn-group {
-		@include clay-container($cadmin-alert-btn-group);
-	}
-
-	.btn-group-item {
-		@include clay-container($cadmin-alert-btn-group-item);
-	}
-
-	.close {
-		@include clay-close($cadmin-alert-close);
-	}
-
-	.lead {
-		font-size: $cadmin-alert-lead-font-size;
-		font-weight: $cadmin-alert-lead-font-weight;
-		margin-right: $cadmin-alert-lead-spacer-x;
-	}
-
-	.component-title {
-		@include clay-text-typography($cadmin-alert-title);
-	}
-
-	.component-subtitle {
-		@include clay-text-typography($cadmin-alert-subtitle);
-	}
+	@include clay-alert-variant($cadmin-alert);
 }
 
 .alert-heading {
@@ -50,59 +9,33 @@
 }
 
 .alert-footer {
-	@include clay-container($cadmin-alert-footer);
+	@include clay-css($cadmin-alert-footer);
 }
 
 .alert-link,
 .alert-link.btn-unstyled {
-	font-weight: $cadmin-alert-link-font-weight;
-	text-decoration: $cadmin-alert-link-decoration;
-
-	&:hover,
-	&:focus {
-		text-decoration: $cadmin-alert-link-hover-decoration;
-	}
+	@include clay-link($cadmin-alert-link);
 }
 
 .alert-indicator {
-	font-size: $cadmin-alert-indicator-font-size;
-
+	@include clay-css($cadmin-alert-indicator);
 	+ .lead {
-		margin-left: $cadmin-alert-lead-spacer-x;
+		$lead: setter(map-get($cadmin-alert-indicator, lead), ());
+
+		@include clay-css($lead);
 	}
 }
 
 // Alert Dismissible
 
 .alert-dismissible {
-	padding-bottom: $cadmin-alert-dismissible-padding-bottom;
-	padding-left: $cadmin-alert-dismissible-padding-left;
-	padding-right: $cadmin-alert-dismissible-padding-right;
-	padding-top: $cadmin-alert-dismissible-padding-top;
+	@include clay-css($cadmin-alert-dismissible);
 }
 
 // Alert Fluid
 
 .alert-fluid {
-	@include clay-css($cadmin-alert-fluid);
-
-	&.alert-dismissible {
-		.container,
-		.container-fluid {
-			@include clay-css($cadmin-alert-fluid-dismissible-container);
-		}
-	}
-
-	.container,
-	.container-fluid {
-		@include clay-css($cadmin-alert-fluid-container);
-	}
-
-	.close {
-		right: calc(
-			#{$cadmin-grid-gutter-width / 2} + #{$cadmin-nav-btn-margin-x}
-		);
-	}
+	@include clay-alert-variant($cadmin-alert-fluid);
 }
 
 // Alert Notifications
@@ -133,35 +66,35 @@
 }
 
 .alert-notifications-absolute {
-	bottom: $cadmin-alert-notifications-absolute-bottom;
-	height: 0;
-	left: $cadmin-alert-notifications-absolute-left;
-	position: absolute;
-	right: $cadmin-alert-notifications-absolute-right;
-	top: $cadmin-alert-notifications-absolute-top;
-	z-index: $cadmin-zindex-alert-notifications;
+	$breakpoint-down: map-get(
+		$cadmin-alert-notifications-absolute,
+		breakpoint-down
+	);
 
-	@include clay-scale-component {
-		bottom: $cadmin-alert-notifications-absolute-bottom-mobile;
-		left: $cadmin-alert-notifications-absolute-left-mobile;
-		right: $cadmin-alert-notifications-absolute-right-mobile;
-		top: $cadmin-alert-notifications-absolute-top-mobile;
+	@include clay-css($cadmin-alert-notifications-absolute);
+
+	@include clay-scale-component(null, $breakpoint-down) {
+		$mobile: setter(
+			map-get($cadmin-alert-notifications-absolute, mobile),
+			()
+		);
+
+		@include clay-css($mobile);
 	}
 }
 
 .alert-notifications-fixed {
-	bottom: $cadmin-alert-notifications-fixed-bottom;
-	left: $cadmin-alert-notifications-fixed-left;
-	position: fixed;
-	right: $cadmin-alert-notifications-fixed-right;
-	top: $cadmin-alert-notifications-fixed-top;
-	z-index: $cadmin-zindex-alert-notifications;
+	$breakpoint-down: map-get(
+		$cadmin-alert-notifications-fixed,
+		breakpoint-down
+	);
 
-	@include clay-scale-component {
-		bottom: $cadmin-alert-notifications-fixed-bottom-mobile;
-		left: $cadmin-alert-notifications-fixed-left-mobile;
-		right: $cadmin-alert-notifications-fixed-right-mobile;
-		top: $cadmin-alert-notifications-fixed-top-mobile;
+	@include clay-css($cadmin-alert-notifications-fixed);
+
+	@include clay-scale-component(null, $breakpoint-down) {
+		$mobile: setter(map-get($cadmin-alert-notifications-fixed, mobile), ());
+
+		@include clay-css($mobile);
 	}
 }
 
@@ -190,7 +123,7 @@
 
 	.alert-list {
 		.alert-fluid:last-child {
-			margin-bottom: -$cadmin-alert-fluid-border-bottom-width;
+			margin-bottom: math-sign($cadmin-alert-fluid-border-bottom-width);
 		}
 	}
 }
@@ -236,42 +169,298 @@
 	}
 }
 
+// .alert-inline
+
+.alert-inline.alert {
+	@include clay-css($cadmin-alert-inline);
+
+	&.alert-dismissible {
+		$alert-dismissible: setter(
+			map-get($cadmin-alert-inline, alert-dismissible),
+			()
+		);
+
+		@include clay-css($alert-dismissible);
+
+		&.alert-fluid {
+			$alert-dismissible-alert-fluid: setter(
+				map-get($cadmin-alert-inline, alert-dismissible-alert-fluid),
+				()
+			);
+
+			@include clay-css($alert-dismissible-alert-fluid);
+
+			> .container,
+			> .container-fluid {
+				$container-fluid: setter(
+					map-get($alert-dismissible-alert-fluid, container-fluid),
+					()
+				);
+
+				@include clay-css($container-fluid);
+
+				> .alert-autofit-row {
+					$alert-autofit-row: setter(
+						map-get($container-fluid, alert-autofit-row),
+						map-get($cadmin-alert-inline, alert-autofit-row),
+						()
+					);
+
+					@include clay-css($alert-autofit-row);
+
+					.btn-group {
+						$btn-group: setter(
+							map-get($alert-autofit-row, btn-group),
+							()
+						);
+
+						@include clay-css($btn-group);
+					}
+				}
+			}
+		}
+	}
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($cadmin-alert-inline, alert-autofit-row),
+			()
+		);
+
+		@include clay-css($alert-autofit-row);
+
+		.btn-group {
+			$btn-group: setter(map-get($alert-autofit-row, btn-group), ());
+
+			@include clay-css($btn-group);
+		}
+	}
+
+	.close {
+		$close: setter(map-get($cadmin-alert-inline, close), ());
+
+		@include clay-close($close);
+	}
+}
+
+// Alert Autofit Stacked
+
+.alert-autofit-stacked.alert {
+	@include clay-css($cadmin-alert-autofit-stacked);
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($cadmin-alert-autofit-stacked, alert-autofit-row),
+			()
+		);
+
+		@include clay-css($alert-autofit-row);
+
+		> .autofit-col {
+			$autofit-col: setter(map-get($alert-autofit-row, autofit-col), ());
+
+			@include clay-css($autofit-col);
+		}
+
+		.btn-group {
+			$btn-group: setter(map-get($alert-autofit-row, btn-group), ());
+
+			@include clay-css($btn-group);
+		}
+	}
+
+	.close {
+		$close: setter(map-get($cadmin-alert-autofit-stacked, close), ());
+
+		@include clay-close($close);
+	}
+}
+
+// Alert Autofit Stacked Sm Down
+
+.alert-autofit-stacked-sm-down.alert {
+	@include clay-css($cadmin-alert-autofit-stacked-sm-down);
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($cadmin-alert-autofit-stacked-sm-down, alert-autofit-row),
+			()
+		);
+
+		@include media-breakpoint-down(sm, $cadmin-grid-breakpoints) {
+			@include clay-css($alert-autofit-row);
+		}
+
+		> .autofit-col {
+			$autofit-col: setter(map-get($alert-autofit-row, autofit-col), ());
+
+			@include media-breakpoint-down(sm, $cadmin-grid-breakpoints) {
+				@include clay-css($autofit-col);
+			}
+		}
+
+		.btn-group {
+			$btn-group: setter(map-get($alert-autofit-row, btn-group), ());
+
+			@include media-breakpoint-down(sm, $cadmin-grid-breakpoints) {
+				@include clay-css($btn-group);
+			}
+		}
+	}
+
+	.close {
+		$close: setter(
+			map-get($cadmin-alert-autofit-stacked-sm-down, close),
+			()
+		);
+
+		@include media-breakpoint-down(sm, $cadmin-grid-breakpoints) {
+			@include clay-css($close);
+		}
+	}
+}
+
+// Alert Autofit Stacked Xs Down
+
+.alert-autofit-stacked-xs-down.alert {
+	@include clay-css($cadmin-alert-autofit-stacked-xs-down);
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($cadmin-alert-autofit-stacked-xs-down, alert-autofit-row),
+			()
+		);
+
+		@include media-breakpoint-down(xs, $cadmin-grid-breakpoints) {
+			@include clay-css($alert-autofit-row);
+		}
+
+		> .autofit-col {
+			$autofit-col: setter(map-get($alert-autofit-row, autofit-col), ());
+
+			@include media-breakpoint-down(xs, $cadmin-grid-breakpoints) {
+				@include clay-css($autofit-col);
+			}
+		}
+
+		.btn-group {
+			$btn-group: setter(map-get($alert-autofit-row, btn-group), ());
+
+			@include media-breakpoint-down(xs, $cadmin-grid-breakpoints) {
+				@include clay-css($btn-group);
+			}
+		}
+	}
+
+	.close {
+		$close: setter(
+			map-get($cadmin-alert-autofit-stacked-xs-down, close),
+			()
+		);
+
+		@include media-breakpoint-down(xs, $cadmin-grid-breakpoints) {
+			@include clay-css($close);
+		}
+	}
+}
+
+// Alert Indicator Start
+
+.alert-indicator-start.alert {
+	@include clay-css($cadmin-alert-indicator-start);
+
+	&.alert-fluid {
+		$alert-fluid: setter(
+			map-get($cadmin-alert-indicator-start, alert-fluid),
+			()
+		);
+
+		@include clay-css($alert-fluid);
+
+		> .container,
+		> .container-fluid {
+			$container-fluid: setter(
+				map-get($alert-fluid, container-fluid),
+				()
+			);
+
+			@include clay-css($container-fluid);
+		}
+	}
+
+	&.alert-feedback {
+		$alert-feedback: setter(
+			map-get($cadmin-alert-indicator-start, alert-feedback),
+			()
+		);
+
+		@include clay-css($alert-feedback);
+	}
+
+	.alert-indicator {
+		$alert-indicator: setter(
+			map-get($cadmin-alert-indicator-start, alert-indicator),
+			()
+		);
+
+		@include clay-css($alert-indicator);
+
+		+ .lead {
+			$lead: setter(map-get($alert-indicator, lead), ());
+
+			@include clay-css($lead);
+		}
+	}
+
+	.alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($cadmin-alert-indicator-start, alert-autofit-row),
+			()
+		);
+
+		@include clay-css($alert-autofit-row);
+
+		.alert-indicator:only-child {
+			$alert-indicator-only-child: setter(
+				map-get($alert-autofit-row, alert-indicator-only-child),
+				()
+			);
+
+			@include clay-css($alert-indicator-only-child);
+		}
+	}
+}
+
 // Alert Variants
 
-@each $cadmin-color, $cadmin-value in $cadmin-alert-palette {
-	.alert-#{$cadmin-color} {
-		background-color: map-get($cadmin-value, bg);
-		border-color: map-get($cadmin-value, border-color);
-		color: map-get($cadmin-value, color);
+@each $color, $value in $cadmin-alert-palette {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.alert-', 1)
+		);
 
-		hr {
-			border-top-color: darken(map-get($cadmin-value, border-color), 5%);
-		}
-
-		.alert-btn {
-			@include clay-button-variant(map-get($cadmin-value, alert-btn));
-		}
-
-		.close {
-			color: map-get($cadmin-value, close-color);
-
-			&:hover,
-			&:focus {
-				color: map-get($cadmin-value, close-hover-color);
+		@if (starts-with($color, '%') or map-get($value, extend)) {
+			#{$selector} {
+				@include clay-alert-variant($value);
 			}
-		}
+		} @else if (starts-with($color, 'alert-')) {
+			$placeholder: '%alert-#{$color}';
 
-		.alert-link {
-			color: map-get($cadmin-value, link-color);
-
-			&:hover,
-			&:focus {
-				color: map-get($cadmin-value, link-hover-color);
+			#{$placeholder} {
+				@include clay-alert-variant($value);
 			}
-		}
 
-		.lead {
-			color: map-get($cadmin-value, lead-color);
+			#{$selector} {
+				@extend %alert-#{$color} !optional;
+			}
+		} @else {
+			#{$selector} {
+				@include clay-alert-variant($value);
+			}
 		}
 	}
 }

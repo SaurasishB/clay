@@ -27,14 +27,14 @@ const LayoutNavHome = () => {
 						<div className="d-inline-block text-decoration-none text-reset">
 							<span className="c-inner" tabIndex="-1">
 								<img
-									alt="Clay"
+									alt=""
 									className="align-middle sidebar-logo-image"
 									height="32"
 									src="/images/clay_logo_w.png"
 								/>
 
 								<span className="align-middle font-weight-700 h3 ml-2 sidebar-logo-title">
-									{'Clay'}
+									Clay
 								</span>
 							</span>
 						</div>
@@ -47,9 +47,21 @@ const LayoutNavHome = () => {
 									to="/docs/get-started/index.html"
 								>
 									<span className="c-inner" tabIndex="-1">
-										{'Docs'}
+										Docs
 									</span>
 								</Link>
+							</li>
+							<li className="nav-item">
+								<a
+									className="nav-link"
+									href="/sass-api/index.html"
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									<span className="c-inner" tabIndex="-1">
+										Sass API
+									</span>
+								</a>
 							</li>
 							<li className="nav-item">
 								<Link
@@ -59,7 +71,7 @@ const LayoutNavHome = () => {
 									to="/blog"
 								>
 									<span className="c-inner" tabIndex="-1">
-										{'Blog'}
+										Blog
 									</span>
 								</Link>
 							</li>
@@ -71,7 +83,7 @@ const LayoutNavHome = () => {
 									target="_blank"
 								>
 									<span className="c-inner" tabIndex="-1">
-										{'Storybook'}
+										Storybook
 									</span>
 								</a>
 							</li>
@@ -83,7 +95,7 @@ const LayoutNavHome = () => {
 									target="_blank"
 								>
 									<span className="c-inner" tabIndex="-1">
-										{'Codesandbox'}
+										Codesandbox
 									</span>
 								</a>
 							</li>
@@ -116,7 +128,7 @@ const LayoutNavHome = () => {
 													window.location.reload();
 												}}
 											>
-												{'Reset Settings'}
+												Reset Settings
 											</ClayButton>
 										</>
 									}
@@ -132,10 +144,10 @@ const LayoutNavHome = () => {
 													className="c-inner"
 													tabIndex="-1"
 												>
-													{'Atlas and Base Themes'}
+													Atlas and Base Themes
 												</span>
 											</Link>
-											<span>{'.'}</span>
+											<span>.</span>
 										</>
 									}
 									items={[
@@ -143,13 +155,15 @@ const LayoutNavHome = () => {
 											checked: showAtlas,
 											label: 'Show Atlas',
 											onChange: (checked) => {
-												const clayCSSFile = document.getElementById(
-													'clayCSSFile'
-												);
+												const clayCSSFile =
+													document.getElementById(
+														'clayCSSFile'
+													);
 
-												const clayuiCSSFile = document.getElementById(
-													'clayuiCSSFile'
-												);
+												const clayuiCSSFile =
+													document.getElementById(
+														'clayuiCSSFile'
+													);
 
 												setShowAtlas(checked);
 
@@ -181,6 +195,7 @@ const LayoutNavHome = () => {
 									spritemap={spritemap}
 									trigger={
 										<ClayButton
+											aria-label="Site themes"
 											className="nav-link"
 											displayType="unstyled"
 										>

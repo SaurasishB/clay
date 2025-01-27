@@ -85,9 +85,7 @@ The building block of a card is the `.card-body`. Use it whenever you need a pad
 
 ```html
 <div class="card">
-	<div class="card-body">
-		This is some text within a card body.
-	</div>
+	<div class="card-body">This is some text within a card body.</div>
 </div>
 ```
 
@@ -134,7 +132,7 @@ Use classes `card-item-first` and `card-item-last` on elements that appear at th
         <div class="col-md-4">
             <div class="card card-rounded">
                 <div class="aspect-ratio card-item-first">
-                    <img alt="thumbnail" class="aspect-ratio-item aspect-ratio-item-fluid" src="/images/thumbnail_hot_air_ballon.jpg">
+                    <img alt="thumbnail" class="aspect-ratio-item aspect-ratio-item-flush" src="/images/thumbnail_hot_air_ballon.jpg">
                 </div>
                 <div class="card-body" style="text-align:center;">
                     <h3 class="card-title">Joe Bloggs</h3>
@@ -221,9 +219,7 @@ Add an optional header and/or footer within a card.
 
 ```html
 <div class="card">
-	<div class="card-header">
-		Featured
-	</div>
+	<div class="card-header">Featured</div>
 	<div class="card-body">
 		<h5 class="card-title">Special title treatment</h5>
 		<p class="card-text">
@@ -289,9 +285,7 @@ Use `<div class="card-divider"></div>` to create a horizontal division between c
 <div class="card card-horizontal">
 	<div class="card-row">
 		<div class="autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				autofit-col-expand
-			</section>
+			<section class="autofit-section">autofit-col-expand</section>
 		</div>
 		<div class="autofit-col autofit-col-expand">
 			<section class="autofit-section">
@@ -1096,7 +1090,7 @@ Just add `image-card` class on the same element that `card` class have being add
 						</div>
 						<div class="autofit-col">
 							<div class="dropdown dropdown-action">
-								<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+								<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
                                     <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                                         <use href="/images/icons/icons.svg#ellipsis-v"></use>
                                     </svg>
@@ -1342,7 +1336,7 @@ To make the whole card clickable just wrap the checkbox and card in:
                             </div>
                             <div class="autofit-col">
                                 <div class="dropdown dropdown-action">
-                                    <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+                                    <a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
                                         <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                                             <use href="/images/icons/icons.svg#ellipsis-v"></use>
                                         </svg>
@@ -1360,7 +1354,7 @@ To make the whole card clickable just wrap the checkbox and card in:
         </div>
         <div class="col-md-8">
             <div class="card-type-directory form-check form-check-card form-check-middle-left">
-                <label class="form-check-label">
+                <label class="form-check-labe#l">
                     <input class="form-check-input" type="checkbox">
                     <div class="card card-horizontal">
                         <div class="card-body">
@@ -1385,7 +1379,7 @@ To make the whole card clickable just wrap the checkbox and card in:
                                 </div>
                                 <div class="autofit-col">
                                     <div class="dropdown dropdown-action">
-                                        <a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+                                        <a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
                                             <svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
                                                 <use href="/images/icons/icons.svg#ellipsis-v"></use>
                                             </svg>
@@ -2146,9 +2140,7 @@ You can also use the Bootstrap 4's helper classes `justify-content-start`, `just
 			<section class="autofit-section">middle</section>
 		</div>
 		<div class="justify-content-end autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				bottom
-			</section>
+			<section class="autofit-section">bottom</section>
 		</div>
 	</div>
 </div>
@@ -2252,14 +2244,10 @@ Use classes `rounded`, `rounded-circle`, or `rounded-0` on the card to quickly s
 <div class="card card-horizontal rounded">
 	<div class="card-row">
 		<div class="autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				autofit-col-expand
-			</section>
+			<section class="autofit-section">autofit-col-expand</section>
 		</div>
 		<div class="autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				autofit-col-expand
-			</section>
+			<section class="autofit-section">autofit-col-expand</section>
 		</div>
 	</div>
 </div>
@@ -2275,23 +2263,17 @@ Use classes `rounded`, `rounded-circle`, or `rounded-0` on the card to quickly s
 			</section>
 		</div>
 		<div class="autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				autofit-col-expand
-			</section>
+			<section class="autofit-section">autofit-col-expand</section>
 		</div>
 	</div>
 </div>
 <div class="card card-horizontal rounded-0">
 	<div class="card-row">
 		<div class="autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				autofit-col-expand
-			</section>
+			<section class="autofit-section">autofit-col-expand</section>
 		</div>
 		<div class="autofit-col autofit-col-expand">
-			<section class="autofit-section">
-				autofit-col-expand
-			</section>
+			<section class="autofit-section">autofit-col-expand</section>
 		</div>
 	</div>
 </div>
@@ -2774,7 +2756,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 							</div>
 							<div class="autofit-col">
 								<div class="dropdown dropdown-action">
-									<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+									<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 										<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 											<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 										</svg>
@@ -2830,7 +2812,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 							</div>
 							<div class="autofit-col">
 								<div class="dropdown dropdown-action">
-									<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+									<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 										<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 											<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 										</svg>
@@ -2886,7 +2868,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 							</div>
 							<div class="autofit-col">
 								<div class="dropdown dropdown-action">
-									<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+									<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 										<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 											<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 										</svg>
@@ -2942,7 +2924,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 							</div>
 							<div class="autofit-col">
 								<div class="dropdown dropdown-action">
-									<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+									<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 										<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 											<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 										</svg>
@@ -3009,7 +2991,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 									</div>
 									<div class="autofit-col">
 										<div class="dropdown dropdown-action">
-											<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+											<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 												<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 													<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 												</svg>
@@ -3060,7 +3042,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 									</div>
 									<div class="autofit-col">
 										<div class="dropdown dropdown-action">
-											<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+											<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 												<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 													<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 												</svg>
@@ -3111,7 +3093,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 									</div>
 									<div class="autofit-col">
 										<div class="dropdown dropdown-action">
-											<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+											<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 												<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 													<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 												</svg>
@@ -3162,7 +3144,7 @@ A predefined `card-page` column used in Liferay Portal's card view layouts, gene
 									</div>
 									<div class="autofit-col">
 										<div class="dropdown dropdown-action">
-											<a aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
+											<a aria-label="More Actions" aria-expanded="false" aria-haspopup="true" class="component-action dropdown-toggle" data-toggle="dropdown" href="#1" role="button">
 												<svg class="lexicon-icon lexicon-icon-ellipsis-v" focusable="false" role="presentation">
 													<use xlink:href="/images/icons/icons.svg#ellipsis-v" />
 												</svg>

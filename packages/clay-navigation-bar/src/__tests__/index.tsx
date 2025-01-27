@@ -7,13 +7,7 @@ import '@testing-library/jest-dom/extend-expect';
 import ClayNavigationBar from '..';
 import ClayButton from '@clayui/button';
 import ClayLink from '@clayui/link';
-import {
-	act,
-	cleanup,
-	fireEvent,
-	render,
-	waitForElement,
-} from '@testing-library/react';
+import {act, cleanup, fireEvent, render, waitFor} from '@testing-library/react';
 import React from 'react';
 
 const spritemap = 'node_modules/clay-css/lib/images/icons/icons.svg';
@@ -27,38 +21,49 @@ describe('ClayNavigationBar', () => {
 		const {container} = render(
 			<ClayNavigationBar
 				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
 				spritemap={spritemap}
 				triggerLabel={label}
 			>
 				<ClayNavigationBar.Item active>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#1"
-					>
-						<span className="navbar-text-truncate">{label}</span>
-					</ClayLink>
+					<ClayLink href="#1">{label}</ClayLink>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item>
-					<ClayButton
-						block
-						className="nav-link"
-						displayType="unstyled"
-						small
-					>
-						<span className="navbar-text-truncate">{`Item 2`}</span>
-					</ClayButton>
+					<ClayButton>Item 2</ClayButton>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#3"
-					>
-						<span className="navbar-text-truncate">{`Item 3`}</span>
-					</ClayLink>
+					<ClayLink href="#3">Item 3</ClayLink>
+				</ClayNavigationBar.Item>
+			</ClayNavigationBar>
+		);
+
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders a custom item', () => {
+		const label = 'Item 1';
+
+		const {container} = render(
+			<ClayNavigationBar
+				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
+				spritemap={spritemap}
+				triggerLabel={label}
+			>
+				<ClayNavigationBar.Item active>
+					<a className="my-custom-class" href="#1">
+						{label}
+					</a>
 				</ClayNavigationBar.Item>
 			</ClayNavigationBar>
 		);
@@ -72,28 +77,20 @@ describe('ClayNavigationBar', () => {
 		const {container, getByText} = render(
 			<ClayNavigationBar
 				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
 				spritemap={spritemap}
-				triggerLabel={`Trigger Label`}
+				triggerLabel="Trigger Label"
 			>
 				<ClayNavigationBar.Item active>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#1"
-					>
-						<span className="navbar-text-truncate">{`Item 1`}</span>
-					</ClayLink>
+					<ClayLink href="#1">Item 1</ClayLink>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item>
-					<ClayButton
-						block
-						className="nav-link"
-						displayType="unstyled"
-						small
-					>
-						<span className="navbar-text-truncate">{`Item 2`}</span>
-					</ClayButton>
+					<ClayButton>Item 2</ClayButton>
 				</ClayNavigationBar.Item>
 			</ClayNavigationBar>
 		);
@@ -105,7 +102,7 @@ describe('ClayNavigationBar', () => {
 		let navigationBarDropdown;
 
 		await act(async () => {
-			navigationBarDropdown = await waitForElement(() =>
+			navigationBarDropdown = await waitFor(() =>
 				container.querySelector('.navbar-collapse')
 			);
 		});
@@ -121,28 +118,20 @@ describe('ClayNavigationBar', () => {
 		const {container, getByTestId} = render(
 			<ClayNavigationBar
 				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
 				spritemap={spritemap}
-				triggerLabel={`Trigger Label`}
+				triggerLabel="Trigger Label"
 			>
 				<ClayNavigationBar.Item active>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#1"
-					>
-						<span className="navbar-text-truncate">{`Item 1`}</span>
-					</ClayLink>
+					<ClayLink href="#1">Item 1</ClayLink>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item>
-					<ClayButton
-						block
-						className="nav-link"
-						displayType="unstyled"
-						small
-					>
-						<span className="navbar-text-truncate">{`Item 2`}</span>
-					</ClayButton>
+					<ClayButton>Item 2</ClayButton>
 				</ClayNavigationBar.Item>
 			</ClayNavigationBar>
 		);
@@ -162,7 +151,7 @@ describe('ClayNavigationBar', () => {
 		let navigationBarDropdown;
 
 		await act(async () => {
-			navigationBarDropdown = await waitForElement(() =>
+			navigationBarDropdown = await waitFor(() =>
 				container.querySelector('.navbar-collapse.collapse')
 			);
 		});
@@ -180,38 +169,24 @@ describe('ClayNavigationBar', () => {
 		const {container} = render(
 			<ClayNavigationBar
 				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
 				spritemap={spritemap}
 				triggerLabel={label}
 			>
 				<ClayNavigationBar.Item>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#1"
-					>
-						<span className="navbar-text-truncate">{label}</span>
-					</ClayLink>
+					<ClayLink href="#1">{label}</ClayLink>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item active>
-					<ClayButton
-						block
-						className="nav-link"
-						displayType="unstyled"
-						small
-					>
-						<span className="navbar-text-truncate">{`Item 2`}</span>
-					</ClayButton>
+					<ClayButton>Item 2</ClayButton>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#3"
-					>
-						<span className="navbar-text-truncate">{`Item 3`}</span>
-					</ClayLink>
+					<ClayLink href="#3">Item 3</ClayLink>
 				</ClayNavigationBar.Item>
 			</ClayNavigationBar>
 		);
@@ -229,37 +204,52 @@ describe('ClayNavigationBar', () => {
 		const {container} = render(
 			<ClayNavigationBar
 				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
 				spritemap={spritemap}
 				triggerLabel={label}
 			>
 				<ClayNavigationBar.Item active>
-					<ClayLink
-						className="nav-link"
-						displayType="secondary"
-						href="#1"
-					>
-						<span className="navbar-text-truncate">{label}</span>
-					</ClayLink>
+					<ClayLink href="#1">{label}</ClayLink>
 				</ClayNavigationBar.Item>
 
 				<ClayNavigationBar.Item active>
-					<ClayButton
-						block
-						className="nav-link"
-						displayType="unstyled"
-						small
-					>
-						<span className="navbar-text-truncate">{`Item 2`}</span>
-					</ClayButton>
+					<ClayButton>Item 2</ClayButton>
 				</ClayNavigationBar.Item>
 			</ClayNavigationBar>
 		);
 
 		expect(mockWarnings).toBeCalled();
-		expect(mockWarnings.mock.calls[0][0]).toBe(
+		expect(mockWarnings.mock.calls[0]![0]).toBe(
 			'Warning: ClayNavigationBar expects 0 or 1 active children, but received 2'
 		);
 		expect(container).toMatchSnapshot();
 		jest.resetAllMocks();
+	});
+
+	it('renders with a single item', () => {
+		const label = 'Item 1';
+
+		const {container} = render(
+			<ClayNavigationBar
+				inverted
+				messages={{
+					close: 'Close',
+					open: 'Open',
+					trigger: '{0} Menu, Current Page: {1}',
+				}}
+				spritemap={spritemap}
+				triggerLabel={label}
+			>
+				<ClayNavigationBar.Item active>
+					<ClayLink href="#1">{label}</ClayLink>
+				</ClayNavigationBar.Item>
+			</ClayNavigationBar>
+		);
+
+		expect(container).toMatchSnapshot();
 	});
 });

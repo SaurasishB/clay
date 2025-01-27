@@ -1,6 +1,6 @@
-/* REUSE-Snippet-Begin
+/* SPDX-SnippetBegin
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: © 2018 HTML5 Boilerplate <https://github.com/h5bp/main.css>
+ * SPDX-SnippetCopyrightText: © 2018 HTML5 Boilerplate <https://github.com/h5bp/main.css>
  */
 
 @if $enable-print-styles {
@@ -62,8 +62,12 @@
 		// We don't set margin here because it breaks `size` in Chrome. We also
 		// don't use `!important` on `size` as it breaks in Chrome.
 
-		@page {
-			size: $print-page-size;
+		@at-root {
+			@media print {
+				@page {
+					size: $print-page-size;
+				}
+			}
 		}
 
 		body {
@@ -120,4 +124,4 @@
 	}
 }
 
-/* REUSE-Snippet-End */
+/* SPDX-SnippetEnd */

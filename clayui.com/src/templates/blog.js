@@ -4,16 +4,18 @@
  */
 
 import {graphql} from 'gatsby';
-import React from 'react';
+import React, {useRef} from 'react';
 import Helmet from 'react-helmet';
 
 import LayoutNav from '../components/LayoutNav';
 import Sidebar from '../components/Sidebar';
 
-export default ({data, location}) => {
+export default function Blog({data, location}) {
 	const {allMarkdownRemark, markdownRemark} = data;
 	const {excerpt, frontmatter, html, timeToRead} = markdownRemark;
 	const title = `${frontmatter.title} - Clay`;
+
+	const skipToSearch = useRef();
 
 	const list = allMarkdownRemark.edges.map(({node}) => {
 		const {
@@ -26,6 +28,23 @@ export default ({data, location}) => {
 
 	return (
 		<div className="blog docs">
+			<div className="overflow-hidden skippy">
+				<a
+					className="d-inline-flex m-1 p-1 sr-only sr-only-focusable"
+					href="#content"
+				>
+					Skip to main content
+				</a>
+				<a
+					accessKey="k"
+					aria-keyshortcuts="Control+K"
+					className="d-inline-flex m-1 p-1 sr-only sr-only-focusable"
+					href="#algolia-doc-search"
+					ref={skipToSearch}
+				>
+					Skip to search
+				</a>
+			</div>
 			<Helmet>
 				<title>{title}</title>
 				<meta content={excerpt} name="description" />
@@ -41,11 +60,14 @@ export default ({data, location}) => {
 					<div className="flex-xl-nowrap row">
 						<Sidebar data={list} location={location} />
 						<div className="col-xl sidebar-offset">
-							<LayoutNav pathname={location.pathname} />
+							<LayoutNav
+								pathname={location.pathname}
+								searchRef={skipToSearch}
+							/>
 							<div className="clay-blog-content">
-								<header>
-									<div className="clay-site-container container-fluid">
-										<h1 className="blog-title">
+								<div className="clay-site-container container-fluid">
+									<header>
+										<h1 className="blog-title text-10">
 											{frontmatter.title}
 										</h1>
 										<span className="blog-date">
@@ -72,20 +94,12 @@ export default ({data, location}) => {
 												)
 											)}
 										</span>
-									</div>
-								</header>
-								<div className="clay-site-container container-fluid">
-									<div className="row">
-										<div className="col-md-12">
-											<article>
-												<div
-													dangerouslySetInnerHTML={{
-														__html: html,
-													}}
-												/>
-											</article>
-										</div>
-									</div>
+									</header>
+									<article
+										dangerouslySetInnerHTML={{
+											__html: html,
+										}}
+									/>
 								</div>
 							</div>
 						</div>
@@ -94,7 +108,7 @@ export default ({data, location}) => {
 			</main>
 		</div>
 	);
-};
+}
 
 const addString = (list, string) =>
 	list.push(<span key={`${list.length}-${string}`}>{string}</span>);

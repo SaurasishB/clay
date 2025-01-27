@@ -11,17 +11,27 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '18'
+            - uses: actions/cache@v2
+              with:
+                path: '**/node_modules'
+                key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
             - name: Install Dependencies
               run: yarn install
             - name: Lint
               run: yarn lint
+            - name: Types
+              run: yarn lint:typescript
             - name: Format
               run: yarn format:check
             - name: Verify Dependencies
               run: yarn checkDeps
             - name: Run Jest
               env:
+                  BROWSERSLIST_CONFIG: './packages/browserslist-config-clay/config'
+                  BROWSERSLIST_DISABLE_CACHE: 1
                   CI: true
               run: yarn test --coverage
             - name: Push to Coveralls
@@ -34,8 +44,10 @@ jobs:
     stats:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/setup-node@v1
             - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '18'
             - name: Fetch and Diff
               id: diff
               run: |
@@ -50,8 +62,9 @@ jobs:
             - name: Generate Build Info
               if: ${{ steps.diff.outputs.packages }}
               run: |
+                  yarn cache clean
                   yarn install
-                  node ./node_modules/.bin/lerna run --ignore \"clayui.com\" build
+                  yarn build
                   yarn genBuildSize
             - name: Clean directory
               if: ${{ steps.diff.outputs.packages }}
@@ -64,11 +77,15 @@ jobs:
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   clean: false
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '18'
             - name: Generate Bundle Size Table
               if: ${{ steps.diff.outputs.packages }}
               run: |
+                  yarn cache clean
                   yarn install
-                  node ./node_modules/.bin/lerna run --ignore \"clayui.com\" build
+                  yarn build
                   yarn genBuildSize:compare
             - name: Generate Total Size
               if: ${{ steps.diff.outputs.packages }}

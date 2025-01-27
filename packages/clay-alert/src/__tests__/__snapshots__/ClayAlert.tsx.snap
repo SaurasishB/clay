@@ -1,140 +1,100 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ClayAlert renders 1`] = `
-<div
-  className="alert alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+exports[`ClayAlert render toast alert with stacked action 1`] = `
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
-      >
-        <span
-          className="alert-indicator"
-        >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
-          >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
-      </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
-      <div
-        className="autofit-section"
-      >
-        <strong
-          className="lead"
-        >
-          Hello!
-        </strong>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`ClayAlert renders as \`feedback\` variant 1`] = `
-<div
-  className="alert alert-feedback alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
-  <div
-    className="alert-autofit-row autofit-row"
-  >
-    <div
-      className="autofit-col"
-    >
-      <div
-        className="autofit-section"
-      >
-        <span
-          className="alert-indicator"
-        >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
-          >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
-      </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
-      <div
-        className="autofit-section"
-      >
-        <strong
-          className="lead"
-        >
-          Hello!
-        </strong>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`ClayAlert renders as \`stripe\` variant 1`] = `
-<div
-  className="alert alert-fluid alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
-  <div
-    className="container"
-  >
-    <div
-      className="alert-autofit-row autofit-row"
-    >
-      <div
-        className="autofit-col"
+        class="autofit-col"
       >
         <div
-          className="autofit-section"
+          class="autofit-section"
         >
           <span
-            className="alert-indicator"
+            class="alert-indicator"
           >
             <svg
-              className="lexicon-icon lexicon-icon-info-circle"
+              class="lexicon-icon lexicon-icon-info-circle"
               role="presentation"
             >
               <use
-                xlinkHref="/foo/bar#info-circle"
+                href="/foo/bar#info-circle"
               />
             </svg>
           </span>
         </div>
       </div>
       <div
-        className="autofit-col autofit-col-expand"
+        class="autofit-col autofit-col-expand"
       >
         <div
-          className="autofit-section"
+          class="autofit-section"
         >
           <strong
-            className="lead"
+            class="lead"
+          >
+            Foo:
+          </strong>
+          Bar!
+          <div
+            class="alert-footer"
+          >
+            <button
+              class="btn alert-btn btn-sm btn-primary"
+              type="button"
+            >
+              Baz
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ClayAlert renders 1`] = `
+<div>
+  <div
+    class="alert alert-info"
+  >
+    <div
+      class="alert-autofit-row autofit-row"
+      role="alert"
+    >
+      <div
+        class="autofit-col"
+      >
+        <div
+          class="autofit-section"
+        >
+          <span
+            class="alert-indicator"
+          >
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+      <div
+        class="autofit-col autofit-col-expand"
+      >
+        <div
+          class="autofit-section"
+        >
+          <strong
+            class="lead"
           >
             Hello!
           </strong>
@@ -145,47 +105,191 @@ exports[`ClayAlert renders as \`stripe\` variant 1`] = `
 </div>
 `;
 
-exports[`ClayAlert renders as a different type 1`] = `
-<div
-  className="alert alert-danger"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+exports[`ClayAlert renders alert inline with action 1`] = `
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-inline alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col autofit-col-expand"
       >
-        <span
-          className="alert-indicator"
+        <div
+          class="autofit-section"
         >
-          <svg
-            className="lexicon-icon lexicon-icon-exclamation-full"
-            role="presentation"
+          <span
+            class="alert-indicator"
           >
-            <use
-              xlinkHref="/foo/bar#exclamation-full"
-            />
-          </svg>
-        </span>
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+          <strong
+            class="lead"
+          >
+            Foo:
+          </strong>
+          Bar!
+        </div>
+      </div>
+      <div
+        class="autofit-col"
+      >
+        <div
+          class="autofit-section"
+        >
+          <button
+            class="btn btn-sm btn-primary"
+            type="button"
+          >
+            Baz
+          </button>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`ClayAlert renders as \`feedback\` variant 1`] = `
+<div>
+  <div
+    class="alert alert-feedback alert-indicator-start alert-info"
+  >
     <div
-      className="autofit-col autofit-col-expand"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col autofit-col-expand"
       >
-        <strong
-          className="lead"
+        <div
+          class="autofit-section"
         >
-          Hello!
-        </strong>
+          <span
+            class="alert-indicator"
+          >
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ClayAlert renders as \`stripe\` variant 1`] = `
+<div>
+  <div
+    class="alert alert-fluid alert-info"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="alert-autofit-row autofit-row"
+        role="alert"
+      >
+        <div
+          class="autofit-col"
+        >
+          <div
+            class="autofit-section"
+          >
+            <span
+              class="alert-indicator"
+            >
+              <svg
+                class="lexicon-icon lexicon-icon-info-circle"
+                role="presentation"
+              >
+                <use
+                  href="/foo/bar#info-circle"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div
+          class="autofit-col autofit-col-expand"
+        >
+          <div
+            class="autofit-section"
+          >
+            <strong
+              class="lead"
+            >
+              Hello!
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ClayAlert renders as a different type 1`] = `
+<div>
+  <div
+    class="alert alert-danger"
+  >
+    <div
+      class="alert-autofit-row autofit-row"
+      role="alert"
+    >
+      <div
+        class="autofit-col"
+      >
+        <div
+          class="autofit-section"
+        >
+          <span
+            class="alert-indicator"
+          >
+            <svg
+              class="lexicon-icon lexicon-icon-exclamation-full"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#exclamation-full"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+      <div
+        class="autofit-col autofit-col-expand"
+      >
+        <div
+          class="autofit-section"
+        >
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+        </div>
       </div>
     </div>
   </div>
@@ -193,140 +297,136 @@ exports[`ClayAlert renders as a different type 1`] = `
 `;
 
 exports[`ClayAlert renders with ToastContainer as a wrapper  1`] = `
-<div
-  className="alert-container container"
->
+<div>
   <div
-    className="alert-notifications alert-notifications-fixed"
+    class="alert-container container"
   >
     <div
-      className="alert alert-info"
-      onMouseOut={[Function]}
-      onMouseOver={[Function]}
-      role="alert"
+      class="alert-notifications alert-notifications-fixed"
     >
       <div
-        className="alert-autofit-row autofit-row"
+        class="alert alert-info"
       >
         <div
-          className="autofit-col"
+          class="alert-autofit-row autofit-row"
+          role="alert"
         >
           <div
-            className="autofit-section"
+            class="autofit-col"
           >
-            <span
-              className="alert-indicator"
+            <div
+              class="autofit-section"
             >
-              <svg
-                className="lexicon-icon lexicon-icon-info-circle"
-                role="presentation"
+              <span
+                class="alert-indicator"
               >
-                <use
-                  xlinkHref="/foo/bar#info-circle"
-                />
-              </svg>
-            </span>
+                <svg
+                  class="lexicon-icon lexicon-icon-info-circle"
+                  role="presentation"
+                >
+                  <use
+                    href="/foo/bar#info-circle"
+                  />
+                </svg>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="autofit-col autofit-col-expand"
-        >
           <div
-            className="autofit-section"
+            class="autofit-col autofit-col-expand"
           >
-            <strong
-              className="lead"
+            <div
+              class="autofit-section"
             >
-              One!
-            </strong>
+              <strong
+                class="lead"
+              >
+                One!
+              </strong>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div
-      className="alert alert-info"
-      onMouseOut={[Function]}
-      onMouseOver={[Function]}
-      role="alert"
-    >
       <div
-        className="alert-autofit-row autofit-row"
+        class="alert alert-info"
       >
         <div
-          className="autofit-col"
+          class="alert-autofit-row autofit-row"
+          role="alert"
         >
           <div
-            className="autofit-section"
+            class="autofit-col"
           >
-            <span
-              className="alert-indicator"
+            <div
+              class="autofit-section"
             >
-              <svg
-                className="lexicon-icon lexicon-icon-info-circle"
-                role="presentation"
+              <span
+                class="alert-indicator"
               >
-                <use
-                  xlinkHref="/foo/bar#info-circle"
-                />
-              </svg>
-            </span>
+                <svg
+                  class="lexicon-icon lexicon-icon-info-circle"
+                  role="presentation"
+                >
+                  <use
+                    href="/foo/bar#info-circle"
+                  />
+                </svg>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="autofit-col autofit-col-expand"
-        >
           <div
-            className="autofit-section"
+            class="autofit-col autofit-col-expand"
           >
-            <strong
-              className="lead"
+            <div
+              class="autofit-section"
             >
-              Two!
-            </strong>
+              <strong
+                class="lead"
+              >
+                Two!
+              </strong>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div
-      className="alert alert-info"
-      onMouseOut={[Function]}
-      onMouseOver={[Function]}
-      role="alert"
-    >
       <div
-        className="alert-autofit-row autofit-row"
+        class="alert alert-info"
       >
         <div
-          className="autofit-col"
+          class="alert-autofit-row autofit-row"
+          role="alert"
         >
           <div
-            className="autofit-section"
+            class="autofit-col"
           >
-            <span
-              className="alert-indicator"
+            <div
+              class="autofit-section"
             >
-              <svg
-                className="lexicon-icon lexicon-icon-info-circle"
-                role="presentation"
+              <span
+                class="alert-indicator"
               >
-                <use
-                  xlinkHref="/foo/bar#info-circle"
-                />
-              </svg>
-            </span>
+                <svg
+                  class="lexicon-icon lexicon-icon-info-circle"
+                  role="presentation"
+                >
+                  <use
+                    href="/foo/bar#info-circle"
+                  />
+                </svg>
+              </span>
+            </div>
           </div>
-        </div>
-        <div
-          className="autofit-col autofit-col-expand"
-        >
           <div
-            className="autofit-section"
+            class="autofit-col autofit-col-expand"
           >
-            <strong
-              className="lead"
+            <div
+              class="autofit-section"
             >
-              Three!
-            </strong>
+              <strong
+                class="lead"
+              >
+                Three!
+              </strong>
+            </div>
           </div>
         </div>
       </div>
@@ -336,62 +436,62 @@ exports[`ClayAlert renders with ToastContainer as a wrapper  1`] = `
 `;
 
 exports[`ClayAlert renders with a footer and button 1`] = `
-<div
-  className="alert alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col"
       >
-        <span
-          className="alert-indicator"
-        >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
-          >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
-      </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
-      <div
-        className="autofit-section"
-      >
-        <strong
-          className="lead"
-        >
-          Hello!
-        </strong>
-        <span>
-          test
-        </span>
         <div
-          className="alert-footer"
+          class="autofit-section"
         >
-          <div
-            className="btn-group"
-            role="group"
+          <span
+            class="alert-indicator"
           >
-            <button
-              className="btn alert-btn btn-primary"
-              type="button"
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
             >
-              View
-            </button>
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+      <div
+        class="autofit-col autofit-col-expand"
+      >
+        <div
+          class="autofit-section"
+        >
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+          <span>
+            test
+          </span>
+          <div
+            class="alert-footer"
+          >
+            <div
+              class="btn-group"
+              role="group"
+            >
+              <button
+                class="btn alert-btn btn-primary"
+                type="button"
+              >
+                View
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -401,49 +501,49 @@ exports[`ClayAlert renders with a footer and button 1`] = `
 `;
 
 exports[`ClayAlert renders with a title and a message with markup 1`] = `
-<div
-  className="alert alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col"
       >
-        <span
-          className="alert-indicator"
+        <div
+          class="autofit-section"
         >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
+          <span
+            class="alert-indicator"
           >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
       <div
-        className="autofit-section"
+        class="autofit-col autofit-col-expand"
       >
-        <strong
-          className="lead"
+        <div
+          class="autofit-section"
         >
-          Hello!
-        </strong>
-        <span>
-          test
-        </span>
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+          <span>
+            test
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -451,170 +551,168 @@ exports[`ClayAlert renders with a title and a message with markup 1`] = `
 `;
 
 exports[`ClayAlert renders with an icon for closing 1`] = `
-<div
-  className="alert alert-dismissible alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-dismissible alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col"
       >
-        <span
-          className="alert-indicator"
+        <div
+          class="autofit-section"
         >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
+          <span
+            class="alert-indicator"
           >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
       <div
-        className="autofit-section"
+        class="autofit-col autofit-col-expand"
       >
-        <strong
-          className="lead"
+        <div
+          class="autofit-section"
         >
-          Hello!
-        </strong>
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+        </div>
       </div>
     </div>
-  </div>
-  <button
-    aria-label="Close"
-    className="close"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      className="lexicon-icon lexicon-icon-times"
-      role="presentation"
+    <button
+      aria-label="Close"
+      class="close"
+      type="button"
     >
-      <use
-        xlinkHref="/foo/bar#times"
-      />
-    </svg>
-  </button>
+      <svg
+        class="lexicon-icon lexicon-icon-times"
+        role="presentation"
+      >
+        <use
+          href="/foo/bar#times"
+        />
+      </svg>
+    </button>
+  </div>
 </div>
 `;
 
 exports[`ClayAlert renders with an icon for closing with autoClose 1`] = `
-<div
-  className="alert alert-dismissible alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-dismissible alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col"
       >
-        <span
-          className="alert-indicator"
+        <div
+          class="autofit-section"
         >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
+          <span
+            class="alert-indicator"
           >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
       <div
-        className="autofit-section"
+        class="autofit-col autofit-col-expand"
       >
-        <strong
-          className="lead"
+        <div
+          class="autofit-section"
         >
-          Hello!
-        </strong>
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+        </div>
       </div>
     </div>
-  </div>
-  <button
-    aria-label="Close"
-    className="close"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      className="lexicon-icon lexicon-icon-times"
-      role="presentation"
+    <button
+      aria-label="Close"
+      class="close"
+      type="button"
     >
-      <use
-        xlinkHref="/foo/bar#times"
-      />
-    </svg>
-  </button>
+      <svg
+        class="lexicon-icon lexicon-icon-times"
+        role="presentation"
+      >
+        <use
+          href="/foo/bar#times"
+        />
+      </svg>
+    </button>
+  </div>
 </div>
 `;
 
 exports[`ClayAlert renders with autoClose and without icon 1`] = `
-<div
-  className="alert alert-info"
-  onMouseOut={[Function]}
-  onMouseOver={[Function]}
-  role="alert"
->
+<div>
   <div
-    className="alert-autofit-row autofit-row"
+    class="alert alert-info"
   >
     <div
-      className="autofit-col"
+      class="alert-autofit-row autofit-row"
+      role="alert"
     >
       <div
-        className="autofit-section"
+        class="autofit-col"
       >
-        <span
-          className="alert-indicator"
+        <div
+          class="autofit-section"
         >
-          <svg
-            className="lexicon-icon lexicon-icon-info-circle"
-            role="presentation"
+          <span
+            class="alert-indicator"
           >
-            <use
-              xlinkHref="/foo/bar#info-circle"
-            />
-          </svg>
-        </span>
+            <svg
+              class="lexicon-icon lexicon-icon-info-circle"
+              role="presentation"
+            >
+              <use
+                href="/foo/bar#info-circle"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
-    </div>
-    <div
-      className="autofit-col autofit-col-expand"
-    >
       <div
-        className="autofit-section"
+        class="autofit-col autofit-col-expand"
       >
-        <strong
-          className="lead"
+        <div
+          class="autofit-section"
         >
-          Hello!
-        </strong>
+          <strong
+            class="lead"
+          >
+            Hello!
+          </strong>
+        </div>
       </div>
     </div>
   </div>

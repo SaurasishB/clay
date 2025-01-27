@@ -8,7 +8,9 @@ import React from 'react';
 
 type TColSize = boolean | number | 'auto';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+/* eslint-disable @liferay/no-abbreviations */
+
+export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Element or component to render for container
 	 */

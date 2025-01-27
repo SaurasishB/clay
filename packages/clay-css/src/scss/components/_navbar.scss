@@ -63,6 +63,7 @@
 		align-items: center;
 		display: flex;
 		word-wrap: normal;
+		max-width: 100%;
 	}
 
 	.nav-item {
@@ -132,12 +133,7 @@
 }
 
 .navbar-text-truncate {
-	display: inline-block;
-	max-width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	vertical-align: bottom;
-	white-space: nowrap;
+	@include clay-css($navbar-text-truncate);
 }
 
 // Navbar Toggler
@@ -279,8 +275,8 @@
 
 							.container,
 							.container-fluid {
-								padding-left: $grid-gutter-width / 2;
-								padding-right: $grid-gutter-width / 2;
+								padding-left: $grid-gutter-width * 0.5;
+								padding-right: $grid-gutter-width * 0.5;
 							}
 
 							.navbar-nav,
@@ -312,8 +308,8 @@
 							}
 
 							.dropdown-divider {
-								margin-left: -$navbar-padding-x;
-								margin-right: -$navbar-padding-x;
+								margin-left: math-sign($navbar-padding-x);
+								margin-right: math-sign($navbar-padding-x);
 							}
 
 							.dropdown-item {
@@ -574,44 +570,5 @@
 // Navbar Underline
 
 .navbar-underline {
-	.navbar-toggler-link {
-		&:after {
-			background-color: $navbar-underline-active-bg;
-			bottom: -$navbar-padding-y;
-			content: '';
-			display: block;
-			height: $nav-underline-link-active-highlight-height;
-			left: 0;
-			position: absolute;
-			right: 0;
-			width: auto;
-		}
-	}
-}
-
-.navbar-underline.navbar-expand {
-	@each $breakpoint in map-keys($grid-breakpoints) {
-		$next: breakpoint-next($breakpoint, $grid-breakpoints);
-		$infix: breakpoint-infix($next, $grid-breakpoints);
-
-		// .navbar-expand, sm, md, lg, xl
-
-		&#{$infix} {
-			@include media-breakpoint-up($next) {
-				.navbar-nav .nav-link {
-					&.active:after {
-						background-color: $navbar-underline-active-bg;
-						bottom: -$navbar-padding-y;
-						content: '';
-						display: block;
-						height: $nav-underline-link-active-highlight-height;
-						left: 0;
-						position: absolute;
-						right: 0;
-						width: auto;
-					}
-				}
-			}
-		}
-	}
+	@include clay-navbar-variant($navbar-underline);
 }

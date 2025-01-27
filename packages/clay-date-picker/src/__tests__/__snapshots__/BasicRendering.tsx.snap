@@ -8,10 +8,9 @@ exports[`BasicRendering renders by default 1`] = `
     >
       <div
         class="input-group"
-        style=""
       >
         <div
-          class="input-group-item"
+          class="input-group-item input-group-item-focusable"
         >
           <input
             name="datePicker"
@@ -28,6 +27,9 @@ exports[`BasicRendering renders by default 1`] = `
             class="input-group-inset-item input-group-inset-item-after"
           >
             <button
+              aria-controls="clay-id-1"
+              aria-expanded="false"
+              aria-haspopup="dialog"
               aria-label="Choose date"
               class="date-picker-dropdown-toggle btn btn-unstyled"
               data-testid="date-button"
@@ -38,7 +40,7 @@ exports[`BasicRendering renders by default 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="icons.svg#calendar"
+                  href="icons.svg#calendar"
                 />
               </svg>
             </button>
@@ -48,16 +50,24 @@ exports[`BasicRendering renders by default 1`] = `
     </div>
   </div>
   <div>
+    <span
+      data-focus-scope-start="true"
+      tabindex="0"
+    />
     <div>
       <div
-        class="dropdown-menu date-picker-dropdown-menu"
+        aria-hidden="true"
+        aria-label="Choose date"
+        aria-modal="true"
+        class="dropdown-menu date-picker date-picker-dropdown-menu"
         data-testid="dropdown"
-        style="left: -999px; top: -995px;"
+        id="clay-id-1"
+        role="dialog"
       >
         <div
-          aria-modal="true"
+          aria-label="April 2019"
           class="date-picker-calendar"
-          role="dialog"
+          role="group"
         >
           <div
             class="date-picker-calendar-header"
@@ -139,9 +149,8 @@ exports[`BasicRendering renders by default 1`] = `
                 class="date-picker-nav-item input-date-picker-year"
               >
                 <select
-                  class="form-control form-control-sm"
+                  class="form-control form-control-select form-control-select-secondary form-control-sm"
                   data-testid="year-select"
-                  name="year"
                 >
                   <option
                     value="2019"
@@ -156,6 +165,7 @@ exports[`BasicRendering renders by default 1`] = `
                 <button
                   aria-label="Select the previous month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the previous month"
                   type="button"
                 >
                   <svg
@@ -163,13 +173,14 @@ exports[`BasicRendering renders by default 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-left"
+                      href="icons.svg#angle-left"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select current date"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select current date"
                   type="button"
                 >
                   <svg
@@ -177,13 +188,14 @@ exports[`BasicRendering renders by default 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#simple-circle"
+                      href="icons.svg#simple-circle"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select the next month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the next month"
                   type="button"
                 >
                   <svg
@@ -191,7 +203,7 @@ exports[`BasicRendering renders by default 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-right"
+                      href="icons.svg#angle-right"
                     />
                   </svg>
                 </button>
@@ -200,9 +212,12 @@ exports[`BasicRendering renders by default 1`] = `
           </div>
           <div
             class="date-picker-calendar-body"
+            role="grid"
           >
             <div
+              aria-hidden="true"
               class="date-picker-days-row date-picker-row"
+              role="presentation"
             >
               <div
                 class="date-picker-col"
@@ -284,13 +299,18 @@ exports[`BasicRendering renders by default 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="0"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Mar 31 2019"
                   class="date-picker-date date-picker-calendar-item previous-month-date"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   31
@@ -298,10 +318,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 01 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -309,10 +332,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 02 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -320,10 +346,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 03 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -331,10 +360,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 04 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -342,10 +374,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 05 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   5
@@ -353,10 +388,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 06 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   6
@@ -365,13 +403,18 @@ exports[`BasicRendering renders by default 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="1"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 07 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   7
@@ -379,10 +422,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 08 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   8
@@ -390,10 +436,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 09 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   9
@@ -401,10 +450,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 10 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   10
@@ -412,10 +464,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 11 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   11
@@ -423,10 +478,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 12 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   12
@@ -434,10 +492,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 13 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   13
@@ -446,13 +507,18 @@ exports[`BasicRendering renders by default 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="2"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 14 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   14
@@ -460,10 +526,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 15 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   15
@@ -471,10 +540,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 16 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   16
@@ -482,21 +554,27 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 17 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   17
                 </button>
               </div>
               <div
+                aria-selected="true"
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 18 2019"
                   class="date-picker-date date-picker-calendar-item active"
+                  data-index="4"
                   type="button"
                 >
                   18
@@ -504,10 +582,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 19 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   19
@@ -515,10 +596,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 20 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   20
@@ -527,13 +611,18 @@ exports[`BasicRendering renders by default 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="3"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 21 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   21
@@ -541,10 +630,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 22 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   22
@@ -552,10 +644,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 23 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   23
@@ -563,10 +658,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 24 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   24
@@ -574,10 +672,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 25 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   25
@@ -585,10 +686,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 26 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   26
@@ -596,10 +700,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 27 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   27
@@ -608,13 +715,18 @@ exports[`BasicRendering renders by default 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="4"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 28 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   28
@@ -622,10 +734,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 29 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   29
@@ -633,10 +748,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 30 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   30
@@ -644,10 +762,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed May 01 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -655,10 +776,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu May 02 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -666,10 +790,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri May 03 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -677,10 +804,13 @@ exports[`BasicRendering renders by default 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat May 04 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -691,13 +821,20 @@ exports[`BasicRendering renders by default 1`] = `
         </div>
       </div>
     </div>
+    <span
+      data-focus-scope-end="true"
+      tabindex="0"
+    />
   </div>
 </body>
 `;
 
 exports[`BasicRendering renders date picker with dropdown open 1`] = `
 <body>
-  <div>
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  >
     <div
       class="date-picker"
     >
@@ -706,7 +843,7 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
         style=""
       >
         <div
-          class="input-group-item"
+          class="input-group-item input-group-item-focusable"
         >
           <input
             name="datePicker"
@@ -723,6 +860,9 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
             class="input-group-inset-item input-group-inset-item-after"
           >
             <button
+              aria-controls="clay-id-7"
+              aria-expanded="true"
+              aria-haspopup="dialog"
               aria-label="Choose date"
               class="date-picker-dropdown-toggle btn btn-unstyled"
               data-testid="date-button"
@@ -733,7 +873,7 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="icons.svg#calendar"
+                  href="icons.svg#calendar"
                 />
               </svg>
             </button>
@@ -743,16 +883,26 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
     </div>
   </div>
   <div>
+    <span
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-scope-start="true"
+      tabindex="0"
+    />
     <div>
       <div
-        class="dropdown-menu date-picker-dropdown-menu show"
+        aria-label="Choose date"
+        aria-modal="true"
+        class="dropdown-menu date-picker date-picker-dropdown-menu show"
         data-testid="dropdown"
+        id="clay-id-7"
+        role="dialog"
         style="left: -999px; top: -995px;"
       >
         <div
-          aria-modal="true"
+          aria-label="April 2019"
           class="date-picker-calendar"
-          role="dialog"
+          role="group"
         >
           <div
             class="date-picker-calendar-header"
@@ -834,9 +984,8 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
                 class="date-picker-nav-item input-date-picker-year"
               >
                 <select
-                  class="form-control form-control-sm"
+                  class="form-control form-control-select form-control-select-secondary form-control-sm"
                   data-testid="year-select"
-                  name="year"
                 >
                   <option
                     value="2019"
@@ -851,6 +1000,7 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
                 <button
                   aria-label="Select the previous month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the previous month"
                   type="button"
                 >
                   <svg
@@ -858,13 +1008,14 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-left"
+                      href="icons.svg#angle-left"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select current date"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select current date"
                   type="button"
                 >
                   <svg
@@ -872,13 +1023,14 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#simple-circle"
+                      href="icons.svg#simple-circle"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select the next month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the next month"
                   type="button"
                 >
                   <svg
@@ -886,7 +1038,7 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-right"
+                      href="icons.svg#angle-right"
                     />
                   </svg>
                 </button>
@@ -895,9 +1047,12 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
           </div>
           <div
             class="date-picker-calendar-body"
+            role="grid"
           >
             <div
+              aria-hidden="true"
               class="date-picker-days-row date-picker-row"
+              role="presentation"
             >
               <div
                 class="date-picker-col"
@@ -979,13 +1134,18 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="0"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Mar 31 2019"
                   class="date-picker-date date-picker-calendar-item previous-month-date"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   31
@@ -993,10 +1153,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 01 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -1004,10 +1167,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 02 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -1015,10 +1181,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 03 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -1026,10 +1195,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 04 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -1037,10 +1209,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 05 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   5
@@ -1048,10 +1223,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 06 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   6
@@ -1060,13 +1238,18 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="1"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 07 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   7
@@ -1074,10 +1257,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 08 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   8
@@ -1085,10 +1271,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 09 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   9
@@ -1096,10 +1285,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 10 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   10
@@ -1107,10 +1299,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 11 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   11
@@ -1118,10 +1313,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 12 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   12
@@ -1129,10 +1327,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 13 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   13
@@ -1141,13 +1342,18 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="2"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 14 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   14
@@ -1155,10 +1361,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 15 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   15
@@ -1166,10 +1375,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 16 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   16
@@ -1177,21 +1389,27 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 17 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   17
                 </button>
               </div>
               <div
+                aria-selected="true"
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 18 2019"
                   class="date-picker-date date-picker-calendar-item active"
+                  data-index="4"
                   type="button"
                 >
                   18
@@ -1199,10 +1417,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 19 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   19
@@ -1210,10 +1431,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 20 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   20
@@ -1222,13 +1446,18 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="3"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 21 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   21
@@ -1236,10 +1465,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 22 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   22
@@ -1247,10 +1479,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 23 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   23
@@ -1258,10 +1493,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 24 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   24
@@ -1269,10 +1507,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 25 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   25
@@ -1280,10 +1521,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 26 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   26
@@ -1291,10 +1535,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 27 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   27
@@ -1303,13 +1550,18 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="4"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 28 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   28
@@ -1317,10 +1569,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 29 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   29
@@ -1328,10 +1583,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 30 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   30
@@ -1339,10 +1597,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed May 01 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -1350,10 +1611,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu May 02 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -1361,10 +1625,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri May 03 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -1372,10 +1639,13 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat May 04 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -1386,6 +1656,12 @@ exports[`BasicRendering renders date picker with dropdown open 1`] = `
         </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-scope-end="true"
+      tabindex="0"
+    />
   </div>
 </body>
 `;
@@ -1400,7 +1676,7 @@ exports[`BasicRendering renders date picker with native picker 1`] = `
         class="input-group"
       >
         <div
-          class="input-group-item"
+          class="input-group-item input-group-item-focusable"
         >
           <input
             name="datePicker"
@@ -1422,7 +1698,10 @@ exports[`BasicRendering renders date picker with native picker 1`] = `
 
 exports[`BasicRendering renders date picker with time 1`] = `
 <body>
-  <div>
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  >
     <div
       class="date-picker"
     >
@@ -1431,7 +1710,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
         style=""
       >
         <div
-          class="input-group-item"
+          class="input-group-item input-group-item-focusable"
         >
           <input
             name="datePicker"
@@ -1448,6 +1727,9 @@ exports[`BasicRendering renders date picker with time 1`] = `
             class="input-group-inset-item input-group-inset-item-after"
           >
             <button
+              aria-controls="clay-id-10"
+              aria-expanded="true"
+              aria-haspopup="dialog"
               aria-label="Choose date"
               class="date-picker-dropdown-toggle btn btn-unstyled"
               data-testid="date-button"
@@ -1458,7 +1740,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="icons.svg#calendar"
+                  href="icons.svg#calendar"
                 />
               </svg>
             </button>
@@ -1468,16 +1750,26 @@ exports[`BasicRendering renders date picker with time 1`] = `
     </div>
   </div>
   <div>
+    <span
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-scope-start="true"
+      tabindex="0"
+    />
     <div>
       <div
-        class="dropdown-menu date-picker-dropdown-menu show"
+        aria-label="Choose date"
+        aria-modal="true"
+        class="dropdown-menu date-picker date-picker-dropdown-menu show"
         data-testid="dropdown"
+        id="clay-id-10"
+        role="dialog"
         style="left: -999px; top: -995px;"
       >
         <div
-          aria-modal="true"
+          aria-label="April 2019"
           class="date-picker-calendar"
-          role="dialog"
+          role="group"
         >
           <div
             class="date-picker-calendar-header"
@@ -1559,9 +1851,8 @@ exports[`BasicRendering renders date picker with time 1`] = `
                 class="date-picker-nav-item input-date-picker-year"
               >
                 <select
-                  class="form-control form-control-sm"
+                  class="form-control form-control-select form-control-select-secondary form-control-sm"
                   data-testid="year-select"
-                  name="year"
                 >
                   <option
                     value="2019"
@@ -1576,6 +1867,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                 <button
                   aria-label="Select the previous month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the previous month"
                   type="button"
                 >
                   <svg
@@ -1583,13 +1875,14 @@ exports[`BasicRendering renders date picker with time 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-left"
+                      href="icons.svg#angle-left"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select current date"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select current date"
                   type="button"
                 >
                   <svg
@@ -1597,13 +1890,14 @@ exports[`BasicRendering renders date picker with time 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#simple-circle"
+                      href="icons.svg#simple-circle"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select the next month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the next month"
                   type="button"
                 >
                   <svg
@@ -1611,7 +1905,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-right"
+                      href="icons.svg#angle-right"
                     />
                   </svg>
                 </button>
@@ -1620,9 +1914,12 @@ exports[`BasicRendering renders date picker with time 1`] = `
           </div>
           <div
             class="date-picker-calendar-body"
+            role="grid"
           >
             <div
+              aria-hidden="true"
               class="date-picker-days-row date-picker-row"
+              role="presentation"
             >
               <div
                 class="date-picker-col"
@@ -1704,13 +2001,18 @@ exports[`BasicRendering renders date picker with time 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="0"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Mar 31 2019"
                   class="date-picker-date date-picker-calendar-item previous-month-date"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   31
@@ -1718,10 +2020,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 01 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -1729,10 +2034,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 02 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -1740,10 +2048,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 03 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -1751,10 +2062,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 04 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -1762,10 +2076,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 05 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   5
@@ -1773,10 +2090,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 06 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   6
@@ -1785,13 +2105,18 @@ exports[`BasicRendering renders date picker with time 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="1"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 07 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   7
@@ -1799,10 +2124,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 08 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   8
@@ -1810,10 +2138,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 09 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   9
@@ -1821,10 +2152,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 10 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   10
@@ -1832,10 +2166,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 11 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   11
@@ -1843,10 +2180,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 12 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   12
@@ -1854,10 +2194,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 13 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   13
@@ -1866,13 +2209,18 @@ exports[`BasicRendering renders date picker with time 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="2"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 14 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   14
@@ -1880,10 +2228,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 15 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   15
@@ -1891,10 +2242,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 16 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   16
@@ -1902,21 +2256,27 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 17 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   17
                 </button>
               </div>
               <div
+                aria-selected="true"
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 18 2019"
                   class="date-picker-date date-picker-calendar-item active"
+                  data-index="4"
                   type="button"
                 >
                   18
@@ -1924,10 +2284,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 19 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   19
@@ -1935,10 +2298,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 20 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   20
@@ -1947,13 +2313,18 @@ exports[`BasicRendering renders date picker with time 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="3"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 21 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   21
@@ -1961,10 +2332,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 22 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   22
@@ -1972,10 +2346,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 23 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   23
@@ -1983,10 +2360,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 24 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   24
@@ -1994,10 +2374,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 25 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   25
@@ -2005,10 +2388,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 26 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   26
@@ -2016,10 +2402,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 27 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   27
@@ -2028,13 +2417,18 @@ exports[`BasicRendering renders date picker with time 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="4"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 28 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   28
@@ -2042,10 +2436,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 29 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   29
@@ -2053,10 +2450,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 30 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   30
@@ -2064,10 +2464,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed May 01 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -2075,10 +2478,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu May 02 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -2086,10 +2492,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri May 03 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -2097,10 +2506,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat May 04 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -2131,13 +2543,13 @@ exports[`BasicRendering renders date picker with time 1`] = `
                         role="presentation"
                       >
                         <use
-                          xlink:href="icons.svg#time"
+                          href="icons.svg#time"
                         />
                       </svg>
                     </div>
                   </div>
                   <div
-                    class="input-group-item input-group-item-shrink"
+                    class="input-group-item"
                   >
                     <div
                       class="form-control"
@@ -2153,7 +2565,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                           maxlength="2"
                           readonly=""
                           type="text"
-                          value="00"
+                          value="--"
                         />
                         <span
                           class="clay-time-divider"
@@ -2167,7 +2579,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                           maxlength="2"
                           readonly=""
                           type="text"
-                          value="00"
+                          value="--"
                         />
                       </div>
                       <div
@@ -2188,7 +2600,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                               role="presentation"
                             >
                               <use
-                                xlink:href="icons.svg#times-circle"
+                                href="icons.svg#times-circle"
                               />
                             </svg>
                           </button>
@@ -2213,7 +2625,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                                 role="presentation"
                               >
                                 <use
-                                  xlink:href="icons.svg#angle-up"
+                                  href="icons.svg#angle-up"
                                 />
                               </svg>
                             </button>
@@ -2228,7 +2640,7 @@ exports[`BasicRendering renders date picker with time 1`] = `
                                 role="presentation"
                               >
                                 <use
-                                  xlink:href="icons.svg#angle-down"
+                                  href="icons.svg#angle-down"
                                 />
                               </svg>
                             </button>
@@ -2253,13 +2665,22 @@ exports[`BasicRendering renders date picker with time 1`] = `
         </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-scope-end="true"
+      tabindex="0"
+    />
   </div>
 </body>
 `;
 
 exports[`BasicRendering renders the date picker with years range 1`] = `
 <body>
-  <div>
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  >
     <div
       class="date-picker"
     >
@@ -2268,7 +2689,7 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
         style=""
       >
         <div
-          class="input-group-item"
+          class="input-group-item input-group-item-focusable"
         >
           <input
             name="datePicker"
@@ -2285,6 +2706,9 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
             class="input-group-inset-item input-group-inset-item-after"
           >
             <button
+              aria-controls="clay-id-14"
+              aria-expanded="true"
+              aria-haspopup="dialog"
               aria-label="Choose date"
               class="date-picker-dropdown-toggle btn btn-unstyled"
               data-testid="date-button"
@@ -2295,7 +2719,7 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="icons.svg#calendar"
+                  href="icons.svg#calendar"
                 />
               </svg>
             </button>
@@ -2305,16 +2729,26 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
     </div>
   </div>
   <div>
+    <span
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-scope-start="true"
+      tabindex="0"
+    />
     <div>
       <div
-        class="dropdown-menu date-picker-dropdown-menu show"
+        aria-label="Choose date"
+        aria-modal="true"
+        class="dropdown-menu date-picker date-picker-dropdown-menu show"
         data-testid="dropdown"
+        id="clay-id-14"
+        role="dialog"
         style="left: -999px; top: -995px;"
       >
         <div
-          aria-modal="true"
+          aria-label="April 2019"
           class="date-picker-calendar"
-          role="dialog"
+          role="group"
         >
           <div
             class="date-picker-calendar-header"
@@ -2396,9 +2830,8 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
                 class="date-picker-nav-item input-date-picker-year"
               >
                 <select
-                  class="form-control form-control-sm"
+                  class="form-control form-control-select form-control-select-secondary form-control-sm"
                   data-testid="year-select"
-                  name="year"
                 >
                   <option
                     value="1997"
@@ -2548,6 +2981,7 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
                 <button
                   aria-label="Select the previous month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the previous month"
                   type="button"
                 >
                   <svg
@@ -2555,13 +2989,14 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-left"
+                      href="icons.svg#angle-left"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select current date"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select current date"
                   type="button"
                 >
                   <svg
@@ -2569,13 +3004,14 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#simple-circle"
+                      href="icons.svg#simple-circle"
                     />
                   </svg>
                 </button>
                 <button
                   aria-label="Select the next month"
                   class="nav-btn nav-btn-monospaced btn"
+                  title="Select the next month"
                   type="button"
                 >
                   <svg
@@ -2583,7 +3019,7 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
                     role="presentation"
                   >
                     <use
-                      xlink:href="icons.svg#angle-right"
+                      href="icons.svg#angle-right"
                     />
                   </svg>
                 </button>
@@ -2592,9 +3028,12 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
           </div>
           <div
             class="date-picker-calendar-body"
+            role="grid"
           >
             <div
+              aria-hidden="true"
               class="date-picker-days-row date-picker-row"
+              role="presentation"
             >
               <div
                 class="date-picker-col"
@@ -2676,13 +3115,18 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="0"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Mar 31 2019"
                   class="date-picker-date date-picker-calendar-item previous-month-date"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   31
@@ -2690,10 +3134,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 01 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -2701,10 +3148,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 02 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -2712,10 +3162,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 03 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -2723,10 +3176,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 04 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -2734,10 +3190,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 05 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   5
@@ -2745,10 +3204,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 06 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   6
@@ -2757,13 +3219,18 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="1"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 07 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   7
@@ -2771,10 +3238,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 08 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   8
@@ -2782,10 +3252,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 09 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   9
@@ -2793,10 +3266,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 10 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   10
@@ -2804,10 +3280,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 11 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   11
@@ -2815,10 +3294,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 12 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   12
@@ -2826,10 +3308,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 13 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   13
@@ -2838,13 +3323,18 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="2"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 14 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   14
@@ -2852,10 +3342,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 15 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   15
@@ -2863,10 +3356,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 16 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   16
@@ -2874,21 +3370,27 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 17 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   17
                 </button>
               </div>
               <div
+                aria-selected="true"
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 18 2019"
                   class="date-picker-date date-picker-calendar-item active"
+                  data-index="4"
                   type="button"
                 >
                   18
@@ -2896,10 +3398,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 19 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   19
@@ -2907,10 +3412,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 20 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   20
@@ -2919,13 +3427,18 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="3"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 21 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   21
@@ -2933,10 +3446,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 22 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   22
@@ -2944,10 +3460,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 23 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   23
@@ -2955,10 +3474,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed Apr 24 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   24
@@ -2966,10 +3488,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu Apr 25 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   25
@@ -2977,10 +3502,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri Apr 26 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   26
@@ -2988,10 +3516,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat Apr 27 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   27
@@ -3000,13 +3531,18 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
             </div>
             <div
               class="date-picker-date-row date-picker-row"
+              data-index="4"
+              role="row"
             >
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sun Apr 28 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="0"
+                  tabindex="-1"
                   type="button"
                 >
                   28
@@ -3014,10 +3550,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Mon Apr 29 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="1"
+                  tabindex="-1"
                   type="button"
                 >
                   29
@@ -3025,10 +3564,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Tue Apr 30 2019"
                   class="date-picker-date date-picker-calendar-item"
+                  data-index="2"
+                  tabindex="-1"
                   type="button"
                 >
                   30
@@ -3036,10 +3578,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Wed May 01 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="3"
+                  tabindex="-1"
                   type="button"
                 >
                   1
@@ -3047,10 +3592,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Thu May 02 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="4"
+                  tabindex="-1"
                   type="button"
                 >
                   2
@@ -3058,10 +3606,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Fri May 03 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="5"
+                  tabindex="-1"
                   type="button"
                 >
                   3
@@ -3069,10 +3620,13 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
               </div>
               <div
                 class="date-picker-col"
+                role="gridcell"
               >
                 <button
                   aria-label="Sat May 04 2019"
                   class="date-picker-date date-picker-calendar-item next-month-date"
+                  data-index="6"
+                  tabindex="-1"
                   type="button"
                 >
                   4
@@ -3083,6 +3637,12 @@ exports[`BasicRendering renders the date picker with years range 1`] = `
         </div>
       </div>
     </div>
+    <span
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-scope-end="true"
+      tabindex="0"
+    />
   </div>
 </body>
 `;

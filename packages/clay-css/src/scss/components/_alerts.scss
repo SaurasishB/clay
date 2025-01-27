@@ -1,46 +1,5 @@
 .alert {
-	border-color: transparent;
-	border-style: $alert-border-style;
-	border-width: $alert-border-width;
-
-	@include border-radius($alert-border-radius);
-
-	display: block;
-	font-size: $alert-font-size;
-	margin-bottom: $alert-margin-bottom;
-	padding: $alert-padding-y $alert-padding-x;
-	position: relative;
-	word-wrap: break-word;
-
-	.alert-btn {
-		@include clay-button-variant($alert-btn);
-	}
-
-	.btn-group {
-		@include clay-container($alert-btn-group);
-	}
-
-	.btn-group-item {
-		@include clay-container($alert-btn-group-item);
-	}
-
-	.close {
-		@include clay-close($alert-close);
-	}
-
-	.lead {
-		font-size: $alert-lead-font-size;
-		font-weight: $alert-lead-font-weight;
-		margin-right: $alert-lead-spacer-x;
-	}
-
-	.component-title {
-		@include clay-text-typography($alert-title);
-	}
-
-	.component-subtitle {
-		@include clay-text-typography($alert-subtitle);
-	}
+	@include clay-alert-variant($alert);
 }
 
 .alert-heading {
@@ -50,57 +9,36 @@
 }
 
 .alert-footer {
-	@include clay-container($alert-footer);
+	@include clay-css($alert-footer);
 }
 
 .alert-link,
 .alert-link.btn-unstyled {
-	font-weight: $alert-link-font-weight;
-	text-decoration: $alert-link-decoration;
-
-	&:hover,
-	&:focus {
-		text-decoration: $alert-link-hover-decoration;
-	}
+	@include clay-link($alert-link);
 }
 
 .alert-indicator {
-	font-size: $alert-indicator-font-size;
+	@include clay-css($alert-indicator);
+
+	.lexicon-icon {
+		@include clay-css(map-get($alert-indicator, lexicon-icon));
+	}
 
 	+ .lead {
-		margin-left: $alert-lead-spacer-x;
+		@include clay-css(map-get($alert-indicator, lead));
 	}
 }
 
 // Alert Dismissible
 
 .alert-dismissible {
-	padding-bottom: $alert-dismissible-padding-bottom;
-	padding-left: $alert-dismissible-padding-left;
-	padding-right: $alert-dismissible-padding-right;
-	padding-top: $alert-dismissible-padding-top;
+	@include clay-css($alert-dismissible);
 }
 
 // Alert Fluid
 
 .alert-fluid {
-	@include clay-css($alert-fluid);
-
-	&.alert-dismissible {
-		.container,
-		.container-fluid {
-			@include clay-css($alert-fluid-dismissible-container);
-		}
-	}
-
-	.container,
-	.container-fluid {
-		@include clay-css($alert-fluid-container);
-	}
-
-	.close {
-		right: calc(#{$grid-gutter-width / 2} + #{$nav-btn-margin-x});
-	}
+	@include clay-alert-variant($alert-fluid);
 }
 
 // Alert Notifications
@@ -130,35 +68,22 @@
 }
 
 .alert-notifications-absolute {
-	bottom: $alert-notifications-absolute-bottom;
-	height: 0;
-	left: $alert-notifications-absolute-left;
-	position: absolute;
-	right: $alert-notifications-absolute-right;
-	top: $alert-notifications-absolute-top;
-	z-index: $zindex-alert-notifications;
+	$breakpoint-down: map-get($alert-notifications-absolute, breakpoint-down);
 
-	@include clay-scale-component {
-		bottom: $alert-notifications-absolute-bottom-mobile;
-		left: $alert-notifications-absolute-left-mobile;
-		right: $alert-notifications-absolute-right-mobile;
-		top: $alert-notifications-absolute-top-mobile;
+	@include clay-css($alert-notifications-absolute);
+
+	@include clay-scale-component(null, $breakpoint-down) {
+		@include clay-css(map-get($alert-notifications-absolute, mobile));
 	}
 }
 
 .alert-notifications-fixed {
-	bottom: $alert-notifications-fixed-bottom;
-	left: $alert-notifications-fixed-left;
-	position: fixed;
-	right: $alert-notifications-fixed-right;
-	top: $alert-notifications-fixed-top;
-	z-index: $zindex-alert-notifications;
+	$breakpoint-down: map-get($alert-notifications-fixed, breakpoint-down);
 
-	@include clay-scale-component {
-		bottom: $alert-notifications-fixed-bottom-mobile;
-		left: $alert-notifications-fixed-left-mobile;
-		right: $alert-notifications-fixed-right-mobile;
-		top: $alert-notifications-fixed-top-mobile;
+	@include clay-css($alert-notifications-fixed);
+
+	@include clay-scale-component(null, $breakpoint-down) {
+		@include clay-css(map-get($alert-notifications-fixed, mobile));
 	}
 }
 
@@ -181,13 +106,17 @@
 .modal-body {
 	.alert {
 		.close {
-			right: $modal-inner-padding;
+			right: if(
+				variable-exists(modal-inner-padding),
+				$modal-inner-padding,
+				null
+			);
 		}
 	}
 
 	.alert-list {
 		.alert-fluid:last-child {
-			margin-bottom: -$alert-fluid-border-bottom-width;
+			margin-bottom: math-sign($alert-fluid-border-bottom-width);
 		}
 	}
 }
@@ -233,42 +162,243 @@
 	}
 }
 
+// .alert-inline
+
+.alert-inline.alert {
+	@include clay-css($alert-inline);
+
+	&.alert-dismissible {
+		@include clay-css(map-get($alert-inline, alert-dismissible));
+
+		&.alert-fluid {
+			$alert-dismissible-alert-fluid: setter(
+				map-get($alert-inline, alert-dismissible-alert-fluid),
+				()
+			);
+
+			@include clay-css($alert-dismissible-alert-fluid);
+
+			> .container,
+			> .container-fluid {
+				$container-fluid: setter(
+					map-get($alert-dismissible-alert-fluid, container-fluid),
+					()
+				);
+
+				@include clay-css($container-fluid);
+
+				> .alert-autofit-row {
+					@include clay-css(
+						setter(
+							map-get($container-fluid, alert-autofit-row),
+							map-get($alert-inline, alert-autofit-row)
+						)
+					);
+
+					.btn-group {
+						@include clay-css(
+							map-get($alert-autofit-row, btn-group)
+						);
+					}
+				}
+			}
+		}
+	}
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($alert-inline, alert-autofit-row),
+			()
+		);
+
+		@include clay-css($alert-autofit-row);
+
+		.btn-group {
+			@include clay-css(map-get($alert-autofit-row, btn-group));
+		}
+	}
+
+	.close {
+		@include clay-close(map-get($alert-inline, close));
+	}
+}
+
+// Alert Autofit Stacked
+
+.alert-autofit-stacked.alert {
+	@include clay-css($alert-autofit-stacked);
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($alert-autofit-stacked, alert-autofit-row),
+			()
+		);
+
+		@include clay-css($alert-autofit-row);
+
+		> .autofit-col {
+			@include clay-css(map-get($alert-autofit-row, autofit-col));
+		}
+
+		.btn-group {
+			@include clay-css(map-get($alert-autofit-row, btn-group));
+		}
+	}
+
+	.close {
+		@include clay-close(map-get($alert-autofit-stacked, close));
+	}
+}
+
+// Alert Autofit Stacked Sm Down
+
+.alert-autofit-stacked-sm-down.alert {
+	@include clay-css($alert-autofit-stacked-sm-down);
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($alert-autofit-stacked-sm-down, alert-autofit-row),
+			()
+		);
+
+		@include media-breakpoint-down(sm) {
+			@include clay-css($alert-autofit-row);
+		}
+
+		> .autofit-col {
+			@include media-breakpoint-down(sm) {
+				@include clay-css(map-get($alert-autofit-row, autofit-col));
+			}
+		}
+
+		.btn-group {
+			@include media-breakpoint-down(sm) {
+				@include clay-css(map-get($alert-autofit-row, btn-group));
+			}
+		}
+	}
+
+	.close {
+		@include media-breakpoint-down(sm) {
+			@include clay-css(map-get($alert-autofit-stacked-sm-down, close));
+		}
+	}
+}
+
+// Alert Autofit Stacked Xs Down
+
+.alert-autofit-stacked-xs-down.alert {
+	@include clay-css($alert-autofit-stacked-xs-down);
+
+	> .alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($alert-autofit-stacked-xs-down, alert-autofit-row),
+			()
+		);
+
+		@include media-breakpoint-down(xs) {
+			@include clay-css($alert-autofit-row);
+		}
+
+		> .autofit-col {
+			@include media-breakpoint-down(xs) {
+				@include clay-css(map-get($alert-autofit-row, autofit-col));
+			}
+		}
+
+		.btn-group {
+			@include media-breakpoint-down(xs) {
+				@include clay-css(map-get($alert-autofit-row, btn-group));
+			}
+		}
+	}
+
+	.close {
+		@include media-breakpoint-down(xs) {
+			@include clay-css(map-get($alert-autofit-stacked-xs-down, close));
+		}
+	}
+}
+
+// Alert Indicator Start
+
+.alert-indicator-start.alert {
+	@include clay-css($alert-indicator-start);
+
+	&.alert-fluid {
+		$alert-fluid: setter(map-get($alert-indicator-start, alert-fluid), ());
+
+		@include clay-css($alert-fluid);
+
+		> .container,
+		> .container-fluid {
+			@include clay-css(map-get($alert-fluid, container-fluid));
+		}
+	}
+
+	&.alert-feedback {
+		@include clay-css(map-get($alert-indicator-start, alert-feedback));
+	}
+
+	.alert-indicator {
+		$alert-indicator: setter(
+			map-get($alert-indicator-start, alert-indicator),
+			()
+		);
+
+		@include clay-css($alert-indicator);
+
+		+ .lead {
+			@include clay-css(map-get($alert-indicator, lead));
+		}
+	}
+
+	.alert-autofit-row {
+		$alert-autofit-row: setter(
+			map-get($alert-indicator-start, alert-autofit-row),
+			()
+		);
+
+		@include clay-css($alert-autofit-row);
+
+		.alert-indicator:only-child {
+			@include clay-css(
+				map-get($alert-autofit-row, alert-indicator-only-child)
+			);
+		}
+	}
+}
+
 // Alert Variants
 
 @each $color, $value in $alert-palette {
-	.alert-#{$color} {
-		background-color: map-get($value, bg);
-		border-color: map-get($value, border-color);
-		color: map-get($value, color);
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.alert-', 1)
+		);
 
-		hr {
-			border-top-color: darken(map-get($value, border-color), 5%);
-		}
-
-		.alert-btn {
-			@include clay-button-variant(map-get($value, alert-btn));
-		}
-
-		.close {
-			color: map-get($value, close-color);
-
-			&:hover,
-			&:focus {
-				color: map-get($value, close-hover-color);
+		@if (starts-with($color, '%') or map-get($value, extend)) {
+			#{$selector} {
+				@include clay-alert-variant($value);
 			}
-		}
+		} @else if (starts-with($color, 'alert-')) {
+			$placeholder: '%alert-#{$color}';
 
-		.alert-link {
-			color: map-get($value, link-color);
-
-			&:hover,
-			&:focus {
-				color: map-get($value, link-hover-color);
+			#{$placeholder} {
+				@include clay-alert-variant($value);
 			}
-		}
 
-		.lead {
-			color: map-get($value, lead-color);
+			#{$selector} {
+				@extend %alert-#{$color} !optional;
+			}
+		} @else {
+			#{$selector} {
+				@include clay-alert-variant($value);
+			}
 		}
 	}
 }

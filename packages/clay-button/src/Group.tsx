@@ -19,7 +19,7 @@ export interface IButtonGroupProps
 	vertical?: boolean;
 }
 
-const ClayButtonGroup: React.FunctionComponent<IButtonGroupProps> = ({
+const ClayButtonGroup = ({
 	children,
 	className,
 	role = 'group',
@@ -29,20 +29,14 @@ const ClayButtonGroup: React.FunctionComponent<IButtonGroupProps> = ({
 }: IButtonGroupProps) => (
 	<div
 		{...otherProps}
-		className={classNames(
-			className,
-			vertical ? 'btn-group-vertical' : 'btn-group'
-		)}
+		className={classNames(className, {
+			'btn-group': !spaced && !vertical,
+			'btn-group-spaced': spaced,
+			'btn-group-vertical': vertical,
+		})}
 		role={role}
 	>
-		{spaced
-			? React.Children.map(children, (child, i) =>
-					React.cloneElement(
-						<div className="btn-group-item">{child}</div>,
-						{key: i}
-					)
-			  )
-			: children}
+		{children}
 	</div>
 );
 

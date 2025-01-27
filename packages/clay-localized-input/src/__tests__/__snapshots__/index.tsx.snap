@@ -31,8 +31,10 @@ exports[`ClayLocalizedInput renders 1`] = `
           class="dropdown"
         >
           <button
+            aria-controls="clay-dropdown-menu-1"
+            aria-expanded="false"
+            aria-haspopup="true"
             class="dropdown-toggle btn btn-monospaced btn-secondary"
-            style=""
             title="Open Localizations"
             type="button"
           >
@@ -44,7 +46,7 @@ exports[`ClayLocalizedInput renders 1`] = `
                 role="presentation"
               >
                 <use
-                  xlink:href="/path/to/svg#en-us"
+                  href="/path/to/svg#en-us"
                 />
               </svg>
             </span>
@@ -106,8 +108,10 @@ exports[`ClayLocalizedInput renders with prepend content and result formatter 1`
           class="dropdown"
         >
           <button
+            aria-controls="clay-dropdown-menu-2"
+            aria-expanded="false"
+            aria-haspopup="true"
             class="dropdown-toggle btn btn-monospaced btn-secondary"
-            style=""
             title="Open Localizations"
             type="button"
           >
@@ -119,7 +123,7 @@ exports[`ClayLocalizedInput renders with prepend content and result formatter 1`
                 role="presentation"
               >
                 <use
-                  xlink:href="/path/to/svg#en-us"
+                  href="/path/to/svg#en-us"
                 />
               </svg>
             </span>

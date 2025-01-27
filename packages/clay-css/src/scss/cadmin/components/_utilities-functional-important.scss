@@ -24,40 +24,38 @@
 
 // Background
 
-@each $cadmin-color, $cadmin-value in $cadmin-theme-colors {
-	.bg-#{$cadmin-color} {
-		background-color: $cadmin-value !important;
-	}
+@each $color, $value in $cadmin-bg-theme-colors {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.bg-', 1)
+		);
 
-	a.bg-#{$cadmin-color},
-	button.bg-#{$cadmin-color} {
-		&:hover,
-		&:focus {
-			background-color: darken($cadmin-value, 10%) !important;
+		#{$selector} {
+			@include clay-css($value);
+		}
+
+		a#{$selector},
+		button#{$selector} {
+			&:hover,
+			&:focus {
+				@include clay-css(map-get($value, hover));
+			}
 		}
 	}
 }
 
 @if $cadmin-enable-gradients {
-	@each $cadmin-color, $cadmin-value in $cadmin-theme-colors {
-		.bg-gradient-#{$cadmin-color} {
-			background: $cadmin-value
-				linear-gradient(
-					180deg,
-					mix($cadmin-body-bg, $cadmin-value, 15%),
-					$cadmin-value
-				)
-				repeat-x !important;
+	@each $color, $value in $cadmin-bg-gradient-theme-colors {
+		@if not clay-is-map-unset($value) {
+			.bg-gradient-#{$color} {
+				@include clay-css($value);
+			}
 		}
 	}
-}
-
-.bg-white {
-	background-color: $cadmin-white !important;
-}
-
-.bg-transparent {
-	background-color: transparent !important;
 }
 
 // Border
@@ -102,14 +100,20 @@
 	border-left: 0 !important;
 }
 
-@each $cadmin-color, $cadmin-value in $cadmin-theme-colors {
-	.border-#{$cadmin-color} {
-		border-color: $cadmin-value !important;
-	}
-}
+@each $color, $value in $cadmin-border-theme-colors {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.border-', 1)
+		);
 
-.border-white {
-	border-color: $cadmin-white !important;
+		#{$selector} {
+			@include clay-css($value);
+		}
+	}
 }
 
 // Border-radius
@@ -186,6 +190,10 @@
 	}
 }
 
+.hide {
+	display: none !important;
+}
+
 // Display Print
 
 @media print {
@@ -196,9 +204,9 @@
 	}
 }
 
-/* REUSE-Snippet-Begin
+/* SPDX-SnippetBegin
  * SPDX-License-Identifier: MIT
- * SPDX-Copyright: © 2012 Nicolas Gallagher <https://github.com/suitcss/components-flex-embed>
+ * SPDX-SnippetCopyrightText: © 2012 Nicolas Gallagher <https://github.com/suitcss/components-flex-embed>
  */
 
 .embed-responsive {
@@ -242,15 +250,16 @@
 
 	.embed-responsive-#{$cadmin-embed-responsive-aspect-ratio-x}by#{$cadmin-embed-responsive-aspect-ratio-y} {
 		&::before {
-			padding-top: percentage(
-				$cadmin-embed-responsive-aspect-ratio-y /
-					$cadmin-embed-responsive-aspect-ratio-x
+			padding-top: calc(
+				#{$cadmin-embed-responsive-aspect-ratio-y} /
+					#{$cadmin-embed-responsive-aspect-ratio-x} *
+					100%
 			);
 		}
 	}
 }
 
-/* REUSE-Snippet-End */
+/* SPDX-SnippetEnd */
 
 // Flex
 
@@ -585,27 +594,27 @@
 		@each $cadmin-size, $cadmin-length in $cadmin-spacers {
 			@if $cadmin-size != 0 {
 				.m#{$cadmin-infix}-n#{$cadmin-size} {
-					margin: -$cadmin-length !important;
+					margin: math-sign($cadmin-length) !important;
 				}
 
 				.mt#{$cadmin-infix}-n#{$cadmin-size},
 				.my#{$cadmin-infix}-n#{$cadmin-size} {
-					margin-top: -$cadmin-length !important;
+					margin-top: math-sign($cadmin-length) !important;
 				}
 
 				.mr#{$cadmin-infix}-n#{$cadmin-size},
 				.mx#{$cadmin-infix}-n#{$cadmin-size} {
-					margin-right: -$cadmin-length !important;
+					margin-right: math-sign($cadmin-length) !important;
 				}
 
 				.mb#{$cadmin-infix}-n#{$cadmin-size},
 				.my#{$cadmin-infix}-n#{$cadmin-size} {
-					margin-bottom: -$cadmin-length !important;
+					margin-bottom: math-sign($cadmin-length) !important;
 				}
 
 				.ml#{$cadmin-infix}-n#{$cadmin-size},
 				.mx#{$cadmin-infix}-n#{$cadmin-size} {
-					margin-left: -$cadmin-length !important;
+					margin-left: math-sign($cadmin-length) !important;
 				}
 			}
 		}
@@ -651,12 +660,6 @@
 	}
 }
 
-// Text
-
-.text-monospace {
-	font-family: $cadmin-font-family-monospace !important;
-}
-
 // Text Alignment
 
 .text-justify {
@@ -671,10 +674,14 @@
 	white-space: nowrap !important;
 }
 
+// Text Truncate
+
 .text-truncate {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	@include clay-css($cadmin-text-truncate);
+}
+
+.text-truncate-inline {
+	@include clay-map-to-css($cadmin-text-truncate-inline);
 }
 
 // Responsive Text Alignment
@@ -716,32 +723,62 @@
 
 // Font Weight and Italics
 
-.font-weight-light {
-	font-weight: $cadmin-font-weight-light !important;
-}
-
-.font-weight-lighter {
+.font-weight-lighter,
+.text-weight-lighter {
 	font-weight: $cadmin-font-weight-lighter !important;
 }
 
-.font-weight-normal {
+.font-weight-light,
+.text-weight-light {
+	font-weight: $cadmin-font-weight-light !important;
+}
+
+.font-weight-normal,
+.text-weight-normal {
 	font-weight: $cadmin-font-weight-normal !important;
 }
 
-.font-weight-semi-bold {
+.font-weight-semi-bold,
+.text-weight-semi-bold {
 	font-weight: $cadmin-font-weight-semi-bold !important;
 }
 
-.font-weight-bold {
+.font-weight-bold,
+.text-weight-bold {
 	font-weight: $cadmin-font-weight-bold !important;
 }
 
-.font-weight-bolder {
+.font-weight-bolder,
+.text-weight-bolder {
 	font-weight: $cadmin-font-weight-bolder !important;
 }
 
-.font-italic {
+.font-italic,
+.text-italic {
 	font-style: italic !important;
+}
+
+.font-monospace,
+.text-monospace {
+	font-family: $cadmin-font-family-monospace !important;
+}
+
+// Font Sizes
+
+@each $selector, $value in $cadmin-font-sizes {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($selector, '.') or
+				starts-with($selector, '#') or
+				starts-with($selector, '%'),
+			$selector,
+			str-insert($selector, '.', 1)
+		);
+
+		#{$selector} {
+			@include clay-css($value);
+		}
+	}
 }
 
 // Contextual Colors
@@ -750,38 +787,27 @@
 	color: $cadmin-white !important;
 }
 
-@each $cadmin-color, $cadmin-value in $cadmin-theme-colors {
-	.text-#{$cadmin-color} {
-		color: $cadmin-value !important;
-	}
+@each $color, $value in $cadmin-text-theme-colors {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($color, '.') or
+				starts-with($color, '#') or
+				starts-with($color, '%'),
+			$color,
+			str-insert($color, '.text-', 1)
+		);
 
-	@if $cadmin-emphasized-link-hover-darken-percentage != 0 {
-		a.text-#{$cadmin-color} {
+		#{$selector} {
+			@include clay-css($value);
+		}
+
+		a#{$selector} {
 			&:hover,
 			&:focus {
-				color: darken(
-					$cadmin-value,
-					$cadmin-emphasized-link-hover-darken-percentage
-				) !important;
+				@include clay-css(map-get($value, hover));
 			}
 		}
 	}
-}
-
-.text-body {
-	color: $cadmin-body-color !important;
-}
-
-.text-muted {
-	color: $cadmin-text-muted !important;
-}
-
-.text-black-50 {
-	color: rgba($cadmin-black, 0.5) !important;
-}
-
-.text-white-50 {
-	color: rgba($cadmin-white, 0.5) !important;
 }
 
 // Misc
@@ -794,8 +820,20 @@
 	text-shadow: none;
 }
 
-.text-decoration-none {
-	text-decoration: none !important;
+@each $key, $value in $cadmin-text-decorations {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($key, '.') or
+				starts-with($key, '#') or
+				starts-with($key, '%'),
+			$key,
+			str-insert($key, '.', 1)
+		);
+
+		#{$selector} {
+			@include clay-link($value);
+		}
+	}
 }
 
 .text-break {
@@ -817,4 +855,30 @@
 
 .invisible {
 	visibility: hidden !important;
+}
+
+@at-root {
+	// C Prefers Link Underline
+
+	html#{$cadmin-selector} {
+		@include clay-map-to-css($cadmin-c-prefers-link-underline);
+	}
+
+	// C Prefers Letter Spacing
+
+	html#{$cadmin-selector} {
+		@include clay-map-to-css($cadmin-c-prefers-letter-spacing);
+	}
+
+	// Display C Reduced Motion
+
+	html#{$cadmin-selector} {
+		@include clay-map-to-css($cadmin-displays-c-prefers-reduced-motion);
+	}
+
+	// C Prefers Reduced Motion
+
+	html#{$cadmin-selector} .c-prefers-reduced-motion .cadmin {
+		@include clay-css($cadmin-c-prefers-reduced-motion);
+	}
 }

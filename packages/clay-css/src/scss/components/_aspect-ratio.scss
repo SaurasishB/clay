@@ -158,44 +158,51 @@
 	@extend %aspect-ratio-item-center-middle;
 }
 
-// 3 to 2
+// aspect-ratio-#-to-#
 
-%aspect-ratio-3-to-2 {
-	@include clay-aspect-ratio(3, 2);
-}
+@each $size, $value in $aspect-ratio-sizes {
+	@if not clay-is-map-unset($value) {
+		$selector: if(
+			starts-with($size, '.') or
+				starts-with($size, '#') or
+				starts-with($size, '%'),
+			$size,
+			str-insert($size, '.', 1)
+		);
 
-.aspect-ratio-3-to-2 {
-	@extend %aspect-ratio-3-to-2;
-}
+		@if (starts-with($selector, '%')) {
+			#{$selector} {
+				@include clay-aspect-ratio(
+					map-get($value, width),
+					map-get($value, height)
+				);
+			}
+		} @else if (map-get($value, extend)) {
+			#{$selector} {
+				@include clay-css($value);
+			}
+		} @else if (starts-with($size, 'aspect-ratio-')) {
+			$placeholder: '%#{$size}';
 
-// 4 to 3
+			#{$placeholder} {
+				@include clay-aspect-ratio(
+					map-get($value, width),
+					map-get($value, height)
+				);
+			}
 
-%aspect-ratio-4-to-3 {
-	@include clay-aspect-ratio(4, 3);
-}
-
-.aspect-ratio-4-to-3 {
-	@extend %aspect-ratio-4-to-3;
-}
-
-// 8 to 5
-
-%aspect-ratio-8-to-5 {
-	@include clay-aspect-ratio(8, 5);
-}
-
-.aspect-ratio-8-to-5 {
-	@extend %aspect-ratio-8-to-5;
-}
-
-// 16 to 9
-
-%aspect-ratio-16-to-9 {
-	@include clay-aspect-ratio(16, 9);
-}
-
-.aspect-ratio-16-to-9 {
-	@extend %aspect-ratio-16-to-9;
+			#{$selector} {
+				@extend #{$placeholder} !optional;
+			}
+		} @else {
+			#{$selector} {
+				@include clay-aspect-ratio(
+					map-get($value, width),
+					map-get($value, height)
+				);
+			}
+		}
+	}
 }
 
 // Bg Contain

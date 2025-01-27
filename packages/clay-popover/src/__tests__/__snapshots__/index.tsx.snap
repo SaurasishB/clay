@@ -58,10 +58,21 @@ exports[`ClayPopover renders with \`show\` 1`] = `
 </div>
 `;
 
+exports[`ClayPopover renders with trigger 1`] = `
+<div>
+  <button
+    type="button"
+  >
+    Logo
+  </button>
+</div>
+`;
+
 exports[`ClayPopover renders without scroll 1`] = `
 <div>
   <div
     class="popover clay-popover-bottom"
+    tabindex="-1"
   >
     <div
       class="arrow"

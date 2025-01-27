@@ -18,6 +18,11 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	containerProps?: React.HTMLAttributes<HTMLDivElement>;
 
 	/**
+	 * Props to disable checkbox.
+	 */
+	disabled?: boolean;
+
+	/**
 	 * Flag to indicate that checkbox is in an indeterminate state.
 	 */
 	indeterminate?: boolean;
@@ -33,9 +38,9 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label?: React.ReactText;
 
 	/**
-	 * Callback for when checkbox value is changed
+	 * Callback for when checkbox value is changed.
 	 */
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ClayCheckbox = React.forwardRef<HTMLInputElement, IProps>(
@@ -45,6 +50,7 @@ const ClayCheckbox = React.forwardRef<HTMLInputElement, IProps>(
 			children,
 			className,
 			containerProps = {},
+			disabled,
 			indeterminate = false,
 			inline,
 			label,
@@ -68,6 +74,7 @@ const ClayCheckbox = React.forwardRef<HTMLInputElement, IProps>(
 					containerProps.className,
 					{
 						'custom-control-inline': inline,
+						'custom-control-outside': label,
 					}
 				)}
 			>
@@ -79,6 +86,7 @@ const ClayCheckbox = React.forwardRef<HTMLInputElement, IProps>(
 							'custom-control-input',
 							className
 						)}
+						disabled={disabled}
 						ref={(r) => {
 							inputRef.current = r;
 							if (typeof ref === 'function') {

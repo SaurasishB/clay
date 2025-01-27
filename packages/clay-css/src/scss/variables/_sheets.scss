@@ -27,6 +27,23 @@ $sheet-plus-sheet: map-merge(
 	$sheet-plus-sheet
 );
 
+// Sheet Row
+
+$sheet-row: () !default;
+$sheet-row: map-merge(
+	(
+		margin-left: math-sign($sheet-padding-left),
+		margin-right: math-sign($sheet-padding-right),
+		media-breakpoint-down: (
+			sm: (
+				margin-left: math-sign($sheet-padding-left-mobile),
+				margin-right: math-sign($sheet-padding-right-mobile),
+			),
+		),
+	),
+	$sheet-row
+);
+
 // Sheet Header
 
 $sheet-header-margin-bottom: 3rem !default; // 48px
@@ -126,8 +143,10 @@ $sheet-subtitle-link: map-deep-merge(
 	(
 		color: $sheet-subtitle-link-color,
 		text-decoration: $sheet-subtitle-link-text-decoration,
-		hover-color: $sheet-subtitle-link-hover-color,
-		hover-text-decoration: $sheet-subtitle-link-hover-text-decoration,
+		hover: (
+			color: $sheet-subtitle-link-hover-color,
+			text-decoration: $sheet-subtitle-link-hover-text-decoration,
+		),
 	),
 	$sheet-subtitle-link
 );
@@ -210,7 +229,7 @@ $sheet-dataset-content: () !default;
 $sheet-dataset-content-sheet-header: () !default;
 $sheet-dataset-content-sheet-header: map-merge(
 	(
-		border-width: 0,
+		border-width: 0px,
 		margin: -1.5rem -1.5rem 1.5rem,
 		padding: 1rem 1.5rem,
 	),

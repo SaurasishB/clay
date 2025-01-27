@@ -14,43 +14,35 @@ import ClayModal, {useModal} from '@clayui/modal';
 `;
 
 const modalCode = `const Component = () => {
-	const [visible, setVisible] = useState(false);
-	const {observer, onClose} = useModal({
-		onClose: () => setVisible(false),
-	});
+	const {observer, onOpenChange, open} = useModal();
 
 	return (
 		<>
-			{visible && (
+			{open && (
 				<ClayModal
 					observer={observer}
 					size="lg"
 					spritemap={spritemap}
 					status="info"
 				>
-					<ClayModal.Header>{'Title'}</ClayModal.Header>
+					<ClayModal.Header>Documents</ClayModal.Header>
 					<ClayModal.Body>
-						<h1>{'Hello world!'}</h1>
+						<p>Do you want to save your documents?</p>
 					</ClayModal.Body>
 					<ClayModal.Footer
-						first={
-							<ClayButton.Group spaced>
-								<ClayButton displayType="secondary">
-									{'Secondary'}
-								</ClayButton>
-								<ClayButton displayType="secondary">
-									{'Secondary'}
-								</ClayButton>
-							</ClayButton.Group>
-						}
 						last={
-							<ClayButton onClick={onClose}>{'Primary'}</ClayButton>
+							<ClayButton.Group spaced>
+								<ClayButton displayType="secondary" onClick={() => onOpenChange(false)}>
+									Cancel
+								</ClayButton>
+								<ClayButton onClick={() => onOpenChange(false)}>Save changes</ClayButton>
+							</ClayButton.Group>
 						}
 					/>
 				</ClayModal>
 			)}
-			<ClayButton displayType="primary" onClick={() => setVisible(true)}>
-				{'Open modal'}
+			<ClayButton onClick={() => onOpenChange(true)}>
+				Open modal
 			</ClayButton>
 		</>
 	);

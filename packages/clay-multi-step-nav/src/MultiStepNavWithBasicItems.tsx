@@ -4,6 +4,7 @@
  */
 
 import {ClayDropDownWithItems} from '@clayui/drop-down';
+import {InternalDispatch, useControlledState} from '@clayui/shared';
 import React from 'react';
 
 import ClayMultiStepNav from './MultiStepNav';
@@ -20,11 +21,22 @@ interface ISteps {
 	title?: string;
 }
 
-interface IProps extends React.ComponentProps<typeof ClayMultiStepNav> {
+export interface IProps extends React.ComponentProps<typeof ClayMultiStepNav> {
+	/**
+	 * Value for which step index is active (controlled).
+	 */
+	active?: number;
+
 	/**
 	 * Value for which step index is active
+	 * @deprecated since v3.52.0 - use `active` instead.
 	 */
-	activeIndex: number;
+	activeIndex?: number;
+
+	/**
+	 * Set the default value of active state (uncontrolled).
+	 */
+	defaultActive?: number;
 
 	/**
 	 * Determines at what point a dropdown is show. The dropdown will
@@ -35,12 +47,23 @@ interface IProps extends React.ComponentProps<typeof ClayMultiStepNav> {
 	/**
 	 * Callback for when step is clicked
 	 */
-	onIndexChange: (val: number) => void;
+	onActiveChange?: InternalDispatch<number>;
+
+	/**
+	 * Callback for when step is clicked
+	 * @deprecated since v3.52.0 - use `onActiveChange` instead.
+	 */
+	onIndexChange?: InternalDispatch<number>;
 
 	/**
 	 * Path to spritemap for icon symbol.
 	 */
 	spritemap?: string;
+
+	/**
+	 * Defines the status of the current step.
+	 */
+	state?: 'error' | 'complete';
 
 	/**
 	 * List of steps to display
@@ -63,19 +86,32 @@ const IndicatorWithInnerRef = React.forwardRef<HTMLButtonElement, any>(
 
 IndicatorWithInnerRef.displayName = 'ClayIndicatorWithInnerRef';
 
-export const ClayMultiStepNavWithBasicItems: React.FunctionComponent<IProps> = ({
+export const ClayMultiStepNavWithBasicItems = ({
+	active,
 	activeIndex,
+	defaultActive,
 	maxStepsShown = MAX_STEPS_SHOWN,
+	onActiveChange,
 	onIndexChange,
 	spritemap,
+	state = 'complete',
 	steps,
 	...otherProps
 }: IProps) => {
+	const [internalActive, setActive] = useControlledState({
+		defaultName: 'defaultActive',
+		defaultValue: defaultActive,
+		handleName: 'onActiveChange',
+		name: 'value',
+		onChange: onActiveChange ?? onIndexChange,
+		value: typeof active === 'undefined' ? activeIndex : active,
+	});
+
 	let dropdownItems;
 	let showSteps = steps;
 	const indexEnd = steps.length - 1;
 
-	const lastStep = steps[indexEnd];
+	const lastStep = steps[indexEnd]!;
 
 	if (steps.length > maxStepsShown) {
 		const indexBeforeDropdown = maxStepsShown - 1;
@@ -86,10 +122,10 @@ export const ClayMultiStepNavWithBasicItems: React.FunctionComponent<IProps> = (
 				const index = indexBeforeDropdown + i;
 
 				return {
-					active: activeIndex === index,
+					active: internalActive === index,
 					label: `${index + 1}. ${step.title}`,
-					onClick: () => onIndexChange(index),
-					symbolRight: activeIndex > index ? 'check' : undefined,
+					onClick: () => setActive(index),
+					symbolRight: internalActive > index ? 'check' : undefined,
 				};
 			});
 
@@ -97,26 +133,28 @@ export const ClayMultiStepNavWithBasicItems: React.FunctionComponent<IProps> = (
 	}
 
 	const activeInDropDown =
-		activeIndex > showSteps.length - 1 && activeIndex < indexEnd;
+		internalActive > showSteps.length - 1 && internalActive < indexEnd;
 
 	return (
 		<ClayMultiStepNav {...otherProps}>
 			{showSteps.map(({subTitle, title}, i: number) => {
-				const complete = activeIndex > i;
+				const error = state === 'error' && internalActive === i;
+				const complete = !error ? internalActive > i : false;
 
 				return (
 					<ClayMultiStepNav.Item
-						active={activeIndex === i}
-						complete={complete}
+						active={internalActive === i}
 						expand={i + 1 !== steps.length}
 						key={i}
+						state={
+							error ? 'error' : complete ? 'complete' : undefined
+						}
 					>
 						<ClayMultiStepNav.Title>{title}</ClayMultiStepNav.Title>
 						<ClayMultiStepNav.Divider />
 						<ClayMultiStepNav.Indicator
-							complete={complete}
 							label={1 + i}
-							onClick={() => onIndexChange(i)}
+							onClick={() => setActive(i)}
 							spritemap={spritemap}
 							subTitle={subTitle}
 						/>
@@ -128,13 +166,13 @@ export const ClayMultiStepNavWithBasicItems: React.FunctionComponent<IProps> = (
 				<>
 					<ClayMultiStepNav.Item
 						active={activeInDropDown}
-						complete={activeIndex === indexEnd}
+						complete={internalActive === indexEnd}
 						expand
 					>
 						<ClayMultiStepNav.Title>
 							{activeInDropDown
-								? steps[activeIndex].title
-								: steps[showSteps.length].title}
+								? steps[internalActive]!.title
+								: steps[showSteps.length]!.title}
 						</ClayMultiStepNav.Title>
 						<ClayMultiStepNav.Divider />
 
@@ -145,14 +183,14 @@ export const ClayMultiStepNavWithBasicItems: React.FunctionComponent<IProps> = (
 						/>
 					</ClayMultiStepNav.Item>
 
-					<ClayMultiStepNav.Item active={activeIndex === indexEnd}>
+					<ClayMultiStepNav.Item active={internalActive === indexEnd}>
 						<ClayMultiStepNav.Title>
 							{lastStep.title}
 						</ClayMultiStepNav.Title>
 						<ClayMultiStepNav.Divider />
 						<ClayMultiStepNav.Indicator
 							label={steps.length}
-							onClick={() => onIndexChange(indexEnd)}
+							onClick={() => setActive(indexEnd)}
 							spritemap={spritemap}
 							subTitle={lastStep.subTitle}
 						/>
